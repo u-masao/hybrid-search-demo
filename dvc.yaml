@@ -56,16 +56,12 @@ stages:
     outs:
       - data/embeddings.parquet
 
-  generate_history:
+  load_to_elasticsearch:
     cmd: >-
-      poetry run python src/generate_history.py
-      data/formatted_dataset.parquet
+      poetry run python src/load_to_elasticsearch.py
+      --es-host=localhost:9200
+      --index-name=user_sentences
       data/users_with_sentences.parquet
-      data/user_history.parquet
-      --max_views=${max_views}
     deps:
-      - src/generate_history.py
-      - data/formatted_dataset.parquet
+      - src/load_to_elasticsearch.py
       - data/users_with_sentences.parquet
-    outs:
-      - data/user_history.parquet
