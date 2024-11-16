@@ -1,5 +1,4 @@
 import pandas as pd
-from hello import hello
 import click
 
 @click.command()
