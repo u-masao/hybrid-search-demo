@@ -5,3 +5,4 @@ certs/
 /data/
 __pycache__
 /.cache/
+/mlruns/
