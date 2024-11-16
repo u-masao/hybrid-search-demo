@@ -1,16 +1,21 @@
+import hashlib
 import os
 import unittest
+
 import numpy as np
-import hashlib
+
 from src.embedding.embedding import Embedding
+
 
 class TestEmbedding(unittest.TestCase):
 
     def setUp(self):
-        self.embedding = Embedding(dimension=768)
+        self.embedding = Embedding(dimension=384)
 
     def test_split_text(self):
-        text = "This is a sample text to test the splitting functionality. " * 20
+        text = (
+            "This is a sample text to test the splitting functionality. " * 20
+        )
         chunks = self.embedding.split_text(text, max_length=50, overlap=10)
         self.assertTrue(all(len(chunk) <= 50 for chunk in chunks))
         self.assertTrue(len(chunks) > 1)
@@ -22,7 +27,7 @@ class TestEmbedding(unittest.TestCase):
 
         # Check caching
         cache_dir = ".cache/md5"
-        text_hash = hashlib.md5(text.encode('utf-8')).hexdigest()
+        text_hash = hashlib.md5(text.encode("utf-8")).hexdigest()
         cache_path = os.path.join(cache_dir, f"{text_hash}.pkl")
         self.assertTrue(os.path.exists(cache_path))
 
@@ -36,5 +41,6 @@ class TestEmbedding(unittest.TestCase):
         similarity = self.embedding.compute_similarity(vector1, vector3)
         self.assertAlmostEqual(similarity, 0.707, places=3)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
