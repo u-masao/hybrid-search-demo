@@ -5,3 +5,11 @@ stages:
       - src/make_dataset.py
     outs:
       - data/train.parquet
+
+  format_dataset:
+    cmd: poetry run python src/format_dataset.py data/train.parquet
+    deps:
+      - src/format_dataset.py
+      - data/train.parquet
+    outs:
+      - data/formatted_dataset.parquet
