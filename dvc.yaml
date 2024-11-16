@@ -6,6 +6,7 @@ stages:
       --num_users=${num_users}
       --categories="technology,sports,music,art"
       data/users_with_sentences.parquet
+      data/user_embeddings.parquet
     deps:
       - src/generate_users.py
     params:
