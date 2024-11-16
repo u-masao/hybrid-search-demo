@@ -22,7 +22,7 @@ def perform_vector_search(es_host, index_name, query_text, top_k=5):
         raise ValueError(f"Index '{index_name}' does not exist.")
 
     # Initialize Embedding class
-    embedding_model = Embedding(dimension=768)  # Assuming 768 dimensions
+    embedding_model = Embedding(dimension=384)  # Assuming 384 dimensions
 
     # Generate embedding for the query text
     query_vector = embedding_model.generate_embedding(query_text)
