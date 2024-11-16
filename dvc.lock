@@ -219,3 +219,14 @@ stages:
       hash: md5
       md5: 74f1f7fc99ebc6274693c350f6e25e64
       size: 2242
+  search_demo:
+    cmd: poetry run python -m src.search_program
+    deps:
+    - path: src/embedding/embedding.py
+      hash: md5
+      md5: 1d3ae2f3553d85d2da013a0ff03dca3d
+      size: 3840
+    - path: src/search_program.py
+      hash: md5
+      md5: cce429e629035d30ce38f281f3c90f1e
+      size: 2305
