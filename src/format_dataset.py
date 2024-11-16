@@ -1,5 +1,4 @@
 import datetime
-from dotenv import load_dotenv
 import os
 import random
 
@@ -7,10 +6,11 @@ import click
 import mlflow
 import openai
 import pandas as pd
+from dotenv import load_dotenv
 from loguru import logger
 
-
 load_dotenv()
+
 
 def create_sentence_column(df):
     """
@@ -102,6 +102,7 @@ def generate_user_history(df, num_users=1000):
             )
 
     return pd.DataFrame(history)
+
 
 @click.command()
 @click.argument("input_file", type=click.Path(exists=True))
