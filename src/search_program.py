@@ -36,7 +36,7 @@ def perform_bm25_search(es_host, index_name, query_text, top_k=5):
     # Initialize Elasticsearch client
     es = Elasticsearch(
         es_host,
-        http_auth=(
+        basic_auth=(
             os.getenv("ELASTIC_USERNAME"),
             os.getenv("ELASTIC_PASSWORD"),
         ),
