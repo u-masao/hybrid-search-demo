@@ -21,6 +21,8 @@ def load_mermaid_chart(file_path):
 def load_dvc_yaml(file_path):
     with open(file_path, "r") as file:
         return yaml.safe_load(file)
+
+def main():
     st.title("DVC Pipeline Outputs Summary")
 
     # Load and display DVC YAML data
@@ -43,7 +45,6 @@ def load_dvc_yaml(file_path):
             """,
             height=500,
         )
-    st.title("DVC Pipeline Outputs Summary")
 
     # Load and display user profiles
     user_profiles = load_data("data/user_profiles.parquet")
@@ -68,6 +69,8 @@ def load_dvc_yaml(file_path):
     st.header("User Embeddings")
     st.write(user_embeddings.head())
     st.write(user_embeddings.describe())
+
+    # Load and display user history
     user_history = load_data("data/user_history.parquet")
     st.header("User History")
     st.write(user_history.head())
