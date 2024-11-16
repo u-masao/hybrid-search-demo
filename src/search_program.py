@@ -1,7 +1,7 @@
 import os
 from elasticsearch import Elasticsearch
-from src.embedding.embedding import Embedding
-from src.load_to_elasticsearch import bm25_search
+from embedding.embedding import Embedding
+from load_to_elasticsearch import bm25_search
 
 def perform_vector_search(es_host, index_name, query_text, top_k=5):
     # Initialize Elasticsearch client
