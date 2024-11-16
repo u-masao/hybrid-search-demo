@@ -48,7 +48,7 @@ def perform_bm25_search(es_host, index_name, query_text, top_k=5):
 
 if __name__ == "__main__":
     es_host = "https://localhost:9200"
-    index_name = "articles"
+    index_name = "article_data"
     query_text = "example search text"
 
     # Perform vector search
