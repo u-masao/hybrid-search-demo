@@ -111,6 +111,6 @@ stages:
       - src/search_program.py
       - src/embedding/embedding.py
       - data/load_users_timestamp.txt
+      - data/load_articles_timestamp.txt
     outs:
       - data/search_timestamp.txt
-      - data/load_articles_timestamp.txt
