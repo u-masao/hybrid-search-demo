@@ -24,5 +24,6 @@ def main(output_file):
     """Main function to handle command-line arguments."""
     make_dataset(output_file)
 
+
 if __name__ == "__main__":
     main()
