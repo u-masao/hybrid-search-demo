@@ -24,7 +24,7 @@ def generate_user_profiles(num_users=1000, categories=None):
     if categories is None:
         categories = []
 
-    user_ids = [for i in range(1, num_users + 1)]
+    user_ids = [i for i in range(1, num_users + 1)]
     genders = ["male", "female", "non-binary"]
 
     client = OpenAI(
