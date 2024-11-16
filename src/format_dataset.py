@@ -4,10 +4,10 @@ import random
 
 import click
 import mlflow
-import openai
 import pandas as pd
 from dotenv import load_dotenv
 from loguru import logger
+from openai import OpenAI
 
 load_dotenv()
 
@@ -48,28 +48,34 @@ def generate_user_history(df, num_users=1000):
     categories = df["category"].unique().tolist()
 
     # Set OpenAI API key
-    openai.api_key = os.environ["OPENAI_API_KEY"]
+    client = OpenAI(
+        api_key=os.environ["OPENAI_API_KEY"],
+    )
     user_profiles = {
         user_id: (
             lambda age, gender, preferences: {
                 "age": age,
                 "gender": gender,
                 "preferences": preferences,
-                "introduction": openai.ChatCompletion.create(
+                "introduction": client.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=[
                         {
                             "role": "system",
                             "content": (
-                                f"Create a short self-introduction for a {user_id}"
-                                f" who is {age} years old, {gender}, "
-                                f"and likes {', '.join(preferences)}. in japanese"
+                                f"Create a short self-introduction for"
+                                f" a {user_id}"
+                                f" who is {age} years old, {gender},"
+                                f" and likes {', '.join(preferences)}"
+                                " in japanese."
                             ),
                         }
                     ],
                     max_tokens=50,
-                    temperature=0,
-                ).choices[0].message['content'].strip(),
+                    temperature=0.9,
+                )
+                .choices[0]
+                .message.content.strip(),
             }
         )(
             random.randint(18, 70),
