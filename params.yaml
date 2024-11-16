@@ -4,3 +4,4 @@ embedding:
   model_name: "intfloat/multilingual-e5-small"
   dimension: 384
 num_users: 25
+max_views: 10
