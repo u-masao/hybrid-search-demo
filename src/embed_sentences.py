@@ -10,7 +10,13 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
     df = pd.read_parquet(input_file)
 
     embedding_model = Embedding(dimension=dimension)
-    df["embedding"] = df["sentence"].apply(lambda x: embedding_model.generate_embedding(x) if limit == 0 or df.index.get_loc(x) < limit else None)
+    df["embedding"] = df["sentence"].apply(
+        lambda x: (
+            embedding_model.generate_embedding(x)
+            if limit == 0 or df.index.get_loc(x) < limit
+            else None
+        )
+    )
 
     df.to_parquet(output_file)
     logger.info(f"Embeddings saved to {output_file}")
@@ -27,6 +33,5 @@ if __name__ == "__main__":
     @click.argument("limit", type=int)
     def main(input_file, output_file, dimension, model_name, limit):
         embed_sentences(input_file, output_file, dimension, model_name, limit)
-
 
     main()
