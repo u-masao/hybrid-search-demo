@@ -40,20 +40,20 @@ class Embedding:
         戻り値:
         入力テキストの埋め込みを表すnumpy配列。
         """
-        # Create cache directory if it doesn't exist
+        # キャッシュディレクトリが存在しない場合は作成
         cache_dir = ".cache/md5"
         os.makedirs(cache_dir, exist_ok=True)
 
-        # Compute MD5 hash of the text
+        # テキストのMD5ハッシュを計算
         text_hash = hashlib.md5(text.encode("utf-8")).hexdigest()
         cache_path = os.path.join(cache_dir, f"{text_hash}.pkl")
 
-        # Check if the embedding is already cached
+        # 埋め込みが既にキャッシュされているか確認
         if os.path.exists(cache_path):
             with open(cache_path, "rb") as f:
                 return pickle.load(f)
 
-        # Generate embedding if not cached
+        # キャッシュされていない場合は埋め込みを生成
         tokenizer = AutoTokenizer.from_pretrained(
             "intfloat/multilingual-e5-small"
         )
@@ -66,7 +66,7 @@ class Embedding:
             outputs.last_hidden_state.mean(dim=1).squeeze().detach().numpy()
         )
 
-        # Save the embedding to cache
+        # 埋め込みをキャッシュに保存
         with open(cache_path, "wb") as f:
             pickle.dump(embedding, f)
 

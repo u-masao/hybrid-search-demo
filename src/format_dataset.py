@@ -33,7 +33,7 @@ def main(input_file, output_file):
     logger.info("Columns in the dataset: {}", df.columns.tolist())
     df.to_parquet(output_file)
     logger.info(f"Formatted dataset saved to {output_file}")
-    # Read the saved Parquet file and print the first row
+    # 保存されたParquetファイルを読み込み、最初の行を表示
     df_loaded = pd.read_parquet(output_file)
     logger.info(
         "First row, 'sentence' column of the formatted dataset: {}",

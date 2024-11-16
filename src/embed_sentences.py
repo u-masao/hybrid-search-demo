@@ -19,22 +19,21 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
     logger.info(f"Reading formatted dataset from {input_file}")
     df = pd.read_parquet(input_file)
 
-    # Limit the number of rows if a limit is specified
+    # 制限が指定されている場合は行数を制限
     if limit > 0:
         df = df.head(max(limit, len(df)))
 
-    # Initialize the embedding model with the specified dimension
+    # 指定された次元で埋め込みモデルを初期化
     embedding_model = Embedding(dimension=dimension)
-    # Register tqdm with pandas
+    # pandasにtqdmを登録
     tqdm.pandas()
 
-    # Apply the embedding generation to each sentence in the DataFrame
-    # with a progress bar
+    # DataFrame内の各文に埋め込み生成を適用し、プログレスバーを表示
     df["embedding"] = df["sentence"].progress_apply(
         lambda x: (embedding_model.generate_embedding(x))
     )
 
-    # Save the DataFrame with embeddings to a Parquet file
+    # 埋め込みを含むDataFrameをParquetファイルに保存
     df.to_parquet(output_file)
     logger.info(f"Embeddings saved to {output_file}")
 

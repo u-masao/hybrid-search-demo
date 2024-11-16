@@ -17,10 +17,10 @@ def make_dataset(output_file):
     mlflow.set_experiment("Dataset Creation")
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     dataset = load_dataset("llm-book/livedoor-news-corpus")
-    # Convert each split in the DatasetDict to a Pandas DataFrame
+    # DatasetDictの各分割をPandas DataFrameに変換
     for split_name, split in dataset.items():
         df = pd.DataFrame.from_dict(split)
-        # Extract numeric ID from URL and add as a new column
+        # URLから数値IDを抽出し、新しい列として追加
         df["id"] = df["url"].apply(
             lambda x: (
                 re.search(r"/(\d+)/", x).group(1)
@@ -29,10 +29,10 @@ def make_dataset(output_file):
             )
         )
 
-        # Replace 'train' in the output file name with the current split name
+        # 出力ファイル名の'train'を現在の分割名に置き換え
         split_output_file = output_file.replace("train", split_name)
         print(f"Dataset split '{split_name}' as DataFrame:\n{df}")
-        # Log input and output lengths
+        # 入力と出力の長さをログに記録
         mlflow.log_params(
             {"input_length": len(split), "output_length": len(df)}
         )
@@ -49,7 +49,7 @@ def main(output_file):
     """コマンドライン引数を処理するメイン関数。"""
     with mlflow.start_run():
         make_dataset(output_file)
-        # Log CLI options
+        # CLIオプションをログに記録
         mlflow.log_params({"output_file": output_file})
 
 
