@@ -14,6 +14,7 @@ stages:
       size: 12022017
   format_dataset:
     cmd: poetry run python src/format_dataset.py data/train.parquet data/formatted_dataset.parquet
+      --limit=100
     deps:
     - path: data/train.parquet
       hash: md5
@@ -21,21 +22,21 @@ stages:
       size: 12022017
     - path: src/format_dataset.py
       hash: md5
-      md5: 10a62d6a605dd1a54eeaa85a305c7043
-      size: 1714
+      md5: f3e7ebca2614759ebf5bda8b67ebb555
+      size: 1825
     outs:
     - path: data/formatted_dataset.parquet
       hash: md5
-      md5: c29937cdce55d4dc3eebcef74fb56011
-      size: 23784591
+      md5: d83c9fa53ca3765a7ad6b9f5c48dfe59
+      size: 382072
   embed_sentences:
     cmd: poetry run python src/embed_sentences.py data/formatted_dataset.parquet data/embeddings.parquet
-      --dimension=384 --model_name=intfloat/multilingual-e5-small --limit=100
+      --dimension=384 --model_name=intfloat/multilingual-e5-small
     deps:
     - path: data/formatted_dataset.parquet
       hash: md5
-      md5: c29937cdce55d4dc3eebcef74fb56011
-      size: 23784591
+      md5: d83c9fa53ca3765a7ad6b9f5c48dfe59
+      size: 382072
     - path: src/embed_sentences.py
       hash: md5
       md5: 5de3e9fa1cf1657daf5bce71c84cab5d
@@ -47,5 +48,21 @@ stages:
     outs:
     - path: data/embeddings.parquet
       hash: md5
-      md5: 6507999db68f831d5d1f3bc13f8af649
-      size: 683105
+      md5: 3c0988c6eb2450da5aa9fdbae9395363
+      size: 613280
+  generate_user_profiles:
+    cmd: poetry run python src/generate_users.py --num_users=50 --categories="technology,sports,music,art"
+      data/user_profiles.parquet
+    deps:
+    - path: src/generate_users.py
+      hash: md5
+      md5: 8d2a1ad58e5c4bf56a37651abed8715e
+      size: 2595
+    params:
+      params.yaml:
+        num_users: 50
+    outs:
+    - path: data/user_profiles.parquet
+      hash: md5
+      md5: 24573b5b3b39b3c32a949a6edde3f5cf
+      size: 9104
