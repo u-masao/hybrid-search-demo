@@ -7,7 +7,7 @@ import pandas as pd
 from generate_users import generate_user_profiles
 
 
-def generate_user_history(df, user_profiles):
+def generate_user_history(df, user_profiles, max_views=10):
     """
     Generate browsing history for each article.
 
@@ -22,9 +22,7 @@ def generate_user_history(df, user_profiles):
     history = []
 
     for index, row in df.iterrows():
-        num_views = random.randint(
-            1, 10
-        )  # Each article is viewed between 1 to 10 times
+        num_views = random.randint(0, max_views)
         for _ in range(num_views):
             user_id = random.choice(user_ids)
             timestamp = datetime.datetime.now() - datetime.timedelta(
@@ -46,11 +44,12 @@ def generate_user_history(df, user_profiles):
 @click.argument("articles_file", type=click.Path(exists=True))
 @click.argument("user_profiles_file", type=click.Path(exists=True))
 @click.argument("output_file", type=click.Path())
-def main(articles_file, user_profiles_file, output_file):
+@click.option("--max_views", type=int, default=10)
+def main(articles_file, user_profiles_file, output_file, max_views):
     """Generate browsing history and save to a parquet file."""
     df = pd.read_parquet(articles_file)
     user_profiles = pd.read_parquet(user_profiles_file).to_dict(orient="index")
-    df_history = generate_user_history(df, user_profiles)
+    df_history = generate_user_history(df, user_profiles, max_views=max_views)
     df_history.to_parquet(output_file)
 
 
