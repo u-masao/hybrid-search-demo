@@ -13,6 +13,8 @@ stages:
       poetry run python src/format_dataset.py
       data/train.parquet
       data/formatted_dataset.parquet
+      --limit=${embedding.limit}
+      --num_users=${embedding.num_users}
     deps:
       - src/format_dataset.py
       - data/train.parquet
@@ -26,7 +28,6 @@ stages:
       data/embeddings.parquet
       --dimension=${embedding.dimension}
       --model_name=${embedding.model_name}
-      --limit=${embedding.limit}
     deps:
       - src/embed_sentences.py
       - src/embedding/embedding.py
