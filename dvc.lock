@@ -1,0 +1,14 @@
+schema: '2.0'
+stages:
+  make_dataset:
+    cmd: poetry run python src/make_dataset.py data/train.parquet
+    deps:
+    - path: src/make_dataset.py
+      hash: md5
+      md5: 1fe55be0b5f1b612a68e30f60475ae00
+      size: 923
+    outs:
+    - path: data/train.parquet
+      hash: md5
+      md5: 9df3ef943c1d8d79ceaaadb8b8da05d3
+      size: 11969338
