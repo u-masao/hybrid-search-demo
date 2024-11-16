@@ -4,6 +4,7 @@ import random
 import click
 import mlflow
 import pandas as pd
+import openai
 from loguru import logger
 
 
@@ -42,7 +43,8 @@ def generate_user_history(df, num_users=1000):
     genders = ["male", "female", "non-binary"]
     categories = df["category"].unique().tolist()
 
-    # Create user profiles with attributes
+    # Set OpenAI API key
+    openai.api_key = "your-api-key-here"
     user_profiles = {
         user_id: {
             "age": random.randint(18, 70),
@@ -50,7 +52,12 @@ def generate_user_history(df, num_users=1000):
             "preferences": random.sample(
                 categories, k=random.randint(1, min(3, len(categories)))
             ),
-            "introduction": f"Hello, I am a {random.randint(18, 70)} year old {random.choice(genders)} who likes {', '.join(random.sample(categories, k=random.randint(1, min(3, len(categories)))))}.",
+            "introduction": openai.Completion.create(
+                engine="text-davinci-003",
+                prompt=f"Create a short self-introduction for a {user_id} who is {user_profiles[user_id]['age']} years old, {user_profiles[user_id]['gender']}, and likes {', '.join(user_profiles[user_id]['preferences'])}.",
+                max_tokens=50,
+                temperature=0
+            ).choices[0].text.strip(),
         }
         for user_id in user_ids
     }
