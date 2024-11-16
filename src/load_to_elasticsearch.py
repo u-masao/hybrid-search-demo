@@ -1,15 +1,21 @@
-import pandas as pd
 import os
-from elasticsearch import Elasticsearch, helpers
-from dotenv import load_dotenv
 
-load_dotenv('.credential')
+import pandas as pd
+from dotenv import load_dotenv
+from elasticsearch import Elasticsearch, helpers
+
+load_dotenv(".credential")
+
 
 def load_data_to_elasticsearch(es_host, index_name, data_file):
+    print(f"{es_host=}")
     es = Elasticsearch(
         es_host,
-        http_auth=(os.getenv('ELASTIC_USERNAME'), os.getenv('ELASTIC_PASSWORD')),
-        ca_certs="certs/http_ca.crt"
+        http_auth=(
+            os.getenv("ELASTIC_USERNAME"),
+            os.getenv("ELASTIC_PASSWORD"),
+        ),
+        ca_certs="certs/http_ca.crt",
     )
     df = pd.read_parquet(data_file)
 
@@ -23,13 +29,20 @@ def load_data_to_elasticsearch(es_host, index_name, data_file):
 
     helpers.bulk(es, actions)
 
+
 if __name__ == "__main__":
     import click
 
     @click.command()
-    @click.option('--es-host', default='http://localhost:9200', help='Elasticsearch host URL (e.g., http://localhost:9200)')
-    @click.option('--index-name', default='user_data', help='Elasticsearch index name')
-    @click.argument('data_file', type=click.Path(exists=True))
+    @click.option(
+        "--es_host",
+        default="https://localhost:9200",
+        help="Elasticsearch host URL (e.g., https://localhost:9200)",
+    )
+    @click.option(
+        "--index_name", default="user_data", help="Elasticsearch index name"
+    )
+    @click.argument("data_file", type=click.Path(exists=True))
     def main(es_host, index_name, data_file):
         load_data_to_elasticsearch(es_host, index_name, data_file)
 
