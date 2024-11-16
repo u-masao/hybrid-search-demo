@@ -1,5 +1,4 @@
 import pandas as pd
-import yaml
 from loguru import logger
 
 from embedding.embedding import Embedding
@@ -29,7 +28,5 @@ if __name__ == "__main__":
     def main(input_file, output_file, dimension, model_name, limit):
         embed_sentences(input_file, output_file, dimension, model_name, limit)
 
-    with open("params.yaml", "r") as f:
-        params = yaml.safe_load(f)
 
     main()
