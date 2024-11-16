@@ -33,9 +33,6 @@ def generate_user_history(df, user_profiles):
                     "article_id": index,
                     "user_id": user_id,
                     "timestamp": timestamp,
-                    "age": user_profile["age"],
-                    "gender": user_profile["gender"],
-                    "preferences": user_profile["preferences"],
                 }
             )
 
