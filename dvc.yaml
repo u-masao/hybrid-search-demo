@@ -1,7 +1,15 @@
-  embed_sentences:
-    cmd: poetry run python src/embed_sentences.py data/formatted_dataset.parquet data/embeddings.parquet
+stages:
+  make_dataset:
+    cmd: poetry run python src/make_dataset.py data/train.parquet
     deps:
-      - src/embed_sentences.py
-      - data/formatted_dataset.parquet
+      - src/make_dataset.py
     outs:
-      - data/embeddings.parquet
+      - data/train.parquet
+
+  format_dataset:
+    cmd: poetry run python src/format_dataset.py data/train.parquet data/formatted_dataset.parquet
+    deps:
+      - src/format_dataset.py
+      - data/train.parquet
+    outs:
+      - data/formatted_dataset.parquet
