@@ -1,6 +1,10 @@
 stages:
   generate_user_profiles:
-    cmd: poetry run python src/generate_users.py --num_users ${num_users} --categories "technology,sports,music,art" data/user_profiles.parquet
+    cmd: >-
+      poetry run python src/generate_users.py
+      --num_users=${num_users}
+      --categories="technology,sports,music,art"
+      data/user_profiles.parquet
     deps:
       - src/generate_users.py
     params:
@@ -22,8 +26,7 @@ stages:
       poetry run python src/format_dataset.py
       data/train.parquet
       data/formatted_dataset.parquet
-      --limit=${embedding.limit}
-      --num_users=${embedding.num_users}
+      --limit=${dataset.limit}
     deps:
       - src/format_dataset.py
       - data/train.parquet
