@@ -56,16 +56,16 @@ stages:
     deps:
     - path: src/generate_users.py
       hash: md5
-      md5: feac7c365d87b6d9620d16969d06217e
-      size: 2847
+      md5: 7d66976bf9ee0ba305f62344281cf4b8
+      size: 2932
     params:
       params.yaml:
         num_users: 25
     outs:
     - path: data/users_with_sentences.parquet
       hash: md5
-      md5: 869a935b031645932860594522d8bafd
-      size: 8633
+      md5: f70468e5eba8b3c32e219d9a7e022c6d
+      size: 12669
   generate_user_history:
     cmd: poetry run python src/generate_history.py data/formatted_dataset.parquet
       data/user_profiles.parquet data/user_history.parquet
@@ -147,8 +147,8 @@ stages:
       size: 220900
     - path: data/users_with_sentences.parquet
       hash: md5
-      md5: 869a935b031645932860594522d8bafd
-      size: 8633
+      md5: f70468e5eba8b3c32e219d9a7e022c6d
+      size: 12669
     - path: src/generate_history.py
       hash: md5
       md5: 894154d23114b25d77999c8a8a96e7e0
@@ -156,16 +156,16 @@ stages:
     outs:
     - path: data/user_history.parquet
       hash: md5
-      md5: db97206ae93ca40cbb19f80ab53d5891
-      size: 5917
+      md5: c6e36ea52e18d5970fe92a9521fb15d1
+      size: 5937
   embed_users:
     cmd: poetry run python src/embed_sentences.py data/users_with_sentences.parquet
       data/user_embeddings.parquet
     deps:
     - path: data/users_with_sentences.parquet
       hash: md5
-      md5: 869a935b031645932860594522d8bafd
-      size: 8633
+      md5: f70468e5eba8b3c32e219d9a7e022c6d
+      size: 12669
     - path: src/embed_sentences.py
       hash: md5
       md5: 5de3e9fa1cf1657daf5bce71c84cab5d
@@ -173,8 +173,8 @@ stages:
     outs:
     - path: data/user_embeddings.parquet
       hash: md5
-      md5: a40f5ba175bf7b59866ea2f5cbd7c9d4
-      size: 64651
+      md5: 3803a5dc6124e90ed9789f280519f311
+      size: 68678
   load_to_elasticsearch:
     cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
       --index_name=user_sentences data/users_with_sentences.parquet
@@ -209,12 +209,12 @@ stages:
     deps:
     - path: data/user_embeddings.parquet
       hash: md5
-      md5: a40f5ba175bf7b59866ea2f5cbd7c9d4
-      size: 64651
+      md5: 3803a5dc6124e90ed9789f280519f311
+      size: 68678
     - path: data/users_with_sentences.parquet
       hash: md5
-      md5: 869a935b031645932860594522d8bafd
-      size: 8633
+      md5: f70468e5eba8b3c32e219d9a7e022c6d
+      size: 12669
     - path: src/load_to_elasticsearch.py
       hash: md5
       md5: 74f1f7fc99ebc6274693c350f6e25e64
