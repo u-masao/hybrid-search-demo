@@ -28,7 +28,8 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
     # Register tqdm with pandas
     tqdm.pandas()
 
-    # Apply the embedding generation to each sentence in the DataFrame with a progress bar
+    # Apply the embedding generation to each sentence in the DataFrame
+    # with a progress bar
     df["embedding"] = df["sentence"].progress_apply(
         lambda x: (embedding_model.generate_embedding(x))
     )
