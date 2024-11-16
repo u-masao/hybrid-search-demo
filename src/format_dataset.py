@@ -51,7 +51,8 @@ def generate_user_history(df, num_users=1000):
         for user_id in user_ids
     }
 
-    for index, row in df.iterrows():
+    history = []
+    
         num_views = random.randint(1, 10)  # Each article is viewed between 1 to 10 times
         for _ in range(num_views):
             user_id = random.choice(user_ids)
