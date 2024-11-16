@@ -21,8 +21,8 @@ stages:
       size: 12017641
     - path: src/format_dataset.py
       hash: md5
-      md5: 5b74fa5572107e30c069d20f39062c5b
-      size: 1159
+      md5: ee2df4f143c529e8e9a259ae42915866
+      size: 1135
     outs:
     - path: data/formatted_dataset.parquet
       hash: md5
