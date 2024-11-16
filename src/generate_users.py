@@ -44,7 +44,8 @@ def generate_user_profiles(num_users=1000, categories=None):
                     {
                         "role": "system",
                         "content": (
-                            f"30文字以内の短い自己紹介文を作って。"
+                            f"50文字以内の短い自己紹介文を作って。"
+                            "具体例を挙げて個性的な趣味を語って。"
                             f" 年齢は {age} 歳。性別は {gender}。"
                             f" 好きなものは{', '.join(preferences)}"
                         ),
