@@ -187,3 +187,15 @@ stages:
       hash: md5
       md5: 2a7e7b41fc2e74ebbbd36335fe480355
       size: 1166
+  load_articles_to_elasticsearch:
+    cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
+      --index_name=article_data data/formatted_dataset.parquet
+    deps:
+    - path: data/formatted_dataset.parquet
+      hash: md5
+      md5: f077683c3f92b21425373dcc66fd4c56
+      size: 220900
+    - path: src/load_to_elasticsearch.py
+      hash: md5
+      md5: 2a7e7b41fc2e74ebbbd36335fe480355
+      size: 1166
