@@ -6,8 +6,10 @@ flowchart TD
 	node4["generate_history"]
 	node5["generate_user_profiles"]
 	node6["load_articles_to_elasticsearch"]
-	node7["load_to_elasticsearch"]
+	node7["load_users_to_elasticsearch"]
 	node8["make_articles"]
+	node1-->node6
+	node2-->node7
 	node3-->node1
 	node3-->node4
 	node3-->node6
