@@ -1,6 +1,7 @@
 import os
 import unittest
 import numpy as np
+import hashlib
 from src.embedding.embedding import Embedding
 
 class TestEmbedding(unittest.TestCase):
