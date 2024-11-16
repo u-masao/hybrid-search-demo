@@ -57,7 +57,15 @@ def generate_user_profiles(num_users=1000, categories=None):
             .message.content.strip()
         )
 
+        sentence = (
+            f"**Age**: {age}\n\n"
+            f"**Gender**: {gender}\n\n"
+            f"**Preferences**: {', '.join(preferences)}\n\n"
+            f"**Introduction**: {introduction}"
+        )
+
         user_profiles[user_id] = {
+            "sentence": sentence,
             "age": age,
             "gender": gender,
             "preferences": preferences,
