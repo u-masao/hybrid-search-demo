@@ -55,18 +55,21 @@ def generate_user_history(df, num_users=1000):
                 "age": age,
                 "gender": gender,
                 "preferences": preferences,
-                "introduction": openai.Completion.create(
-                    engine="text-davinci-003",
-                    prompt=(
-                        f"Create a short self-introduction for a {user_id}"
-                        f" who is {age} years old, {gender}, "
-                        f"and likes {', '.join(preferences)}. in japanese"
-                    ),
+                "introduction": openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": (
+                                f"Create a short self-introduction for a {user_id}"
+                                f" who is {age} years old, {gender}, "
+                                f"and likes {', '.join(preferences)}. in japanese"
+                            ),
+                        }
+                    ],
                     max_tokens=50,
                     temperature=0,
-                )
-                .choices[0]
-                .text.strip(),
+                ).choices[0].message['content'].strip(),
             }
         )(
             random.randint(18, 70),
