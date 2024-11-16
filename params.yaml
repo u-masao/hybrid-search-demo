@@ -1,6 +1,7 @@
+dataset:
+  limit: 100
 embedding:
   model_name: "intfloat/multilingual-e5-small"
   dimension: 384
-  limit: 100
   num_users: 100
-num_users: 1000
+num_users: 50
