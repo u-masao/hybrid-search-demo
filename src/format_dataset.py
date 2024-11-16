@@ -5,13 +5,13 @@ from loguru import logger
 
 def create_sentence_column(df):
     """
-    Create a 'sentence' column in the DataFrame by combining title, category, and content.
+    タイトル、カテゴリ、コンテンツを組み合わせてDataFrameに'sentence'列を作成します。
 
-    Parameters:
-    - df: DataFrame containing 'title', 'category', and 'content' columns.
+    パラメータ:
+    - df: 'title'、'category'、'content'列を含むDataFrame。
 
-    Returns:
-    DataFrame with an additional 'sentence' column.
+    戻り値:
+    追加の'sentence'列を持つDataFrame。
     """
     df["sentence"] = df.apply(
         lambda row: f"# {row['title']}\n\n"
@@ -26,7 +26,7 @@ def create_sentence_column(df):
 @click.argument("input_file", type=click.Path(exists=True))
 @click.argument("output_file", type=click.Path())
 def main(input_file, output_file):
-    """Read the dataset, print column names, and save formatted dataset."""
+    """データセットを読み込み、列名を表示し、フォーマットされたデータセットを保存します。"""
     logger.info(f"Reading dataset from {input_file}")
     df = pd.read_parquet(input_file)
     df = create_sentence_column(df)

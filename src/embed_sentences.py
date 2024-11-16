@@ -6,14 +6,14 @@ from embedding.embedding import Embedding
 
 def embed_sentences(input_file, output_file, dimension, model_name, limit):
     """
-    Generate embeddings for sentences in the dataset.
+    データセット内の文の埋め込みを生成します。
 
-    Parameters:
-    - input_file: Path to the input Parquet file containing the dataset.
-    - output_file: Path to save the output Parquet file with embeddings.
-    - dimension: Dimensionality of the embedding vectors.
-    - model_name: Name of the pre-trained model to use for embeddings.
-    - limit: Maximum number of rows to process from the dataset.
+    パラメータ:
+    - input_file: データセットを含む入力Parquetファイルのパス。
+    - output_file: 埋め込みを含む出力Parquetファイルを保存するパス。
+    - dimension: 埋め込みベクトルの次元数。
+    - model_name: 埋め込みに使用する事前学習済みモデルの名前。
+    - limit: データセットから処理する最大行数。
     """
     logger.info(f"Reading formatted dataset from {input_file}")
     df = pd.read_parquet(input_file)

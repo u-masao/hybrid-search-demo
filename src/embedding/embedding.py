@@ -12,15 +12,15 @@ class Embedding:
 
     def split_text(self, text, max_length=512, overlap=50):
         """
-        Split text into chunks of max_length with overlap.
+        テキストをmax_lengthのチャンクに分割し、重複させます。
 
-        Parameters:
-        - text: The input text to be split.
-        - max_length: Maximum length of each text chunk.
-        - overlap: Number of overlapping characters between chunks.
+        パラメータ:
+        - text: 分割する入力テキスト。
+        - max_length: 各テキストチャンクの最大長。
+        - overlap: チャンク間の重複文字数。
 
-        Returns:
-        A list of text chunks.
+        戻り値:
+        テキストチャンクのリスト。
         """
         chunks = []
         start = 0
@@ -32,13 +32,13 @@ class Embedding:
 
     def generate_embedding(self, text):
         """
-        Generate embeddings for the given text using a pre-trained model with caching.
+        キャッシュを使用して事前学習済みモデルで指定されたテキストの埋め込みを生成します。
 
-        Parameters:
-        - text: The input text for which to generate embeddings.
+        パラメータ:
+        - text: 埋め込みを生成する入力テキスト。
 
-        Returns:
-        A numpy array representing the embedding of the input text.
+        戻り値:
+        入力テキストの埋め込みを表すnumpy配列。
         """
         # Create cache directory if it doesn't exist
         cache_dir = ".cache/md5"
@@ -72,23 +72,23 @@ class Embedding:
 
         return embedding
         """
-        Generate a random embedding vector.
+        ランダムな埋め込みベクトルを生成します。
 
-        Returns:
-        A numpy array representing a random embedding vector.
+        戻り値:
+        ランダムな埋め込みベクトルを表すnumpy配列。
         """
         return np.random.rand(self.dimension)
 
     def compute_similarity(self, vector1, vector2):
         """
-        Compute the cosine similarity between two vectors.
+        2つのベクトル間のコサイン類似度を計算します。
 
-        Parameters:
-        - vector1: First vector for similarity computation.
-        - vector2: Second vector for similarity computation.
+        パラメータ:
+        - vector1: 類似度計算のための最初のベクトル。
+        - vector2: 類似度計算のための2番目のベクトル。
 
-        Returns:
-        Cosine similarity score between vector1 and vector2.
+        戻り値:
+        vector1とvector2の間のコサイン類似度スコア。
         """
         dot_product = np.dot(vector1, vector2)
         norm1 = np.linalg.norm(vector1)
