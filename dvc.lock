@@ -5,10 +5,26 @@ stages:
     deps:
     - path: src/make_dataset.py
       hash: md5
-      md5: 1fe55be0b5f1b612a68e30f60475ae00
-      size: 923
+      md5: 12440c22458b2a7c7452493b94b90fd2
+      size: 1159
     outs:
     - path: data/train.parquet
       hash: md5
-      md5: 9df3ef943c1d8d79ceaaadb8b8da05d3
-      size: 11969338
+      md5: ea64420f070a324cdbcdb456f5556887
+      size: 12017641
+  format_dataset:
+    cmd: poetry run python src/format_dataset.py data/train.parquet data/formatted_dataset.parquet
+    deps:
+    - path: data/train.parquet
+      hash: md5
+      md5: ea64420f070a324cdbcdb456f5556887
+      size: 12017641
+    - path: src/format_dataset.py
+      hash: md5
+      md5: 91dddcc0799dc8d5db9657f3353e2315
+      size: 820
+    outs:
+    - path: data/formatted_dataset.parquet
+      hash: md5
+      md5: 4db501c51b050e9e009e0b3b9189a383
+      size: 23776107
