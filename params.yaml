@@ -3,3 +3,4 @@ embedding:
   dimension: 384
   limit: 100
   num_users: 100
+num_users: 1000
