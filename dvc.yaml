@@ -80,10 +80,13 @@ stages:
       --index_name=user_sentences
       --embedding_file=data/user_embeddings.parquet
       data/users_with_sentences.parquet
+      && echo `date` > data/load_users_timestamp.txt
     deps:
       - src/load_to_elasticsearch.py
       - data/users_with_sentences.parquet
       - data/user_embeddings.parquet
+    outs:
+      - data/load_users_timestamp.txt
 
   load_articles_to_elasticsearch:
     cmd: >-
@@ -92,7 +95,22 @@ stages:
       --index_name=article_data
       --embedding_file=data/article_embeddings.parquet
       data/formatted_dataset.parquet
+      && echo `date` > data/load_articles_timestamp.txt
     deps:
       - src/load_to_elasticsearch.py
       - data/formatted_dataset.parquet
       - data/article_embeddings.parquet
+    outs:
+      - data/load_articles_timestamp.txt
+
+  search_demo:
+    cmd: >-
+      poetry run python -m src.search_program
+      && echo `date` > data/search_timestamp.txt
+    deps:
+      - src/search_program.py
+      - src/embedding/embedding.py
+      - data/load_users_timestamp.txt
+    outs:
+      - data/search_timestamp.txt
+      - data/load_articles_timestamp.txt
