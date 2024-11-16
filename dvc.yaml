@@ -16,7 +16,13 @@ stages:
       - src/embedding/embedding.py
 
   embed_sentences:
-    cmd: poetry run python src/embed_sentences.py data/formatted_dataset.parquet data/embeddings.parquet ${embedding.dimension} ${embedding.model_name} ${embedding.limit}
+    cmd: >-
+      poetry run python src/embed_sentences.py
+      data/formatted_dataset.parquet
+      data/embeddings.parquet
+      ${embedding.dimension}
+      ${embedding.model_name}
+      ${embedding.limit}
     deps:
       - src/embed_sentences.py
       - data/formatted_dataset.parquet
