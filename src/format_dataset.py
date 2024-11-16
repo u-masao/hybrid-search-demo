@@ -78,4 +78,8 @@ def main(input_file, output_file):
 
 
 if __name__ == "__main__":
+    import sys
+    if "poetry" not in sys.executable:
+        print("Please run this script using 'poetry run python src/format_dataset.py'")
+        sys.exit(1)
     main()
