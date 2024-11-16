@@ -9,13 +9,12 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
     logger.info(f"Reading formatted dataset from {input_file}")
     df = pd.read_parquet(input_file)
 
+    if limit > 0:
+        df = df.head(max(limit, len(df)))
+
     embedding_model = Embedding(dimension=dimension)
     df["embedding"] = df["sentence"].apply(
-        lambda x: (
-            embedding_model.generate_embedding(x)
-            if limit == 0 or df.index.get_loc(x) < limit
-            else None
-        )
+        lambda x: (embedding_model.generate_embedding(x))
     )
 
     df.to_parquet(output_file)
@@ -28,9 +27,11 @@ if __name__ == "__main__":
     @click.command()
     @click.argument("input_file", type=click.Path(exists=True))
     @click.argument("output_file", type=click.Path())
-    @click.argument("dimension", type=int)
-    @click.argument("model_name", type=str)
-    @click.argument("limit", type=int)
+    @click.option("--dimension", type=int, default=384)
+    @click.option(
+        "--model_name", type=str, default="intfloat/multilingual-e5-small"
+    )
+    @click.option("--limit", type=int, default=0)
     def main(input_file, output_file, dimension, model_name, limit):
         embed_sentences(input_file, output_file, dimension, model_name, limit)
 
