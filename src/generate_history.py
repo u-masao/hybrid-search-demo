@@ -16,7 +16,6 @@ def generate_user_history(df, user_profiles, max_views=10):
     Returns:
     DataFrame containing browsing history.
     """
-    user_ids = list(user_profiles.keys())
     history = []
 
     for index, row in df.iterrows():
