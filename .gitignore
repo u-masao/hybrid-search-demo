@@ -3,3 +3,5 @@
 .credential
 certs/
 /data/
+__pycache__
+/.cache/
