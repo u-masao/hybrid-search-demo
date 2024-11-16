@@ -1,30 +1,35 @@
 stages:
   make_dataset:
-    cmd: poetry run python src/make_dataset.py data/train.parquet
+    cmd: >-
+      poetry run python src/make_dataset.py
+      data/train.parquet
     deps:
       - src/make_dataset.py
     outs:
       - data/train.parquet
 
   format_dataset:
-    cmd: poetry run python src/format_dataset.py data/train.parquet data/formatted_dataset.parquet
+    cmd: >-
+      poetry run python src/format_dataset.py
+      data/train.parquet
+      data/formatted_dataset.parquet
     deps:
       - src/format_dataset.py
       - data/train.parquet
     outs:
       - data/formatted_dataset.parquet
-      - src/embedding/embedding.py
 
   embed_sentences:
     cmd: >-
       poetry run python src/embed_sentences.py
       data/formatted_dataset.parquet
       data/embeddings.parquet
-      ${embedding.dimension}
-      ${embedding.model_name}
-      ${embedding.limit}
+      --dimension=${embedding.dimension}
+      --model_name=${embedding.model_name}
+      --limit=${embedding.limit}
     deps:
       - src/embed_sentences.py
+      - src/embedding/embedding.py
       - data/formatted_dataset.parquet
     outs:
       - data/embeddings.parquet
