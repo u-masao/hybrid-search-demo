@@ -117,7 +117,7 @@ stages:
       md5: f077683c3f92b21425373dcc66fd4c56
       size: 220900
   embed_articles:
-    cmd: poetry run python src/embed_sentences.py data/formatted_dataset.parquet data/embeddings.parquet
+    cmd: poetry run python src/embed_sentences.py data/formatted_dataset.parquet data/article_embeddings.parquet
       --dimension=384 --model_name=intfloat/multilingual-e5-small
     deps:
     - path: data/formatted_dataset.parquet
@@ -133,7 +133,7 @@ stages:
       md5: d2516a18d3ee710693665fa8b78a2e65
       size: 3246
     outs:
-    - path: data/embeddings.parquet
+    - path: data/article_embeddings.parquet
       hash: md5
       md5: 4429adb07b9899ff8eae7ee6a80c4931
       size: 334516
