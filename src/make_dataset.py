@@ -2,9 +2,9 @@ import os
 import re
 
 import click
+import mlflow
 import pandas as pd
 from datasets import load_dataset
-import mlflow
 
 
 def make_dataset(output_file):
@@ -33,10 +33,9 @@ def make_dataset(output_file):
         split_output_file = output_file.replace("train", split_name)
         print(f"Dataset split '{split_name}' as DataFrame:\n{df}")
         # Log input and output lengths
-        mlflow.log_params({
-            "input_length": len(split),
-            "output_length": len(df)
-        })
+        mlflow.log_params(
+            {"input_length": len(split), "output_length": len(df)}
+        )
         df.to_parquet(split_output_file)
         print(
             f"Dataset split '{split_name}' saved to "
