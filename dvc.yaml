@@ -46,3 +46,16 @@ stages:
       - data/formatted_dataset.parquet
     outs:
       - data/embeddings.parquet
+
+  generate_user_history:
+    cmd: >-
+      poetry run python src/generate_history.py
+      data/formatted_dataset.parquet
+      data/user_profiles.parquet
+      data/user_history.parquet
+    deps:
+      - src/generate_history.py
+      - data/formatted_dataset.parquet
+      - data/user_profiles.parquet
+    outs:
+      - data/user_history.parquet
