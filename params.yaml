@@ -1,4 +1,4 @@
 embedding:
-  model_name: "default_model"
+  model_name: "intfloat/multilingual-e5-small"
   dimension: 384
-  limit: 0
+  limit: 100
