@@ -23,10 +23,13 @@ if __name__ == "__main__":
     @click.command()
     @click.argument("input_file", type=click.Path(exists=True))
     @click.argument("output_file", type=click.Path())
+    @click.argument("dimension", type=int)
+    @click.argument("model_name", type=str)
+    @click.argument("limit", type=int)
     def main(input_file, output_file, dimension, model_name, limit):
         embed_sentences(input_file, output_file, dimension, model_name, limit)
 
     with open("params.yaml", "r") as f:
         params = yaml.safe_load(f)
 
-    main(input_file, output_file, params['embedding']['dimension'], params['embedding']['model_name'], params['embedding']['limit'])
+    main()
