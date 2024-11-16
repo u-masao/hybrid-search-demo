@@ -1,7 +1,10 @@
 import os
+
 from elasticsearch import Elasticsearch
+
 from src.embedding.embedding import Embedding
 from src.load_to_elasticsearch import bm25_search
+
 
 def perform_vector_search(es_host, index_name, query_text, top_k=5):
     # Initialize Elasticsearch client
@@ -32,6 +35,7 @@ def perform_vector_search(es_host, index_name, query_text, top_k=5):
     top_indices = embedding_model.vector_search(query_vector, vectors, top_k)
     return [response["hits"]["hits"][i] for i in top_indices]
 
+
 def perform_bm25_search(es_host, index_name, query_text, top_k=5):
     # Initialize Elasticsearch client
     es = Elasticsearch(
@@ -46,11 +50,8 @@ def perform_bm25_search(es_host, index_name, query_text, top_k=5):
     # Perform BM25 search
     return bm25_search(es, index_name, query_text, top_k)
 
-if __name__ == "__main__":
-    es_host = "https://localhost:9200"
-    index_name = "article_data"
-    query_text = "example search text"
 
+def search(es_host, index_name, query_text):
     # Perform vector search
     vector_results = perform_vector_search(es_host, index_name, query_text)
     print("Vector Search Results:")
@@ -62,3 +63,15 @@ if __name__ == "__main__":
     print("\nBM25 Search Results:")
     for result in bm25_results:
         print(result)
+
+
+if __name__ == "__main__":
+    es_host = "https://localhost:9200"
+
+    index_name = "article_data"
+    query_text = "スマホ"
+    search(es_host, index_name, query_text)
+
+    index_name = "user_sentences"
+    query_text = "スマホ"
+    search(es_host, index_name, query_text)
