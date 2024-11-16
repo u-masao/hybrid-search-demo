@@ -8,6 +8,7 @@ format:
 
 lint:
 	poetry run flake8 src tests
+	git commit dvc.lock -m 'run dvc repro'
 
 check_commit:
 	git diff-index --quiet HEAD --
