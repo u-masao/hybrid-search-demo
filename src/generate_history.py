@@ -17,6 +17,7 @@ def generate_user_history(df, user_profiles, max_views=10):
     DataFrame containing browsing history.
     """
     history = []
+    user_ids = list(user_profiles.keys())
 
     for index, row in df.iterrows():
         num_views = random.randint(0, max_views)
