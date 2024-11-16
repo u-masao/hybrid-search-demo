@@ -21,10 +21,31 @@ stages:
       size: 12022017
     - path: src/format_dataset.py
       hash: md5
-      md5: 1e9987f98d152ac454a0893d6c96a79d
-      size: 1446
+      md5: 10a62d6a605dd1a54eeaa85a305c7043
+      size: 1714
     outs:
     - path: data/formatted_dataset.parquet
       hash: md5
       md5: c29937cdce55d4dc3eebcef74fb56011
       size: 23784591
+  embed_sentences:
+    cmd: poetry run python src/embed_sentences.py data/formatted_dataset.parquet data/embeddings.parquet
+      --dimension=384 --model_name=intfloat/multilingual-e5-small --limit=100
+    deps:
+    - path: data/formatted_dataset.parquet
+      hash: md5
+      md5: c29937cdce55d4dc3eebcef74fb56011
+      size: 23784591
+    - path: src/embed_sentences.py
+      hash: md5
+      md5: 5de3e9fa1cf1657daf5bce71c84cab5d
+      size: 2197
+    - path: src/embedding/embedding.py
+      hash: md5
+      md5: d2516a18d3ee710693665fa8b78a2e65
+      size: 3246
+    outs:
+    - path: data/embeddings.parquet
+      hash: md5
+      md5: 6507999db68f831d5d1f3bc13f8af649
+      size: 683105
