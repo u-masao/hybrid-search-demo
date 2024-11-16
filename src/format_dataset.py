@@ -54,7 +54,7 @@ def generate_user_history(df, num_users=1000):
             ),
             "introduction": openai.Completion.create(
                 engine="text-davinci-003",
-                prompt=f"Create a short self-introduction for a {user_id} who is {age} years old, {gender}, and likes {', '.join(preferences)}.",
+                prompt=f"Create a short self-introduction for a {user_id} who is {profile['age']} years old, {profile['gender']}, and likes {', '.join(profile['preferences'])}.",
                 max_tokens=50,
                 temperature=0
             ).choices[0].text.strip(),
