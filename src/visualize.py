@@ -55,7 +55,11 @@ def main():
     st.write(embeddings.head())
     st.write(embeddings.describe())
 
-    # Load and display user history
+    # Load and display user embeddings
+    user_embeddings = load_data("data/user_embeddings.parquet")
+    st.header("User Embeddings")
+    st.write(user_embeddings.head())
+    st.write(user_embeddings.describe())
     user_history = load_data("data/user_history.parquet")
     st.header("User History")
     st.write(user_history.head())
