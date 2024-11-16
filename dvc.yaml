@@ -59,8 +59,8 @@ stages:
   load_to_elasticsearch:
     cmd: >-
       poetry run python src/load_to_elasticsearch.py
-      --es-host=localhost:9200
-      --index-name=user_sentences
+      --es_host=https://localhost:9200
+      --index_name=user_sentences
       data/users_with_sentences.parquet
     deps:
       - src/load_to_elasticsearch.py
