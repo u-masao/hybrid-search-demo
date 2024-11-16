@@ -6,9 +6,9 @@ import click
 import mlflow
 import pandas as pd
 from dotenv import load_dotenv
-from tqdm import tqdm
 from loguru import logger
 from openai import OpenAI
+from tqdm import tqdm
 
 load_dotenv()
 
@@ -59,23 +59,27 @@ def generate_user_history(df, num_users=1000):
         preferences = random.sample(
             categories, k=random.randint(1, min(3, len(categories)))
         )
-        introduction = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        f"Create a short self-introduction for"
-                        f" a {user_id}"
-                        f" who is {age} years old, {gender},"
-                        f" and likes {', '.join(preferences)}"
-                        " in japanese."
-                    ),
-                }
-            ],
-            max_tokens=50,
-            temperature=0.9,
-        ).choices[0].message.content.strip()
+        introduction = (
+            client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": (
+                            f"Create a short self-introduction for"
+                            f" a {user_id}"
+                            f" who is {age} years old, {gender},"
+                            f" and likes {', '.join(preferences)}"
+                            " in japanese."
+                        ),
+                    }
+                ],
+                max_tokens=50,
+                temperature=0.9,
+            )
+            .choices[0]
+            .message.content.strip()
+        )
 
         user_profiles[user_id] = {
             "age": age,
