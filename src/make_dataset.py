@@ -16,6 +16,7 @@ def make_dataset(output_file):
     for split_name, split in dataset.items():
         df = pd.DataFrame.from_dict(split)
         # Extract numeric ID from URL and add as a new column
+        df['sentence'] = df['text'].apply(lambda x: f"**{x}**")  # Example markdown transformation
         df['id'] = df['url'].apply(lambda x: re.search(r'/(\d+)/', x).group(1) if re.search(r'/(\d+)/', x) else None)
         
         if split_name == "train":
