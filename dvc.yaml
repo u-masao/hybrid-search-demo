@@ -60,12 +60,12 @@ stages:
     cmd: >-
       poetry run python src/generate_history.py
       data/formatted_dataset.parquet
-      data/user_profiles.parquet
+      data/users_with_sentences.parquet
       data/user_history.parquet
       --max_views=${max_views}
     deps:
       - src/generate_history.py
       - data/formatted_dataset.parquet
-      - data/user_profiles.parquet
+      - data/users_with_sentences.parquet
     outs:
       - data/user_history.parquet
