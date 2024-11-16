@@ -1,8 +1,10 @@
-import streamlit as st
 import pandas as pd
+import streamlit as st
+
 
 def load_data(file_path):
     return pd.read_parquet(file_path)
+
 
 def main():
     st.title("DVC Pipeline Outputs Summary")
@@ -26,6 +28,7 @@ def main():
     user_history = load_data("data/user_history.parquet")
     st.header("User History")
     st.write(user_history.describe())
+
 
 if __name__ == "__main__":
     main()
