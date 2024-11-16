@@ -139,16 +139,16 @@ stages:
       size: 334516
   generate_history:
     cmd: poetry run python src/generate_history.py data/formatted_dataset.parquet
-      data/user_profiles.parquet data/user_history.parquet --max_views=10
+      data/users_with_sentences.parquet data/user_history.parquet --max_views=10
     deps:
     - path: data/formatted_dataset.parquet
       hash: md5
       md5: f077683c3f92b21425373dcc66fd4c56
       size: 220900
-    - path: data/user_profiles.parquet
+    - path: data/users_with_sentences.parquet
       hash: md5
-      md5: 254356b6bc19091201fd3e4b0fd0b3a8
-      size: 5327
+      md5: a5d42738fe1b211d744a03bd190970b3
+      size: 7951
     - path: src/generate_history.py
       hash: md5
       md5: 894154d23114b25d77999c8a8a96e7e0
@@ -156,8 +156,8 @@ stages:
     outs:
     - path: data/user_history.parquet
       hash: md5
-      md5: 9f7d181c47e8f22f61ac6c9762b18a24
-      size: 5845
+      md5: 8fcfcaa1f511121862265aac25d85a6f
+      size: 5901
   embed_users:
     cmd: poetry run python src/embed_sentences.py data/users_with_sentences.parquet
       data/user_embeddings.parquet
