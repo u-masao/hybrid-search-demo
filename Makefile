@@ -1,6 +1,6 @@
 # Makefile for code formatting and linting
 
-.PHONY: format lint
+.PHONY: format lint repro
 
 format:
 	poetry run isort src tests
@@ -8,6 +8,9 @@ format:
 
 lint:
 	poetry run flake8 src tests
+
+repro:
+	dvc repro
 
 test:
 	poetry run python -m unittest discover tests
