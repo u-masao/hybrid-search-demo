@@ -16,7 +16,7 @@ repro: check_commit PIPELINE.md
 	poetry run dvc repro
 	git commit dvc.lock -m 'run dvc repro' || true
 
-PIPELINE.md:
+PIPELINE.md: dvc.yaml params.yaml
 	poetry run dvc dag --md > PIPELINE.md
 	git commit PIPELINE.md -m 'dvc pipeline updated' || true
 
