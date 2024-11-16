@@ -32,8 +32,6 @@ def create_sentence_column(df):
     return df
 
 
-
-
 @click.command()
 @click.argument("input_file", type=click.Path(exists=True))
 @click.argument("output_file", type=click.Path())

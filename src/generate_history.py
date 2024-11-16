@@ -1,8 +1,11 @@
-import click
 import datetime
 import random
+
+import click
 import pandas as pd
+
 from generate_users import generate_user_profiles
+
 
 def generate_user_history(df, user_profiles):
     """
@@ -38,6 +41,7 @@ def generate_user_history(df, user_profiles):
 
     return pd.DataFrame(history)
 
+
 @click.command()
 @click.argument("articles_file", type=click.Path(exists=True))
 @click.argument("user_profiles_file", type=click.Path(exists=True))
@@ -45,9 +49,10 @@ def generate_user_history(df, user_profiles):
 def main(articles_file, user_profiles_file, output_file):
     """Generate browsing history and save to a parquet file."""
     df = pd.read_parquet(articles_file)
-    user_profiles = pd.read_parquet(user_profiles_file).to_dict(orient='index')
+    user_profiles = pd.read_parquet(user_profiles_file).to_dict(orient="index")
     df_history = generate_user_history(df, user_profiles)
     df_history.to_parquet(output_file)
+
 
 if __name__ == "__main__":
     main()
