@@ -1,9 +1,10 @@
+import datetime
+import random
+
 import click
 import mlflow
 import pandas as pd
 from loguru import logger
-import random
-import datetime
 
 
 def create_sentence_column(df):
@@ -46,7 +47,9 @@ def generate_user_history(df, num_users=1000):
         user_id: {
             "age": random.randint(18, 70),
             "gender": random.choice(genders),
-            "preferences": random.sample(categories, k=random.randint(1, min(3, len(categories))))
+            "preferences": random.sample(
+                categories, k=random.randint(1, min(3, len(categories)))
+            ),
         }
         for user_id in user_ids
     }
@@ -54,22 +57,29 @@ def generate_user_history(df, num_users=1000):
     history = []
 
     for index, row in df.iterrows():
-        num_views = random.randint(1, 10)  # Each article is viewed between 1 to 10 times
+        num_views = random.randint(
+            1, 10
+        )  # Each article is viewed between 1 to 10 times
         for _ in range(num_views):
             user_id = random.choice(user_ids)
-            timestamp = datetime.datetime.now() - datetime.timedelta(days=random.randint(0, 365))
+            timestamp = datetime.datetime.now() - datetime.timedelta(
+                days=random.randint(0, 365)
+            )
             user_profile = user_profiles[user_id]
-            history.append({
-                "article_id": index,
-                "user_id": user_id,
-                "timestamp": timestamp,
-                "sentence": row["sentence"],
-                "age": user_profile["age"],
-                "gender": user_profile["gender"],
-                "preferences": user_profile["preferences"],
-            })
+            history.append(
+                {
+                    "article_id": index,
+                    "user_id": user_id,
+                    "timestamp": timestamp,
+                    "sentence": row["sentence"],
+                    "age": user_profile["age"],
+                    "gender": user_profile["gender"],
+                    "preferences": user_profile["preferences"],
+                }
+            )
 
     return pd.DataFrame(history)
+
 
 @click.argument("input_file", type=click.Path(exists=True))
 @click.argument("output_file", type=click.Path())
@@ -96,8 +106,4 @@ def main(input_file, output_file):
 
 
 if __name__ == "__main__":
-    import sys
-    if "poetry" not in sys.executable:
-        print("Please run this script using 'poetry run python src/format_dataset.py'")
-        sys.exit(1)
     main()
