@@ -94,6 +94,8 @@ class Embedding:
         """
         similarities = cosine_similarity([query_vector], vectors)
         return np.argsort(similarities[0])[-top_k:][::-1]
+
+    def compute_similarity(self, vector1, vector2):
         """
         2つのベクトル間のコサイン類似度を計算します。
 
