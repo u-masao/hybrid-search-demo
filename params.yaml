@@ -1,2 +1,4 @@
 embedding:
-  dimension: 128
+  model_name: "default_model"
+  dimension: 384
+  limit: 0
