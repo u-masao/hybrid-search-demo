@@ -137,3 +137,24 @@ stages:
       hash: md5
       md5: 4429adb07b9899ff8eae7ee6a80c4931
       size: 334516
+  generate_history:
+    cmd: poetry run python src/generate_history.py data/formatted_dataset.parquet
+      data/user_profiles.parquet data/user_history.parquet --max_views=10
+    deps:
+    - path: data/formatted_dataset.parquet
+      hash: md5
+      md5: f077683c3f92b21425373dcc66fd4c56
+      size: 220900
+    - path: data/user_profiles.parquet
+      hash: md5
+      md5: 254356b6bc19091201fd3e4b0fd0b3a8
+      size: 5327
+    - path: src/generate_history.py
+      hash: md5
+      md5: 894154d23114b25d77999c8a8a96e7e0
+      size: 1618
+    outs:
+    - path: data/user_history.parquet
+      hash: md5
+      md5: 9f7d181c47e8f22f61ac6c9762b18a24
+      size: 5845
