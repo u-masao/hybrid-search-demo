@@ -1,4 +1,5 @@
 import datetime
+from dotenv import load_dotenv
 import os
 import random
 
@@ -8,6 +9,8 @@ import openai
 import pandas as pd
 from loguru import logger
 
+
+load_dotenv()
 
 def create_sentence_column(df):
     """
