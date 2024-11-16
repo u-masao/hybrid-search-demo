@@ -46,19 +46,21 @@ def generate_user_history(df, num_users=1000):
     # Set OpenAI API key
     openai.api_key = "your-api-key-here"
     user_profiles = {
-        user_id: {
-            "age": random.randint(18, 70),
-            "gender": random.choice(genders),
-            "preferences": random.sample(
-                categories, k=random.randint(1, min(3, len(categories)))
-            ),
-            "introduction": openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=f"Create a short self-introduction for a {user_id} who is {profile['age']} years old, {profile['gender']}, and likes {', '.join(profile['preferences'])}.",
-                max_tokens=50,
-                temperature=0
-            ).choices[0].text.strip(),
-        }
+        user_id: (
+            lambda age, gender, preferences: {
+                "age": age,
+                "gender": gender,
+                "preferences": preferences,
+                "introduction": openai.Completion.create(
+                    engine="text-davinci-003",
+                    prompt=f"Create a short self-introduction for a {user_id} who is {age} years old, {gender}, and likes {', '.join(preferences)}.",
+                    max_tokens=50,
+                    temperature=0
+                ).choices[0].text.strip(),
+            }
+        )(random.randint(18, 70), random.choice(genders), random.sample(
+            categories, k=random.randint(1, min(3, len(categories)))
+        ))
         for user_id in user_ids
     }
 
