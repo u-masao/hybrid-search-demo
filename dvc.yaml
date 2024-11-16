@@ -65,3 +65,13 @@ stages:
     deps:
       - src/load_to_elasticsearch.py
       - data/users_with_sentences.parquet
+
+  load_articles_to_elasticsearch:
+    cmd: >-
+      poetry run python src/load_to_elasticsearch.py
+      --es_host=https://localhost:9200
+      --index_name=article_data
+      data/formatted_dataset.parquet
+    deps:
+      - src/load_to_elasticsearch.py
+      - data/formatted_dataset.parquet
