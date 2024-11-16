@@ -12,21 +12,25 @@ def main():
     # Load and display user profiles
     user_profiles = load_data("data/user_profiles.parquet")
     st.header("User Profiles")
+    st.write(user_profiles.head())
     st.write(user_profiles.describe())
 
     # Load and display formatted dataset
     formatted_dataset = load_data("data/formatted_dataset.parquet")
     st.header("Formatted Dataset")
+    st.write(formatted_dataset.head())
     st.write(formatted_dataset.describe())
 
     # Load and display embeddings
     embeddings = load_data("data/embeddings.parquet")
     st.header("Embeddings")
+    st.write(embeddings.head())
     st.write(embeddings.describe())
 
     # Load and display user history
     user_history = load_data("data/user_history.parquet")
     st.header("User History")
+    st.write(user_history.head())
     st.write(user_history.describe())
 
 
