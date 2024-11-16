@@ -19,6 +19,10 @@ def load_data_to_elasticsearch(
         ),
         ca_certs="certs/http_ca.crt",
     )
+    # Delete the index if it exists to ensure all data is overwritten
+    if es.indices.exists(index=index_name):
+        es.indices.delete(index=index_name)
+
     df = pd.read_parquet(data_file)
 
     if embedding_file:
