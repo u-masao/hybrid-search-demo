@@ -201,8 +201,8 @@ stages:
       size: 220900
     - path: src/load_to_elasticsearch.py
       hash: md5
-      md5: 61d5f8ed9e05c833cbc07e1d5a20b117
-      size: 1556
+      md5: 3a295219506ebc47026f9e3b6b64ab74
+      size: 1715
   load_users_to_elasticsearch:
     cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
       --index_name=user_sentences --embedding_file=data/user_embeddings.parquet data/users_with_sentences.parquet
@@ -217,5 +217,5 @@ stages:
       size: 8633
     - path: src/load_to_elasticsearch.py
       hash: md5
-      md5: 61d5f8ed9e05c833cbc07e1d5a20b117
-      size: 1556
+      md5: 3a295219506ebc47026f9e3b6b64ab74
+      size: 1715
