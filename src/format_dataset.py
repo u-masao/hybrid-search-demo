@@ -4,7 +4,15 @@ from loguru import logger
 
 
 def create_sentence_column(df):
-    """Create a 'sentence' column in the DataFrame."""
+    """
+    Create a 'sentence' column in the DataFrame by combining title, category, and content.
+
+    Parameters:
+    - df: DataFrame containing 'title', 'category', and 'content' columns.
+
+    Returns:
+    DataFrame with an additional 'sentence' column.
+    """
     df["sentence"] = df.apply(
         lambda row: f"# {row['title']}\n\n"
         f"**Category:** {row['category']}\n\n"

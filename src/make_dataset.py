@@ -9,6 +9,9 @@ from datasets import load_dataset
 def make_dataset(output_file):
     """
     Function to download and create a dataset from Hugging Face.
+
+    Parameters:
+    - output_file: Path to save the dataset in Parquet format.
     """
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     dataset = load_dataset("llm-book/livedoor-news-corpus")
@@ -24,8 +27,10 @@ def make_dataset(output_file):
             )
         )
 
+        # Replace 'train' in the output file name with the current split name
         split_output_file = output_file.replace("train", split_name)
         print(f"Dataset split '{split_name}' as DataFrame:\n{df}")
+        # Save the DataFrame to a Parquet file
         df.to_parquet(split_output_file)
         print(
             f"Dataset split '{split_name}' saved to "

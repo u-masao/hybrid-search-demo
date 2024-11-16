@@ -11,7 +11,17 @@ class Embedding:
         self.dimension = dimension
 
     def split_text(self, text, max_length=512, overlap=50):
-        """Split text into chunks of max_length with overlap."""
+        """
+        Split text into chunks of max_length with overlap.
+
+        Parameters:
+        - text: The input text to be split.
+        - max_length: Maximum length of each text chunk.
+        - overlap: Number of overlapping characters between chunks.
+
+        Returns:
+        A list of text chunks.
+        """
         chunks = []
         start = 0
         while start < len(text):
@@ -21,8 +31,15 @@ class Embedding:
         return chunks
 
     def generate_embedding(self, text):
-        """Generate embeddings for the given text
-        using a pre-trained model with caching."""
+        """
+        Generate embeddings for the given text using a pre-trained model with caching.
+
+        Parameters:
+        - text: The input text for which to generate embeddings.
+
+        Returns:
+        A numpy array representing the embedding of the input text.
+        """
         # Create cache directory if it doesn't exist
         cache_dir = ".cache/md5"
         os.makedirs(cache_dir, exist_ok=True)
@@ -54,11 +71,25 @@ class Embedding:
             pickle.dump(embedding, f)
 
         return embedding
-        """Generate a random embedding vector."""
+        """
+        Generate a random embedding vector.
+
+        Returns:
+        A numpy array representing a random embedding vector.
+        """
         return np.random.rand(self.dimension)
 
     def compute_similarity(self, vector1, vector2):
-        """Compute the cosine similarity between two vectors."""
+        """
+        Compute the cosine similarity between two vectors.
+
+        Parameters:
+        - vector1: First vector for similarity computation.
+        - vector2: Second vector for similarity computation.
+
+        Returns:
+        Cosine similarity score between vector1 and vector2.
+        """
         dot_product = np.dot(vector1, vector2)
         norm1 = np.linalg.norm(vector1)
         norm2 = np.linalg.norm(vector2)
