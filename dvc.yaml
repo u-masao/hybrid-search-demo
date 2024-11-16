@@ -6,7 +6,6 @@ stages:
       --num_users=${num_users}
       --categories="technology,sports,music,art"
       data/users_with_sentences.parquet
-      data/user_embeddings.parquet
     deps:
       - src/generate_users.py
     params:
@@ -15,7 +14,10 @@ stages:
       - data/users_with_sentences.parquet
 
   embed_users:
-    cmd: poetry run python src/embed_sentences.py data/users_with_sentences.parquet data/user_embeddings.parquet
+    cmd: >-
+      poetry run python src/embed_sentences.py
+      data/users_with_sentences.parquet
+      data/user_embeddings.parquet
     deps:
       - src/embed_sentences.py
       - data/users_with_sentences.parquet
@@ -47,7 +49,7 @@ stages:
     cmd: >-
       poetry run python src/embed_sentences.py
       data/formatted_dataset.parquet
-      data/embeddings.parquet
+      data/article_embeddings.parquet
       --dimension=${embedding.dimension}
       --model_name=${embedding.model_name}
     deps:
@@ -55,7 +57,7 @@ stages:
       - src/embedding/embedding.py
       - data/formatted_dataset.parquet
     outs:
-      - data/embeddings.parquet
+      - data/article_embeddings.parquet
 
   generate_history:
     cmd: >-
@@ -71,22 +73,26 @@ stages:
     outs:
       - data/user_history.parquet
 
-  load_to_elasticsearch:
+  load_users_to_elasticsearch:
     cmd: >-
       poetry run python src/load_to_elasticsearch.py
       --es_host=https://localhost:9200
       --index_name=user_sentences
+      --embedding_file=data/user_embeddings.parquet
       data/users_with_sentences.parquet
     deps:
       - src/load_to_elasticsearch.py
       - data/users_with_sentences.parquet
+      - data/user_embeddings.parquet
 
   load_articles_to_elasticsearch:
     cmd: >-
       poetry run python src/load_to_elasticsearch.py
       --es_host=https://localhost:9200
       --index_name=article_data
+      --embedding_file=data/article_embeddings.parquet
       data/formatted_dataset.parquet
     deps:
       - src/load_to_elasticsearch.py
       - data/formatted_dataset.parquet
+      - data/article_embeddings.parquet
