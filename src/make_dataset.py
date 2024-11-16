@@ -6,7 +6,7 @@ def make_dataset(output_file):
     Function to download and create a dataset from Hugging Face.
     """
     dataset = load_dataset('llm-book/livedoor-news-corpus')
-    # Save the dataset to the specified output file
+    print("Dataset structure:", dataset)
     dataset.to_csv(output_file)
     print(f"Dataset downloaded and saved to {output_file}.")
 @click.command()
