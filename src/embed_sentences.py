@@ -1,4 +1,5 @@
 import pandas as pd
+from tqdm import tqdm
 from loguru import logger
 
 from embedding.embedding import Embedding
@@ -24,8 +25,11 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
 
     # Initialize the embedding model with the specified dimension
     embedding_model = Embedding(dimension=dimension)
-    # Apply the embedding generation to each sentence in the DataFrame
-    df["embedding"] = df["sentence"].apply(
+    # Register tqdm with pandas
+    tqdm.pandas()
+
+    # Apply the embedding generation to each sentence in the DataFrame with a progress bar
+    df["embedding"] = df["sentence"].progress_apply(
         lambda x: (embedding_model.generate_embedding(x))
     )
 
