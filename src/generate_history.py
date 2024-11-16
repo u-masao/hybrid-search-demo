@@ -4,7 +4,6 @@ import random
 import click
 import pandas as pd
 
-from generate_users import generate_user_profiles
 
 
 def generate_user_history(df, user_profiles, max_views=10):
