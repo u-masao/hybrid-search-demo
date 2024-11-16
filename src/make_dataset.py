@@ -1,6 +1,7 @@
 import os
 
 import click
+import re
 import pandas as pd
 from datasets import load_dataset
 
@@ -14,6 +15,9 @@ def make_dataset(output_file):
     # Convert each split in the DatasetDict to a Pandas DataFrame
     for split_name, split in dataset.items():
         df = pd.DataFrame.from_dict(split)
+        # Extract numeric ID from URL and add as a new column
+        df['id'] = df['url'].apply(lambda x: re.search(r'/(\d+)/', x).group(1) if re.search(r'/(\d+)/', x) else None)
+        
         if split_name == "train":
             df.to_parquet(output_file)
             print(f"Train dataset saved to {output_file} in Parquet format.")
