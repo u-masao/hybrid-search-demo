@@ -13,3 +13,11 @@ stages:
       - data/train.parquet
     outs:
       - data/formatted_dataset.parquet
+
+  embed_sentences:
+    cmd: poetry run python src/embed_sentences.py data/formatted_dataset.parquet data/embeddings.parquet
+    deps:
+      - src/embed_sentences.py
+      - data/formatted_dataset.parquet
+    outs:
+      - data/embeddings.parquet
