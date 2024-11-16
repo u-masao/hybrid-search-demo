@@ -1,5 +1,6 @@
 import pandas as pd
 from loguru import logger
+import mlflow
 from tqdm import tqdm
 
 from embedding.embedding import Embedding
@@ -16,8 +17,10 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
     - model_name: 埋め込みに使用する事前学習済みモデルの名前。
     - limit: データセットから処理する最大行数。
     """
-    logger.info(f"Reading formatted dataset from {input_file}")
-    df = pd.read_parquet(input_file)
+    with mlflow.start_run():
+        logger.info(f"Reading formatted dataset from {input_file}")
+        df = pd.read_parquet(input_file)
+        input_length = len(df)
 
     # 制限が指定されている場合は行数を制限
     if limit > 0:
@@ -35,6 +38,9 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
 
     # 埋め込みを含むDataFrameをParquetファイルに保存
     df.to_parquet(output_file)
+    output_length = len(df)
+    mlflow.log_metric("input_length", input_length)
+    mlflow.log_metric("output_length", output_length)
     logger.info(f"Embeddings saved to {output_file}")
 
 
