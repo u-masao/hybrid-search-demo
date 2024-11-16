@@ -19,6 +19,7 @@ def make_dataset(output_file):
         df['id'] = df['url'].apply(lambda x: re.search(r'/(\d+)/', x).group(1) if re.search(r'/(\d+)/', x) else None)
         
         if split_name == "train":
+            print(f"Train dataset DataFrame:\n{df}")
             df.to_parquet(output_file)
             print(f"Train dataset saved to {output_file} in Parquet format.")
         else:
