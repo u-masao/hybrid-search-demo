@@ -50,6 +50,7 @@ def generate_user_history(df, num_users=1000):
             "preferences": random.sample(
                 categories, k=random.randint(1, min(3, len(categories)))
             ),
+            "introduction": f"Hello, I am a {user_profile['age']} year old {user_profile['gender']} who likes {', '.join(user_profile['preferences'])}.",
         }
         for user_id in user_ids
     }
