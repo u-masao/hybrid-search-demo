@@ -1,7 +1,7 @@
-import yaml
 import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
+import yaml
 
 
 def load_data(file_path):
@@ -15,12 +15,16 @@ def load_mermaid_chart(file_path):
     mermaid_start = content.find("```mermaid")
     mermaid_end = content.find("```", mermaid_start + 1)
     if mermaid_start != -1 and mermaid_end != -1:
-        return content[mermaid_start + len("```mermaid"):mermaid_end].strip()
+        return content[
+            mermaid_start + len("```mermaid") : mermaid_end  # noqa: E203
+        ].strip()
     return ""
+
 
 def load_dvc_yaml(file_path):
     with open(file_path, "r") as file:
         return yaml.safe_load(file)
+
 
 def main():
     st.title("DVC Pipeline Outputs Summary")
@@ -39,7 +43,8 @@ def main():
             {mermaid_chart}
             </div>
             <script type="module">
-                import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+                import mermaid from
+                'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
                 mermaid.initialize({{ startOnLoad: true }});
             </script>
             """,
