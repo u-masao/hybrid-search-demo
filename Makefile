@@ -3,8 +3,8 @@
 .PHONY: format lint
 
 format:
-	isort src
-	black src
+	poetry run isort src
+	poetry run black src
 
 lint:
-	flake8 src
+	poetry run flake8 src
