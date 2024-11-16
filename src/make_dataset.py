@@ -7,8 +7,10 @@ def make_dataset(output_file):
     Function to download and create a dataset from Hugging Face.
     """
     dataset = load_dataset('llm-book/livedoor-news-corpus')
-    df = dataset.to_pandas()
-    print("Dataset as DataFrame:", df)
+    # Convert each split in the DatasetDict to a Pandas DataFrame
+    for split_name, split in dataset.items():
+        df = pd.DataFrame.from_dict(split)
+        print(f"Dataset split '{split_name}' as DataFrame:\n", df)
 @click.command()
 @click.argument('output_file', type=click.Path())
 def main(output_file):
