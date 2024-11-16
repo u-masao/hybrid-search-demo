@@ -13,7 +13,7 @@ def main(input_file, output_file):
     print(f"Formatted dataset saved to {output_file}")
     # Read the saved Parquet file and print the first row
     df_loaded = pd.read_parquet(output_file)
-    print("First row of the formatted dataset:", df_loaded.iloc[0])
+    print("First row, 'sentence' column of the formatted dataset:", df_loaded.iloc[0]['sentence'])
 
 if __name__ == "__main__":
     main()
