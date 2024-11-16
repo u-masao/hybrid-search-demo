@@ -1,11 +1,5 @@
 stages:
-  embed_users:
-    cmd: poetry run python src/embed_sentences.py data/users_with_sentences.parquet data/user_embeddings.parquet
-    deps:
-      - src/embed_sentences.py
-      - data/users_with_sentences.parquet
-    outs:
-      - data/user_embeddings.parquet
+
   generate_user_profiles:
     cmd: >-
       poetry run python src/generate_users.py
@@ -17,7 +11,15 @@ stages:
     params:
       - num_users
     outs:
-      - data/user_profiles.parquet
+      - data/users_with_sentences.parquet
+
+  embed_users:
+    cmd: poetry run python src/embed_sentences.py data/users_with_sentences.parquet data/user_embeddings.parquet
+    deps:
+      - src/embed_sentences.py
+      - data/users_with_sentences.parquet
+    outs:
+      - data/user_embeddings.parquet
 
   make_articles:
     cmd: >-
