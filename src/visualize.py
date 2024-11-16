@@ -1,3 +1,4 @@
+import yaml
 import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
@@ -17,8 +18,15 @@ def load_mermaid_chart(file_path):
         return content[mermaid_start + len("```mermaid"):mermaid_end].strip()
     return ""
 
-def main():
+def load_dvc_yaml(file_path):
+    with open(file_path, "r") as file:
+        return yaml.safe_load(file)
     st.title("DVC Pipeline Outputs Summary")
+
+    # Load and display DVC YAML data
+    dvc_data = load_dvc_yaml("dvc.yaml")
+    st.header("DVC Pipeline Configuration")
+    st.json(dvc_data)
 
     # Load and display the Mermaid chart
     mermaid_chart = load_mermaid_chart("PIPELINE.md")
