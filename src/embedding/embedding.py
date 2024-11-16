@@ -3,6 +3,7 @@ import os
 import pickle
 
 import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
 from transformers import AutoModel, AutoTokenizer
 
 
@@ -79,7 +80,20 @@ class Embedding:
         """
         return np.random.rand(self.dimension)
 
-    def compute_similarity(self, vector1, vector2):
+    def vector_search(self, query_vector, vectors, top_k=5):
+        """
+        Perform vector search using cosine similarity.
+
+        Parameters:
+        - query_vector: The vector representation of the query.
+        - vectors: A list of vectors to search against.
+        - top_k: The number of top results to return.
+
+        Returns:
+        A list of indices of the top_k most similar vectors.
+        """
+        similarities = cosine_similarity([query_vector], vectors)
+        return np.argsort(similarities[0])[-top_k:][::-1]
         """
         2つのベクトル間のコサイン類似度を計算します。
 
