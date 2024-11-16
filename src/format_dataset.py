@@ -11,6 +11,9 @@ def main(input_file, output_file):
     print("Columns in the dataset:", df.columns.tolist())
     df.to_parquet(output_file)
     print(f"Formatted dataset saved to {output_file}")
+    # Read the saved Parquet file and print the first row
+    df_loaded = pd.read_parquet(output_file)
+    print("First row of the formatted dataset:", df_loaded.iloc[0])
 
 if __name__ == "__main__":
     main()
