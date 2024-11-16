@@ -44,11 +44,9 @@ def generate_user_profiles(num_users=1000, categories=None):
                     {
                         "role": "system",
                         "content": (
-                            f"Create a short self-introduction for"
-                            f" a {user_id}"
-                            f" who is {age} years old, {gender},"
-                            f" and likes {', '.join(preferences)}"
-                            " in japanese."
+                            f"30文字以内の短い自己紹介文を作って。"
+                            f" 年齢は {age} 歳。性別は {gender}。"
+                            f" 好きなものは{', '.join(preferences)}"
                         ),
                     }
                 ],
