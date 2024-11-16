@@ -14,7 +14,6 @@ def make_dataset(output_file):
     パラメータ:
     - output_file: データセットをParquet形式で保存するパス。
     """
-    mlflow.set_experiment("Dataset Creation")
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     dataset = load_dataset("llm-book/livedoor-news-corpus")
     # DatasetDictの各分割をPandas DataFrameに変換
@@ -34,7 +33,10 @@ def make_dataset(output_file):
         print(f"Dataset split '{split_name}' as DataFrame:\n{df}")
         # 入力と出力の長さをログに記録
         mlflow.log_params(
-            {"input_length": len(split), "output_length": len(df)}
+            {
+                f"input_length.{split_name}": len(split),
+                f"output_length.{split_name}": len(df),
+            }
         )
         df.to_parquet(split_output_file)
         print(
@@ -47,10 +49,12 @@ def make_dataset(output_file):
 @click.argument("output_file", type=click.Path())
 def main(output_file):
     """コマンドライン引数を処理するメイン関数。"""
+    mlflow.set_experiment("Dataset Creation")
     with mlflow.start_run():
-        make_dataset(output_file)
         # CLIオプションをログに記録
         mlflow.log_params({"output_file": output_file})
+
+        make_dataset(output_file)
 
 
 if __name__ == "__main__":
