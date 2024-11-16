@@ -2,6 +2,8 @@ import click
 import mlflow
 import pandas as pd
 from loguru import logger
+import random
+import datetime
 
 
 def create_sentence_column(df):
@@ -23,7 +25,34 @@ def create_sentence_column(df):
     return df
 
 
-@click.command()
+def generate_user_history(df, num_users=1000):
+    """
+    各記事に対して架空のユーザー閲覧履歴を生成します。
+
+    パラメータ:
+    - df: 'sentence'列を含むDataFrame。
+    - num_users: ユニークなユーザーの数。
+
+    戻り値:
+    閲覧履歴を含むDataFrame。
+    """
+    user_ids = [f"user_{i}" for i in range(1, num_users + 1)]
+    history = []
+
+    for index, row in df.iterrows():
+        num_views = random.randint(1, 10)  # Each article is viewed between 1 to 10 times
+        for _ in range(num_views):
+            user_id = random.choice(user_ids)
+            timestamp = datetime.datetime.now() - datetime.timedelta(days=random.randint(0, 365))
+            history.append({
+                "article_id": index,
+                "user_id": user_id,
+                "timestamp": timestamp,
+                "sentence": row["sentence"]
+            })
+
+    return pd.DataFrame(history)
+
 @click.argument("input_file", type=click.Path(exists=True))
 @click.argument("output_file", type=click.Path())
 def main(input_file, output_file):
@@ -37,7 +66,8 @@ def main(input_file, output_file):
         mlflow.log_metric("input_length", input_length)
         mlflow.log_metric("output_length", output_length)
         logger.info("Columns in the dataset: {}", df.columns.tolist())
-        df.to_parquet(output_file)
+        df_history = generate_user_history(df)
+        df_history.to_parquet(output_file)
         logger.info(f"Formatted dataset saved to {output_file}")
         # 保存されたParquetファイルを読み込み、最初の行を表示
         df_loaded = pd.read_parquet(output_file)
