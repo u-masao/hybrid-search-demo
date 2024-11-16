@@ -47,13 +47,13 @@ stages:
     outs:
       - data/embeddings.parquet
 
-  generate_user_history:
+  generate_history:
     cmd: >-
       poetry run python src/generate_history.py
       data/formatted_dataset.parquet
       data/user_profiles.parquet
       data/user_history.parquet
-      --max_veiws=${max_views}
+      --max_views=${max_views}
     deps:
       - src/generate_history.py
       - data/formatted_dataset.parquet
