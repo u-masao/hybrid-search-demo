@@ -7,7 +7,7 @@ stages:
       - data/train.parquet
 
   format_dataset:
-    cmd: poetry run python src/format_dataset.py data/train.parquet
+    cmd: poetry run python src/format_dataset.py data/train.parquet data/formatted_dataset.parquet
     deps:
       - src/format_dataset.py
       - data/train.parquet
