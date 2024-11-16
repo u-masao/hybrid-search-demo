@@ -12,7 +12,7 @@ stages:
     outs:
       - data/user_profiles.parquet
 
-  make_dataset:
+  make_articles:
     cmd: >-
       poetry run python src/make_dataset.py
       data/train.parquet
@@ -21,7 +21,7 @@ stages:
     outs:
       - data/train.parquet
 
-  format_dataset:
+  format_articles:
     cmd: >-
       poetry run python src/format_dataset.py
       data/train.parquet
@@ -33,7 +33,7 @@ stages:
     outs:
       - data/formatted_dataset.parquet
 
-  embed_sentences:
+  embed_articles:
     cmd: >-
       poetry run python src/embed_sentences.py
       data/formatted_dataset.parquet
