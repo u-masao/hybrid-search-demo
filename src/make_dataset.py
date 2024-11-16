@@ -18,7 +18,9 @@ def make_dataset(output_file):
         # Extract numeric ID from URL and add as a new column
         df["id"] = df["url"].apply(
             lambda x: (
-                re.search(r"/(\d+)/", x).group(1) if re.search(r"/(\d+)/", x) else None
+                re.search(r"/(\d+)/", x).group(1)
+                if re.search(r"/(\d+)/", x)
+                else None
             )
         )
 
@@ -26,7 +28,8 @@ def make_dataset(output_file):
         print(f"Dataset split '{split_name}' as DataFrame:\n{df}")
         df.to_parquet(split_output_file)
         print(
-            f"Dataset split '{split_name}' saved to {split_output_file} in Parquet format."
+            f"Dataset split '{split_name}' saved to "
+            f"{split_output_file} in Parquet format."
         )
 
 

@@ -9,7 +9,9 @@ def main(input_file, output_file):
     """Read the dataset, print column names, and save formatted dataset."""
     df = pd.read_parquet(input_file)
     df["sentence"] = df.apply(
-        lambda row: f"# {row['title']}\n\n**Category:** {row['category']}\n\n{row['content']}",
+        lambda row: f"# {row['title']}\n\n"
+        f"**Category:** {row['category']}\n\n"
+        f"{row['content']}",
         axis=1,
     )
     print("Columns in the dataset:", df.columns.tolist())
