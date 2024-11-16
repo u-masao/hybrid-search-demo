@@ -1,14 +1,14 @@
-from loguru import logger
 import click
 import pandas as pd
+from loguru import logger
 
 
 def create_sentence_column(df):
     """Create a 'sentence' column in the DataFrame."""
     df["sentence"] = df.apply(
         lambda row: f"# {row['title']}\n\n"
-                    f"**Category:** {row['category']}\n\n"
-                    f"{row['content']}",
+        f"**Category:** {row['category']}\n\n"
+        f"{row['content']}",
         axis=1,
     )
     return df

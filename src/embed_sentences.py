@@ -1,17 +1,20 @@
-from loguru import logger
 import pandas as pd
+from loguru import logger
+
 from embedding.embedding import Embedding
+
 
 def embed_sentences(input_file, output_file):
     """Generate embeddings for sentences in the dataset."""
     logger.info(f"Reading formatted dataset from {input_file}")
     df = pd.read_parquet(input_file)
-    
+
     embedding_model = Embedding(dimension=128)  # Assuming a dimension of 128
-    df['embedding'] = df['sentence'].apply(embedding_model.generate_embedding)
-    
+    df["embedding"] = df["sentence"].apply(embedding_model.generate_embedding)
+
     df.to_parquet(output_file)
     logger.info(f"Embeddings saved to {output_file}")
+
 
 if __name__ == "__main__":
     import click

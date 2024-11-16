@@ -5,8 +5,8 @@ stages:
     deps:
     - path: src/make_dataset.py
       hash: md5
-      md5: 12440c22458b2a7c7452493b94b90fd2
-      size: 1159
+      md5: 7fbfb42fd059a50cbe779408e9cd83ef
+      size: 1275
     outs:
     - path: data/train.parquet
       hash: md5
@@ -21,8 +21,8 @@ stages:
       size: 12017641
     - path: src/format_dataset.py
       hash: md5
-      md5: 91dddcc0799dc8d5db9657f3353e2315
-      size: 820
+      md5: 5b74fa5572107e30c069d20f39062c5b
+      size: 1159
     outs:
     - path: data/formatted_dataset.parquet
       hash: md5
