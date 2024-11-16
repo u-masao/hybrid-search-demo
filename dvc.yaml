@@ -11,7 +11,7 @@ stages:
       poetry run python src/generate_users.py
       --num_users=${num_users}
       --categories="technology,sports,music,art"
-      data/user_profiles.parquet
+      data/users_with_sentences.parquet
     deps:
       - src/generate_users.py
     params:
