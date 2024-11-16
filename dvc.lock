@@ -51,21 +51,21 @@ stages:
       md5: 3c0988c6eb2450da5aa9fdbae9395363
       size: 613280
   generate_user_profiles:
-    cmd: poetry run python src/generate_users.py --num_users=50 --categories="technology,sports,music,art"
+    cmd: poetry run python src/generate_users.py --num_users=25 --categories="technology,sports,music,art"
       data/user_profiles.parquet
     deps:
     - path: src/generate_users.py
       hash: md5
-      md5: 8d2a1ad58e5c4bf56a37651abed8715e
-      size: 2595
+      md5: 641aae9b7e993593a65571961cb7ecf1
+      size: 2581
     params:
       params.yaml:
-        num_users: 50
+        num_users: 25
     outs:
     - path: data/user_profiles.parquet
       hash: md5
-      md5: 24573b5b3b39b3c32a949a6edde3f5cf
-      size: 9104
+      md5: 254356b6bc19091201fd3e4b0fd0b3a8
+      size: 5327
   generate_user_history:
     cmd: poetry run python src/generate_history.py data/formatted_dataset.parquet
       data/user_profiles.parquet data/user_history.parquet
@@ -87,3 +87,53 @@ stages:
       hash: md5
       md5: 9058296124d4911436c02e96d8859cff
       size: 9122
+  make_articles:
+    cmd: poetry run python src/make_dataset.py data/train.parquet
+    deps:
+    - path: src/make_dataset.py
+      hash: md5
+      md5: c67a625ae978784b517fadd9470ae53e
+      size: 1919
+    outs:
+    - path: data/train.parquet
+      hash: md5
+      md5: 53361d2369e0a6f49667d3876258c691
+      size: 12022017
+  format_articles:
+    cmd: poetry run python src/format_dataset.py data/train.parquet data/formatted_dataset.parquet
+      --limit=50
+    deps:
+    - path: data/train.parquet
+      hash: md5
+      md5: 53361d2369e0a6f49667d3876258c691
+      size: 12022017
+    - path: src/format_dataset.py
+      hash: md5
+      md5: adc72400124e4c3fb41d79e60446cf16
+      size: 1734
+    outs:
+    - path: data/formatted_dataset.parquet
+      hash: md5
+      md5: f077683c3f92b21425373dcc66fd4c56
+      size: 220900
+  embed_articles:
+    cmd: poetry run python src/embed_sentences.py data/formatted_dataset.parquet data/embeddings.parquet
+      --dimension=384 --model_name=intfloat/multilingual-e5-small
+    deps:
+    - path: data/formatted_dataset.parquet
+      hash: md5
+      md5: f077683c3f92b21425373dcc66fd4c56
+      size: 220900
+    - path: src/embed_sentences.py
+      hash: md5
+      md5: 5de3e9fa1cf1657daf5bce71c84cab5d
+      size: 2197
+    - path: src/embedding/embedding.py
+      hash: md5
+      md5: d2516a18d3ee710693665fa8b78a2e65
+      size: 3246
+    outs:
+    - path: data/embeddings.parquet
+      hash: md5
+      md5: 4429adb07b9899ff8eae7ee6a80c4931
+      size: 334516
