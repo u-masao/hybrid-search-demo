@@ -10,7 +10,7 @@ lint:
 	poetry run flake8 src tests
 
 repro:
-	dvc repro
+	poetry run dvc repro
 
 visualize:
 	poetry run streamlit run src/visualize.py
