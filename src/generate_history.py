@@ -1,3 +1,4 @@
+import click
 import datetime
 import random
 import pandas as pd
@@ -40,9 +41,16 @@ def generate_user_history(df, user_profiles):
 
     return pd.DataFrame(history)
 
-if __name__ == "__main__":
-    # Example usage
-    df = pd.read_parquet("articles.parquet")
-    user_profiles = pd.read_parquet("user_profiles.parquet").to_dict(orient='index')
+@click.command()
+@click.argument("articles_file", type=click.Path(exists=True))
+@click.argument("user_profiles_file", type=click.Path(exists=True))
+@click.argument("output_file", type=click.Path())
+def main(articles_file, user_profiles_file, output_file):
+    """Generate browsing history and save to a parquet file."""
+    df = pd.read_parquet(articles_file)
+    user_profiles = pd.read_parquet(user_profiles_file).to_dict(orient='index')
     df_history = generate_user_history(df, user_profiles)
-    df_history.to_parquet("user_history.parquet")
+    df_history.to_parquet(output_file)
+
+if __name__ == "__main__":
+    main()

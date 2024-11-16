@@ -1,3 +1,4 @@
+import click
 import os
 import random
 from openai import OpenAI
@@ -65,9 +66,16 @@ def generate_user_profiles(num_users=1000, categories=None):
 
     return user_profiles
 
-if __name__ == "__main__":
-    # Example usage
-    categories = ["technology", "sports", "music", "art"]
-    user_profiles = generate_user_profiles(num_users=1000, categories=categories)
+@click.command()
+@click.option("--num_users", default=1000, help="Number of unique users to generate.")
+@click.option("--categories", default="technology,sports,music,art", help="Comma-separated list of categories for user preferences.")
+@click.argument("output_file", type=click.Path())
+def main(num_users, categories, output_file):
+    """Generate user profiles and save to a parquet file."""
+    categories_list = categories.split(",")
+    user_profiles = generate_user_profiles(num_users=num_users, categories=categories_list)
     df_user_profiles = pd.DataFrame.from_dict(user_profiles, orient='index')
-    df_user_profiles.to_parquet("user_profiles.parquet")
+    df_user_profiles.to_parquet(output_file)
+
+if __name__ == "__main__":
+    main()
