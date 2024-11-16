@@ -16,7 +16,6 @@ def make_dataset(output_file):
     for split_name, split in dataset.items():
         df = pd.DataFrame.from_dict(split)
         # Extract numeric ID from URL and add as a new column
-        df['sentence'] = df.apply(lambda row: f"# {row['title']}\n\n**Category:** {row['category']}\n\n{row['content']}", axis=1)
         df['id'] = df['url'].apply(lambda x: re.search(r'/(\d+)/', x).group(1) if re.search(r'/(\d+)/', x) else None)
         
         split_output_file = output_file.replace("train", split_name)
