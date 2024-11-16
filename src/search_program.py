@@ -7,12 +7,16 @@ def perform_vector_search(es_host, index_name, query_text, top_k=5):
     # Initialize Elasticsearch client
     es = Elasticsearch(
         es_host,
-        http_auth=(
+        basic_auth=(
             os.getenv("ELASTIC_USERNAME"),
             os.getenv("ELASTIC_PASSWORD"),
         ),
         ca_certs="certs/http_ca.crt",
     )
+
+    # Check if the index exists
+    if not es.indices.exists(index=index_name):
+        raise ValueError(f"Index '{index_name}' does not exist.")
 
     # Initialize Embedding class
     embedding_model = Embedding(dimension=768)  # Assuming 768 dimensions
