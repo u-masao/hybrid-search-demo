@@ -64,11 +64,7 @@ def generate_user_history(df, num_users=1000):
                 "sentence": row["sentence"],
                 "age": user_profile["age"],
                 "gender": user_profile["gender"],
-                "preferences": user_profile["preferences"]
-                "article_id": index,
-                "user_id": user_id,
-                "timestamp": timestamp,
-                "sentence": row["sentence"]
+                "preferences": user_profile["preferences"],
             })
 
     return pd.DataFrame(history)
