@@ -175,3 +175,15 @@ stages:
       hash: md5
       md5: f2c941a8067d4353ee366bff06156228
       size: 63961
+  load_to_elasticsearch:
+    cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
+      --index_name=user_sentences data/users_with_sentences.parquet
+    deps:
+    - path: data/users_with_sentences.parquet
+      hash: md5
+      md5: a5d42738fe1b211d744a03bd190970b3
+      size: 7951
+    - path: src/load_to_elasticsearch.py
+      hash: md5
+      md5: 2a7e7b41fc2e74ebbbd36335fe480355
+      size: 1166
