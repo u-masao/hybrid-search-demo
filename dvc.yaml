@@ -1,4 +1,13 @@
 stages:
+  generate_user_profiles:
+    cmd: poetry run python src/generate_users.py --num_users ${num_users} --categories "technology,sports,music,art" data/user_profiles.parquet
+    deps:
+      - src/generate_users.py
+    params:
+      - num_users
+    outs:
+      - data/user_profiles.parquet
+
   make_dataset:
     cmd: >-
       poetry run python src/make_dataset.py
