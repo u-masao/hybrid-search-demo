@@ -1,6 +1,6 @@
+import mlflow
 import pandas as pd
 from loguru import logger
-import mlflow
 from tqdm import tqdm
 
 from embedding.embedding import Embedding
@@ -24,7 +24,7 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
 
     # 制限が指定されている場合は行数を制限
     if limit > 0:
-        df = df.head(max(limit, len(df)))
+        df = df.head(min(limit, len(df)))
 
     # 指定された次元で埋め込みモデルを初期化
     embedding_model = Embedding(dimension=dimension)
