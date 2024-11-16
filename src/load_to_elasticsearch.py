@@ -7,7 +7,9 @@ from elasticsearch import Elasticsearch, helpers
 load_dotenv(".credential")
 
 
-def load_data_to_elasticsearch(es_host, index_name, data_file, embedding_file=None):
+def load_data_to_elasticsearch(
+    es_host, index_name, data_file, embedding_file=None
+):
     print(f"{es_host=}")
     es = Elasticsearch(
         es_host,
@@ -21,7 +23,7 @@ def load_data_to_elasticsearch(es_host, index_name, data_file, embedding_file=No
 
     if embedding_file:
         df_embeddings = pd.read_parquet(embedding_file)
-        df = df.merge(df_embeddings, on='id', how='left')
+        df = df.merge(df_embeddings, on="id", how="left")
 
     actions = [
         {
@@ -53,6 +55,8 @@ if __name__ == "__main__":
         help="Optional file containing embeddings to merge with the main data",
     )
     def main(es_host, index_name, data_file, embedding_file):
-        load_data_to_elasticsearch(es_host, index_name, data_file, embedding_file)
+        load_data_to_elasticsearch(
+            es_host, index_name, data_file, embedding_file
+        )
 
     main()
