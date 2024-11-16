@@ -19,12 +19,10 @@ def make_dataset(output_file):
         df['sentence'] = df.apply(lambda row: f"# {row['title']}\n\n**Category:** {row['category']}\n\n{row['text']}", axis=1)
         df['id'] = df['url'].apply(lambda x: re.search(r'/(\d+)/', x).group(1) if re.search(r'/(\d+)/', x) else None)
         
-        if split_name == "train":
-            print(f"Train dataset DataFrame:\n{df}")
-            df.to_parquet(output_file)
-            print(f"Train dataset saved to {output_file} in Parquet format.")
-        else:
-            print(f"Dataset split '{split_name}' as DataFrame:\n", df)
+        split_output_file = output_file.replace("train", split_name)
+        print(f"Dataset split '{split_name}' as DataFrame:\n{df}")
+        df.to_parquet(split_output_file)
+        print(f"Dataset split '{split_name}' saved to {split_output_file} in Parquet format.")
 
 
 @click.command()
