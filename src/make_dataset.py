@@ -1,3 +1,4 @@
+import os
 import click
 import pandas as pd
 from datasets import load_dataset
@@ -7,6 +8,7 @@ def make_dataset(output_file):
     """
     Function to download and create a dataset from Hugging Face.
     """
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
     dataset = load_dataset("llm-book/livedoor-news-corpus")
     # Convert each split in the DatasetDict to a Pandas DataFrame
     for split_name, split in dataset.items():
