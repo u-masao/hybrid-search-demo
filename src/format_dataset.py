@@ -71,7 +71,6 @@ def generate_user_history(df, num_users=1000):
                     "article_id": index,
                     "user_id": user_id,
                     "timestamp": timestamp,
-                    "sentence": row["sentence"],
                     "age": user_profile["age"],
                     "gender": user_profile["gender"],
                     "preferences": user_profile["preferences"],
