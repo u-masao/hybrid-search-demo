@@ -1,14 +1,8 @@
-import datetime
-import os
-import random
-
 import click
 import mlflow
 import pandas as pd
 from dotenv import load_dotenv
 from loguru import logger
-from openai import OpenAI
-from tqdm import tqdm
 
 load_dotenv()
 

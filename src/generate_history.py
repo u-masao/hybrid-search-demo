@@ -5,7 +5,6 @@ import click
 import pandas as pd
 
 
-
 def generate_user_history(df, user_profiles, max_views=10):
     """
     Generate browsing history for each article.
@@ -27,7 +26,6 @@ def generate_user_history(df, user_profiles, max_views=10):
             timestamp = datetime.datetime.now() - datetime.timedelta(
                 days=random.randint(0, 365)
             )
-            user_profile = user_profiles[user_id]
             history.append(
                 {
                     "article_id": index,
