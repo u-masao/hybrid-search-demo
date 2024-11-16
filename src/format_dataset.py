@@ -54,39 +54,6 @@ def generate_user_history(df, num_users=1000):
     )
     user_profiles = {}
     for user_id in tqdm(user_ids, desc="Generating user profiles"):
-        user_id: (
-            lambda age, gender, preferences: {
-                "age": age,
-                "gender": gender,
-                "preferences": preferences,
-                "introduction": client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": (
-                                f"Create a short self-introduction for"
-                                f" a {user_id}"
-                                f" who is {age} years old, {gender},"
-                                f" and likes {', '.join(preferences)}"
-                                " in japanese."
-                            ),
-                        }
-                    ],
-                    max_tokens=50,
-                    temperature=0.9,
-                )
-                .choices[0]
-                .message.content.strip(),
-            }
-        )(
-            random.randint(18, 70),
-            random.choice(genders),
-            random.sample(
-                categories, k=random.randint(1, min(3, len(categories)))
-            ),
-        )
-        for user_id in user_ids
         age = random.randint(18, 70)
         gender = random.choice(genders)
         preferences = random.sample(
