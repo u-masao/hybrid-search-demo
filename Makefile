@@ -8,16 +8,17 @@ format:
 
 lint:
 	poetry run flake8 src tests
-	git commit dvc.lock -m 'run dvc repro'
 
 check_commit:
 	git diff-index --quiet HEAD --
 
 repro: check_commit PIPELINE.md
+	poetry run dvc repro
+	git commit dvc.lock -m 'run dvc repro' || true
 
 PIPELINE.md:
 	poetry run dvc dag --md > PIPELINE.md
-	poetry run dvc repro
+	git commit PIPELINE.md -m 'dvc pipeline updated' || true
 
 visualize:
 	poetry run streamlit run src/visualize.py
