@@ -3,8 +3,12 @@
 .PHONY: format lint
 
 format:
-	poetry run isort src
-	poetry run black src
+	poetry run isort src tests
+	poetry run black src tests -l 79
 
 lint:
-	poetry run flake8 src
+	poetry run flake8 src tests
+
+test:
+	poetry run python -m unittest discover tests
+
