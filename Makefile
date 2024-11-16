@@ -1,6 +1,6 @@
 # Makefile for code formatting and linting
 
-.PHONY: format lint repro visualize
+.PHONY: format lint repro visualize check_commit
 
 format:
 	poetry run isort src tests
@@ -9,7 +9,10 @@ format:
 lint:
 	poetry run flake8 src tests
 
-repro:
+check_commit:
+	git diff-index --quiet HEAD --
+
+repro: check_commit
 	poetry run dvc repro
 
 visualize:
