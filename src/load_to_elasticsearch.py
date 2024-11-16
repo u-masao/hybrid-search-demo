@@ -39,6 +39,7 @@ def load_data_to_elasticsearch(
 
     helpers.bulk(es, actions)
 
+
 def bm25_search(es, index_name, query, top_k=5):
     """
     Perform BM25 search on the specified index.
@@ -52,16 +53,9 @@ def bm25_search(es, index_name, query, top_k=5):
     Returns:
     A list of search results.
     """
-    search_body = {
-        "query": {
-            "match": {
-                "content": query
-            }
-        },
-        "size": top_k
-    }
+    search_body = {"query": {"match": {"content": query}}, "size": top_k}
     response = es.search(index=index_name, body=search_body)
-    return response['hits']['hits']
+    return response["hits"]["hits"]
 
 
 if __name__ == "__main__":
