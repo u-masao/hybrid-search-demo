@@ -13,7 +13,10 @@ lint:
 check_commit:
 	git diff-index --quiet HEAD --
 
-repro: check_commit
+repro: check_commit PIPELINE.md
+
+PIPELINE.md:
+	poetry run dvc dag --md > PIPELINE.md
 	poetry run dvc repro
 
 visualize:
