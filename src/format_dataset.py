@@ -1,10 +1,11 @@
 import datetime
+import os
 import random
 
 import click
 import mlflow
-import pandas as pd
 import openai
+import pandas as pd
 from loguru import logger
 
 
@@ -44,7 +45,7 @@ def generate_user_history(df, num_users=1000):
     categories = df["category"].unique().tolist()
 
     # Set OpenAI API key
-    openai.api_key = "your-api-key-here"
+    openai.api_key = os.environ["OPENAI_API_KEY"]
     user_profiles = {
         user_id: (
             lambda age, gender, preferences: {
@@ -53,14 +54,24 @@ def generate_user_history(df, num_users=1000):
                 "preferences": preferences,
                 "introduction": openai.Completion.create(
                     engine="text-davinci-003",
-                    prompt=f"Create a short self-introduction for a {user_id} who is {age} years old, {gender}, and likes {', '.join(preferences)}.",
+                    prompt=(
+                        f"Create a short self-introduction for a {user_id}"
+                        f" who is {age} years old, {gender}, "
+                        f"and likes {', '.join(preferences)}. in japanese"
+                    ),
                     max_tokens=50,
-                    temperature=0
-                ).choices[0].text.strip(),
+                    temperature=0,
+                )
+                .choices[0]
+                .text.strip(),
             }
-        )(random.randint(18, 70), random.choice(genders), random.sample(
-            categories, k=random.randint(1, min(3, len(categories)))
-        ))
+        )(
+            random.randint(18, 70),
+            random.choice(genders),
+            random.sample(
+                categories, k=random.randint(1, min(3, len(categories)))
+            ),
+        )
         for user_id in user_ids
     }
 
@@ -89,21 +100,28 @@ def generate_user_history(df, num_users=1000):
 
     return pd.DataFrame(history)
 
-
+@click.command()
 @click.argument("input_file", type=click.Path(exists=True))
 @click.argument("output_file", type=click.Path())
-def main(input_file, output_file):
+@click.option("--num_users", type=int, default=1000)
+@click.option("--limit", type=int, default=0)
+def main(input_file, output_file, num_users, limit):
     """データセットを読み込み、列名を表示し、フォーマットされたデータセットを保存します。"""
     with mlflow.start_run():
         logger.info(f"Reading dataset from {input_file}")
         df = pd.read_parquet(input_file)
+
+        # 制限が指定されている場合は行数を制限
+        if limit > 0:
+            df = df.sample(min(limit, len(df)))
+
         input_length = len(df)
         df = create_sentence_column(df)
         output_length = len(df)
         mlflow.log_metric("input_length", input_length)
         mlflow.log_metric("output_length", output_length)
         logger.info("Columns in the dataset: {}", df.columns.tolist())
-        df_history = generate_user_history(df)
+        df_history = generate_user_history(df, num_users=num_users)
         df_history.to_parquet(output_file)
         logger.info(f"Formatted dataset saved to {output_file}")
         # 保存されたParquetファイルを読み込み、最初の行を表示
