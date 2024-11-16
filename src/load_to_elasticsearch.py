@@ -27,7 +27,7 @@ if __name__ == "__main__":
     import click
 
     @click.command()
-    @click.option('--es-host', default='http://localhost:9200', help='Elasticsearch host URL')
+    @click.option('--es-host', default='http://localhost:9200', help='Elasticsearch host URL (e.g., http://localhost:9200)')
     @click.option('--index-name', default='user_data', help='Elasticsearch index name')
     @click.argument('data_file', type=click.Path(exists=True))
     def main(es_host, index_name, data_file):
