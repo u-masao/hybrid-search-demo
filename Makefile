@@ -3,8 +3,7 @@
 .PHONY: format lint repro visualize check_commit run run_api_server
 
 run_api_server:
-	PYTHONPATH=. poetry run python src/api_server.py &
-	sleep 10
+	PYTHONPATH=. poetry run python src/api_server.py
 
 format:
 	poetry run isort src tests
@@ -27,5 +26,5 @@ PIPELINE.md: dvc.yaml params.yaml
 visualize:
 	poetry run streamlit run src/visualize.py
 
-test: run_api_server
+test:
 	PYTHONPATH=$(shell pwd) poetry run pytest tests
