@@ -27,5 +27,6 @@ PIPELINE.md: dvc.yaml params.yaml
 visualize:
 	poetry run streamlit run src/visualize.py
 
-test:
+test: 
+	PYTHONPATH=src 
 	poetry run pytest tests/

@@ -13,6 +13,7 @@ def embedding():
 
 
 class TestEmbedding:
+    def __init__(self):
         self.embedding = Embedding(dimension=384)
 
     def test_split_text(self, embedding):
