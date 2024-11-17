@@ -12,7 +12,7 @@ def load_embeddings(file_path):
 def load_labels(labels_file):
     # Load labels from a Parquet file
     labels_df = pd.read_parquet(labels_file)
-    # Check if 'label' column exists, otherwise raise an informative error
+    print("Columns in labels file:", labels_df.columns)  # Debug statement
     if 'label' not in labels_df.columns:
         raise KeyError("The 'label' column is missing from the labels file.")
     return torch.tensor(labels_df['label'].astype('float32').values, dtype=torch.float32)
