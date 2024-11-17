@@ -1,6 +1,9 @@
 # Makefile for code formatting and linting
 
-.PHONY: format lint repro visualize check_commit
+.PHONY: format lint repro visualize check_commit run
+
+run:
+	poetry run python app.py
 
 format:
 	poetry run isort src tests
