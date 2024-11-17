@@ -16,7 +16,7 @@ def load_embeddings(file_path):
     embedding_df = df.filter(like='embedding')
     if embedding_df.empty:
         raise ValueError("No 'embedding' columns found in the DataFrame.")
-    return numeric_df.astype("float32").to_numpy()
+    return embedding_df.astype("float32").to_numpy()
 
 
 def load_labels(labels_file):
