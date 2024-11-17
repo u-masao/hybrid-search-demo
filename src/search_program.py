@@ -1,12 +1,3 @@
-import os
-
-from dotenv import load_dotenv
-
-load_dotenv(".credential")
-
-from elasticsearch import Elasticsearch
-
-from src.embedding.embedding import Embedding
 
 
 def perform_vector_search(es_host, index_name, query_text, top_k=5):
@@ -93,7 +84,7 @@ def search(es_host, index_name, query_text):
     vector_results = perform_vector_search(es_host, index_name, query_text)
     print("Vector Search Results:")
     for i, result in enumerate(vector_results):
-        print(f"{i + 1}: {result['_source']['title']}")
+        print(f"{i + 1}: {result['_source']['title'][:79]}")
 
     while True:
         try:
@@ -128,7 +119,7 @@ def search(es_host, index_name, query_text):
     bm25_results = perform_bm25_search(es_host, index_name, query_text)
     print("\nBM25 Search Results:")
     for i, result in enumerate(bm25_results):
-        print(f"{i + 1}: {result['_source']['title']}")
+        print(f"{i + 1}: {result['_source']['title'][:79]}")
 
     while True:
         try:

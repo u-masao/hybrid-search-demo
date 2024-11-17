@@ -1,8 +1,7 @@
 import click
 import pandas as pd
-import torch.nn.functional as F
 
-from two_tower_model import TwoTowerModel, train_two_tower_model
+from two_tower_model import TwoTowerModel
 
 
 def load_embeddings(file_path):
