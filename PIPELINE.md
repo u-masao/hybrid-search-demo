@@ -15,6 +15,7 @@ flowchart TD
 	node2-->node8
 	node3-->node1
 	node3-->node4
+	node4-->node6
 	node5-->node2
 	node5-->node4
 	node9-->node3
