@@ -100,6 +100,7 @@ def search(es_host, index_name, query_text):
                 print("\nSelected Vector Search Result Details:")
                 print(f"Title: {vector_results[selection]['_source']['title']}")
                 print(f"Content: {vector_results[selection]['_source']['content']}")
+                input("\nPress Enter to continue...")
             else:
                 print("Invalid selection. Please try again.")
         except ValueError:
@@ -120,6 +121,7 @@ def search(es_host, index_name, query_text):
                 print("\nSelected BM25 Search Result Details:")
                 print(f"Title: {bm25_results[selection]['_source']['title']}")
                 print(f"Content: {bm25_results[selection]['_source']['content']}")
+                input("\nPress Enter to continue...")
             else:
                 print("Invalid selection. Please try again.")
         except ValueError:
