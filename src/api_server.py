@@ -3,8 +3,13 @@ from transformers import AutoModel, AutoTokenizer
 import torch
 
 app = Flask(__name__)
+print("Initializing tokenizer...")
 tokenizer = AutoTokenizer.from_pretrained('intfloat/multilingual-e5-small')
+print("Tokenizer initialized.")
+
+print("Initializing model...")
 model = AutoModel.from_pretrained('intfloat/multilingual-e5-small')
+print("Model initialized.")
 
 @app.route('/embed', methods=['POST'])
 def embed():
