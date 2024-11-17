@@ -41,23 +41,26 @@ def search_users(query_text, top_k=5):
 with gr.Blocks() as demo:
     gr.Markdown("# Article and User Search")
 
-    with gr.Tab("Search Articles"):
-        article_query = gr.Textbox(label="Search Articles")
-        article_results = gr.Markdown()
-        article_search_button = gr.Button("Search")
-        article_query.submit(
-            fn=search_articles,
-            inputs=[article_query],
-            outputs=[article_results],
-        )
+    query_input = gr.Textbox(label="Search Query")
 
-    with gr.Tab("Search Users"):
-        user_query = gr.Textbox(label="Search Users")
-        user_results = gr.Markdown()
-        user_search_button = gr.Button("Search")
-        user_query.submit(
-            fn=search_users, inputs=[user_query], outputs=[user_results]
-        )
+    with gr.Row():
+        with gr.Column():
+            bm25_user_results = gr.Markdown(label="BM25 User Results")
+            vector_user_results = gr.Markdown(label="Vector Search User Results")
+        with gr.Column():
+            bm25_article_results = gr.Markdown(label="BM25 Article Results")
+            vector_article_results = gr.Markdown(label="Vector Search Article Results")
+
+    query_input.submit(
+        fn=search_articles,
+        inputs=[query_input],
+        outputs=[bm25_article_results, vector_article_results],
+    )
+    query_input.submit(
+        fn=search_users,
+        inputs=[query_input],
+        outputs=[bm25_user_results, vector_user_results],
+    )
 
 if __name__ == "__main__":
     demo.launch()
