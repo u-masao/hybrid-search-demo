@@ -4,7 +4,7 @@ import mlflow.pytorch
 import pandas as pd
 import torch
 
-from src.two_tower_model import TwoTowerModel
+from two_tower_model import TwoTowerModel
 
 
 def load_embeddings(file_path):
