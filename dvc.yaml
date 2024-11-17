@@ -105,6 +105,7 @@ stages:
       data/user_embeddings.parquet
       data/article_embeddings.parquet
       data/two_tower_model.pth
+      data/user_history.parquet
     deps:
       - src/two_tower_model.py
       - data/user_embeddings.parquet
