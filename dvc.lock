@@ -189,58 +189,48 @@ stages:
       size: 1166
   load_articles_to_elasticsearch:
     cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
-      --index_name=article_data --embedding_file=data/article_embeddings.parquet data/formatted_dataset.parquet
-      && echo `date` > data/load_articles_timestamp.txt
+      --index_name=article_data data/article_embeddings.parquet && echo `date` > data/load_articles_timestamp.txt
     deps:
     - path: data/article_embeddings.parquet
       hash: md5
       md5: 4429adb07b9899ff8eae7ee6a80c4931
       size: 334516
-    - path: data/formatted_dataset.parquet
-      hash: md5
-      md5: f077683c3f92b21425373dcc66fd4c56
-      size: 220900
     - path: src/load_to_elasticsearch.py
       hash: md5
-      md5: 74f1f7fc99ebc6274693c350f6e25e64
-      size: 2242
+      md5: 6d43d66aeb9fef851f854c71ba97e537
+      size: 1877
     outs:
     - path: data/load_articles_timestamp.txt
       hash: md5
-      md5: 8d30d0f91791d593409b3f92c0c57c32
+      md5: 1ea29aa6675ab266e76f58cd309aa6c5
       size: 43
   load_users_to_elasticsearch:
     cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
-      --index_name=user_sentences --embedding_file=data/user_embeddings.parquet data/users_with_sentences.parquet
-      && echo `date` > data/load_users_timestamp.txt
+      --index_name=user_sentences data/user_embeddings.parquet && echo `date` > data/load_users_timestamp.txt
     deps:
     - path: data/user_embeddings.parquet
       hash: md5
       md5: 3803a5dc6124e90ed9789f280519f311
       size: 68678
-    - path: data/users_with_sentences.parquet
-      hash: md5
-      md5: f70468e5eba8b3c32e219d9a7e022c6d
-      size: 12669
     - path: src/load_to_elasticsearch.py
       hash: md5
-      md5: 74f1f7fc99ebc6274693c350f6e25e64
-      size: 2242
+      md5: 6d43d66aeb9fef851f854c71ba97e537
+      size: 1877
     outs:
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: 7fd69ae3ee835c9717f0a709b8e5c273
+      md5: cd4df1d1e9942ff3981f1f341ab402c7
       size: 43
   search_demo:
     cmd: poetry run python -m src.search_program && echo `date` > data/search_timestamp.txt
     deps:
     - path: data/load_articles_timestamp.txt
       hash: md5
-      md5: 8d30d0f91791d593409b3f92c0c57c32
+      md5: 1ea29aa6675ab266e76f58cd309aa6c5
       size: 43
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: 7fd69ae3ee835c9717f0a709b8e5c273
+      md5: cd4df1d1e9942ff3981f1f341ab402c7
       size: 43
     - path: src/embedding/embedding.py
       hash: md5
@@ -248,10 +238,10 @@ stages:
       size: 3840
     - path: src/search_program.py
       hash: md5
-      md5: d6e10fb35ac8c61fae902cbcc999a9d8
-      size: 2305
+      md5: 83689f63926df5c9f70862142d862cc0
+      size: 2307
     outs:
     - path: data/search_timestamp.txt
       hash: md5
-      md5: 2c9889fa943b395d186cea8b7043eb8e
+      md5: 7084e50d49dee0dd3c415e6048034396
       size: 43
