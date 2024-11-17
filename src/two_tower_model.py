@@ -39,7 +39,7 @@ def train_two_tower_model(user_embeddings, article_embeddings, labels, epochs=10
         model.train()
         optimizer.zero_grad()
         outputs = model(user_embeddings, article_embeddings)
-        loss = criterion(outputs, labels)
+        loss = criterion(outputs.view(-1, 1), labels)
         loss.backward()
         optimizer.step()
         print(f'Epoch {epoch+1}/{epochs}, Loss: {loss.item()}')
