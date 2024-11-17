@@ -8,13 +8,19 @@ es_host = "https://localhost:9200"
 
 def search_articles(query_text, top_k=5):
     # Perform a BM25 search on the articles index
-    result = perform_bm25_search(es_host, "article_data", query_text, top_k)
-    result = perform_vector_search(es_host, "article_data", query_text, top_k)
-    print("BM25 Search Result:", result)  # デバッグ用に追加
-    print("Vector Search Result:", result)  # デバッグ用に追加
+    result_bm25 = perform_bm25_search(
+        es_host, "article_data", query_text, top_k
+    )
+    result_vector = perform_vector_search(
+        es_host, "article_data", query_text, top_k
+    )
+    print("BM25 Search Result:", result_bm25)  # デバッグ用に追加
+    print("Vector Search Result:", result_vector)  # デバッグ用に追加
     formatted_results = "\n".join(
-        f"- **ID**: {item['_source'].get('id', 'N/A')}, **Sentence**: {item['_source'].get('sentence', '')[:200]}"
-        for item in result
+        f"- **ID**: {item['_source'].get('id', 'N/A')},"
+        f" **Score**: {item['_score']},"
+        f" **Sentence**: {item['_source'].get('sentence_x', '')[:200]}"
+        for item in result_vector
     )
     return formatted_results
 
@@ -22,9 +28,13 @@ def search_articles(query_text, top_k=5):
 def search_users(query_text, top_k=5):
     # Perform a BM25 search on the users index
     result = perform_bm25_search(es_host, "user_sentences", query_text, top_k)
-    result = perform_vector_search(es_host, "article_data", query_text, top_k)
+    result = perform_vector_search(
+        es_host, "user_sentences", query_text, top_k
+    )
     formatted_results = "\n".join(
-        f"- **ID**: {item.get('id', 'N/A')}, **Sentence**: {item.get('sentence', '')[:200]}"
+        f"- **ID**: {item['_source'].get('id', 'N/A')},"
+        f" **Score**: {item['_score']},"
+        f" **Sentence**: {item['_source'].get('sentence_x', '')[:200]}"
         for item in result
     )
     return formatted_results
