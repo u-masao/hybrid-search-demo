@@ -20,8 +20,10 @@ class TwoTowerModel(nn.Module):
         self.cosine_similarity = nn.CosineSimilarity(dim=1)
 
     def forward(self, user_embedding, article_embedding):
-        user_vector = self.user_tower(user_embedding)
-        article_vector = self.article_tower(article_embedding)
+        # Ensure the embeddings have the same batch size
+        min_batch_size = min(user_embedding.size(0), article_embedding.size(0))
+        user_vector = self.user_tower(user_embedding[:min_batch_size])
+        article_vector = self.article_tower(article_embedding[:min_batch_size])
         return self.cosine_similarity(user_vector, article_vector)
 
 
