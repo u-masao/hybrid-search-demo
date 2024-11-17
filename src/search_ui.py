@@ -9,21 +9,23 @@ es_host = "https://localhost:9200"
 def search_articles(query_text, top_k=5):
     # Perform a BM25 search on the articles index
     result = perform_bm25_search(es_host, "article_data", query_text, top_k)
-    print(result)
     result = perform_vector_search(es_host, "article_data", query_text, top_k)
-    print(result)
-    print(type(result))
-    return str(result)
+    formatted_results = "\n".join(
+        f"- **Score**: {item['score']}, **ID**: {item['id']}, **Sentence**: {item['sentence'][:200]}"
+        for item in result
+    )
+    return formatted_results
 
 
 def search_users(query_text, top_k=5):
     # Perform a BM25 search on the users index
     result = perform_bm25_search(es_host, "user_sentences", query_text, top_k)
-    print(result)
     result = perform_vector_search(es_host, "article_data", query_text, top_k)
-    print(result)
-    print(type(result))
-    return str(result)
+    formatted_results = "\n".join(
+        f"- **Score**: {item['score']}, **ID**: {item['id']}, **Sentence**: {item['sentence'][:200]}"
+        for item in result
+    )
+    return formatted_results
 
 
 with gr.Blocks() as demo:
