@@ -3,15 +3,15 @@ from elasticsearch import Elasticsearch
 from src.search_program import perform_vector_search, perform_bm25_search
 
 # Initialize Elasticsearch client
-es = Elasticsearch(hosts=["http://localhost:9200"])
+es_host = "http://localhost:9200"
 
 def search_articles(query_text, top_k=5):
     # Perform a BM25 search on the articles index
-    return perform_bm25_search(es, "articles", query_text, top_k)
+    return perform_bm25_search(es_host, "articles", query_text, top_k)
 
 def search_users(query_text, top_k=5):
     # Perform a BM25 search on the users index
-    return perform_bm25_search(es, "users", query_text, top_k)
+    return perform_bm25_search(es_host, "users", query_text, top_k)
 
 def main():
     with gr.Blocks() as demo:
