@@ -109,5 +109,12 @@ stages:
       - src/two_tower_model.py
       - data/user_embeddings.parquet
       - data/article_embeddings.parquet
+      - data/labels.csv
     outs:
       - data/two_tower_model.pth
+    cmd: >-
+      poetry run python src/train_two_tower_model.py
+      data/user_embeddings.parquet
+      data/article_embeddings.parquet
+      data/two_tower_model.pth
+      data/labels.csv
