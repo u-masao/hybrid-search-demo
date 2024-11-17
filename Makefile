@@ -28,4 +28,4 @@ visualize:
 	poetry run streamlit run src/visualize.py
 
 test:
-	PYTHONPATH=$(shell pwd)/src poetry run pytest tests/
+	PYTHONPATH=$(shell pwd) poetry run pytest tests/
