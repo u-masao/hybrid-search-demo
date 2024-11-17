@@ -7,11 +7,11 @@ es = Elasticsearch(hosts=["http://localhost:9200"])
 
 def search_articles(query_text, top_k=5):
     # Perform a BM25 search on the articles index
-    return perform_bm25_search("http://localhost:9200", "articles", query_text, top_k)
+    return perform_bm25_search(es, "articles", query_text, top_k)
 
 def search_users(query_text, top_k=5):
     # Perform a BM25 search on the users index
-    return perform_bm25_search("http://localhost:9200", "users", query_text, top_k)
+    return perform_bm25_search(es, "users", query_text, top_k)
 
 def main():
     with gr.Blocks() as demo:
