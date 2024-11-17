@@ -11,7 +11,7 @@ def search_articles(query_text, top_k=5):
     result = perform_bm25_search(es_host, "article_data", query_text, top_k)
     result = perform_vector_search(es_host, "article_data", query_text, top_k)
     formatted_results = "\n".join(
-        f"- **Score**: {item['score']}, **ID**: {item['id']}, **Sentence**: {item['sentence'][:200]}"
+        f"- **ID**: {item['id']}, **Sentence**: {item['sentence'][:200]}"
         for item in result
     )
     return formatted_results
