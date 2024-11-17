@@ -245,3 +245,28 @@ stages:
       hash: md5
       md5: 575b0a4d1a75b6f96c490be672dede3a
       size: 43
+  learn_two_tower_model:
+    cmd: poetry run python src/train_two_tower_model.py data/user_embeddings.parquet
+      data/article_embeddings.parquet data/two_tower_model.pth data/user_history.parquet
+    deps:
+    - path: data/article_embeddings.parquet
+      hash: md5
+      md5: 4429adb07b9899ff8eae7ee6a80c4931
+      size: 334516
+    - path: data/user_embeddings.parquet
+      hash: md5
+      md5: 3803a5dc6124e90ed9789f280519f311
+      size: 68678
+    - path: data/user_history.parquet
+      hash: md5
+      md5: 9f234f60f53eccbfe8d4437435146367
+      size: 7054
+    - path: src/two_tower_model.py
+      hash: md5
+      md5: a1c95322f72cfa26cc3bc8b1ed224762
+      size: 1773
+    outs:
+    - path: data/two_tower_model.pth
+      hash: md5
+      md5: 29c60e343abddccb198ae8c1878c75b1
+      size: 71520
