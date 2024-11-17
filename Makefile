@@ -26,3 +26,6 @@ visualize:
 test:	
 	poetry run python -m unittest discover tests
 
+run_ui:
+	poetry run python src/search_ui.py
+
