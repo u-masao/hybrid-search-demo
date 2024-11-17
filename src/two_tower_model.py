@@ -30,13 +30,11 @@ class TwoTowerModel(nn.Module):
 def train_two_tower_model(
     user_embeddings, article_embeddings, labels, epochs=30, lr=0.0001
 ):
-    # Ensure the number of user and article embeddings match
-    min_samples = min(user_embeddings.shape[0], article_embeddings.shape[0])
+    # Ensure the number of user, article embeddings, and labels match
+    min_samples = min(user_embeddings.shape[0], article_embeddings.shape[0], labels.shape[0])
     user_embeddings = user_embeddings[:min_samples]
     article_embeddings = article_embeddings[:min_samples]
-
-    # Ensure the number of labels matches the number of samples
-    labels = labels[:min_samples].view(-1, 1)
+    labels = labels[:min_samples]
 
     model = TwoTowerModel(
         user_embeddings.shape[1], article_embeddings.shape[1]
