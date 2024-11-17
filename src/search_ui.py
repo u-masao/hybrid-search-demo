@@ -13,7 +13,7 @@ def search_articles(query_text, top_k=5):
     print("BM25 Search Result:", result)  # デバッグ用に追加
     print("Vector Search Result:", result)  # デバッグ用に追加
     formatted_results = "\n".join(
-        f"- **ID**: {item.get('id', 'N/A')}, **Sentence**: {item.get('sentence', '')[:200]}"
+        f"- **ID**: {item['_source'].get('id', 'N/A')}, **Sentence**: {item['_source'].get('sentence', '')[:200]}"
         for item in result
     )
     return formatted_results
