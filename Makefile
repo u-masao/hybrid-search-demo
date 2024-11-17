@@ -27,13 +27,5 @@ PIPELINE.md: dvc.yaml params.yaml
 visualize:
 	poetry run streamlit run src/visualize.py
 
-test:	
-	poetry run python -m unittest discover tests
-
-run_ui:
-	PYTHONPATH=. poetry run gradio src/search_ui.py
-
-.PHONY: test
-
 test:
-	pytest tests/
+	poetry run pytest tests/
