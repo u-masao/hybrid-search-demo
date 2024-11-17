@@ -22,7 +22,7 @@ class TwoTowerModel(nn.Module):
         article_vector = self.article_tower(article_embedding)
         return self.cosine_similarity(user_vector, article_vector)
 
-def train_two_tower_model(user_embeddings, article_embeddings, labels, epochs=10, lr=0.001):
+def train_two_tower_model(user_embeddings, article_embeddings, labels, epochs=20, lr=0.0005):
     # Ensure the number of user and article embeddings match
     min_samples = min(user_embeddings.shape[0], article_embeddings.shape[0])
     user_embeddings = user_embeddings[:min_samples]
