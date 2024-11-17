@@ -30,7 +30,9 @@ def search_articles(query_text, top_k=5):
         f"</div>"
         for item in result_bm25
     )
-    return formatted_results_bm25, formatted_results
+    count_bm25 = f"<strong>BM25 Results Count:</strong> {len(result_bm25)}<br>"
+    count_vector = f"<strong>Vector Results Count:</strong> {len(result_vector)}<br>"
+    return count_bm25 + formatted_results_bm25, count_vector + formatted_results
 
 
 def search_users(query_text, top_k=5):
@@ -55,7 +57,9 @@ def search_users(query_text, top_k=5):
         f"</div>"
         for item in result_bm25
     )
-    return formatted_results_bm25, formatted_results
+    count_bm25 = f"<strong>BM25 Results Count:</strong> {len(result_bm25)}<br>"
+    count_vector = f"<strong>Vector Results Count:</strong> {len(result_vector)}<br>"
+    return count_bm25 + formatted_results_bm25, count_vector + formatted_results
 
 
 with gr.Blocks() as demo:
