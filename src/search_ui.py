@@ -19,7 +19,7 @@ def search_articles(query_text, top_k=5):
     formatted_results = "\n".join(
         f"- **ID**: {item['_source'].get('id', 'N/A')},"
         f" **Score**: {item['_score']},"
-        f" **Sentence**: {item['_source'].get('sentence_x', '')[:200]}"
+        f" **Sentence**: {item['_source'].get('sentence', '')[:200]}"
         for item in result_vector
     )
     return formatted_results
@@ -34,7 +34,7 @@ def search_users(query_text, top_k=5):
     formatted_results = "\n".join(
         f"- **ID**: {item['_source'].get('id', 'N/A')},"
         f" **Score**: {item['_score']},"
-        f" **Sentence**: {item['_source'].get('sentence_x', '')[:200]}"
+        f" **Sentence**: {item['_source'].get('sentence', '')[:200]}"
         for item in result
     )
     return formatted_results
