@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from hello import hello
 from transformers import AutoModel, AutoTokenizer
 import torch
 
