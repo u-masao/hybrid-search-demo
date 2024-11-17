@@ -4,7 +4,7 @@ import pandas as pd
 from two_tower_model import train_two_tower_model
 
 def load_embeddings(file_path):
-    return pd.read_parquet(file_path).values
+    return pd.read_parquet(file_path).to_numpy(dtype='float32')
 
 def load_labels(labels_file):
     # Load labels from a Parquet file
