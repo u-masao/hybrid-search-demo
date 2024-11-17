@@ -270,3 +270,19 @@ stages:
       hash: md5
       md5: 6a135a534933d75168be4e35c4cfaa64
       size: 71520
+  use_elasticsearch:
+    cmd: echo use elasticsearch && echo `date` > data/use_elasticsearch.txt
+    deps:
+    - path: data/load_articles_timestamp.txt
+      hash: md5
+      md5: ae07d977d3df14a1ee84f6f5419a4d74
+      size: 43
+    - path: data/load_users_timestamp.txt
+      hash: md5
+      md5: c131bdf210b9ab003d29f293a41da7ed
+      size: 43
+    outs:
+    - path: data/use_elasticsearch.txt
+      hash: md5
+      md5: 62c90c9e3481ee755b7d17035ea5ea7c
+      size: 43
