@@ -7,6 +7,12 @@ from src.embedding.embedding import Embedding
 
 def perform_vector_search(es_host, index_name, query_text, top_k=5):
     # Initialize Elasticsearch client
+    elastic_username = os.getenv("ELASTIC_USERNAME")
+    elastic_password = os.getenv("ELASTIC_PASSWORD")
+
+    if not elastic_username or not elastic_password:
+        raise ValueError("Elasticsearch username or password not set in environment variables.")
+
     es = Elasticsearch(
         [es_host],
         basic_auth=(
