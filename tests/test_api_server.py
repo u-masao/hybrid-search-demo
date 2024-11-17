@@ -10,8 +10,8 @@ def is_server_running(url):
         return False
 
 def test_embed_endpoint():
-    url = "http://localhost:5000/embed"
-    if not is_server_running("http://localhost:5000"):
+    url = "http://localhost:5001/embed"
+    if not is_server_running("http://localhost:5001"):
         # Start the server in a subprocess
         server_process = subprocess.Popen(
             ["poetry", "run", "python", "src/api_server.py"],
