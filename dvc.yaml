@@ -99,14 +99,15 @@ stages:
     outs:
       - data/load_articles_timestamp.txt
 
-  search_demo:
+  learn_two_tower_model:
     cmd: >-
-      poetry run python -m src.search_program
-      && echo `date` > data/search_timestamp.txt
+      poetry run python src/train_two_tower_model.py
+      data/user_embeddings.parquet
+      data/article_embeddings.parquet
+      data/two_tower_model.pth
     deps:
-      - src/search_program.py
-      - src/embedding/embedding.py
-      - data/load_users_timestamp.txt
-      - data/load_articles_timestamp.txt
+      - src/two_tower_model.py
+      - data/user_embeddings.parquet
+      - data/article_embeddings.parquet
     outs:
-      - data/search_timestamp.txt
+      - data/two_tower_model.pth
