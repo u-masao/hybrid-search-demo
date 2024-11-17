@@ -28,6 +28,9 @@ def train_two_tower_model(user_embeddings, article_embeddings, labels, epochs=10
     user_embeddings = user_embeddings[:min_samples]
     article_embeddings = article_embeddings[:min_samples]
 
+    # Ensure the number of labels matches the number of samples
+    labels = labels[:min_samples]
+
     model = TwoTowerModel(user_embeddings.shape[1], article_embeddings.shape[1])
     criterion = nn.BCELoss()
     optimizer = optim.Adam(model.parameters(), lr=lr)
