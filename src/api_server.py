@@ -11,6 +11,14 @@ print("Initializing model...")
 model = AutoModel.from_pretrained('intfloat/multilingual-e5-small')
 print("Model initialized.")
 
+# Perform a dummy embedding trial
+test_input = "This is a test input for embedding."
+print("Performing dummy embedding trial...")
+inputs = tokenizer(test_input, return_tensors="pt", truncation=True, padding=True)
+outputs = model(**inputs)
+dummy_embedding = outputs.last_hidden_state.mean(dim=1).squeeze().detach().numpy()
+print("Dummy embedding trial completed. Embedding size:", dummy_embedding.shape)
+
 @app.route('/embed', methods=['POST'])
 def embed():
     data = request.json
