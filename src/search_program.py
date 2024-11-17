@@ -3,7 +3,6 @@ import os
 from elasticsearch import Elasticsearch
 
 from src.embedding.embedding import Embedding
-from src.load_to_elasticsearch import bm25_search
 
 
 def perform_vector_search(es_host, index_name, query_text, top_k=5):
@@ -43,6 +42,23 @@ def perform_vector_search(es_host, index_name, query_text, top_k=5):
     )
     return response["hits"]["hits"]
 
+
+def bm25_search(es, index_name, query, top_k=5):
+    """
+    Perform BM25 search on the specified index.
+
+    Parameters:
+    - es: Elasticsearch client instance.
+    - index_name: The name of the index to search.
+    - query: The search query string.
+    - top_k: The number of top results to return.
+
+    Returns:
+    A list of search results.
+    """
+    search_body = {"query": {"match": {"content": query}}, "size": top_k}
+    response = es.search(index=index_name, body=search_body)
+    return response["hits"]["hits"]
 
 def perform_bm25_search(es_host, index_name, query_text, top_k=5):
     # Initialize Elasticsearch client
