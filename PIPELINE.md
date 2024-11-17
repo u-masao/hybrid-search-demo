@@ -9,6 +9,7 @@ flowchart TD
 	node7["load_articles_to_elasticsearch"]
 	node8["load_users_to_elasticsearch"]
 	node9["make_articles"]
+	node10["use_elasticsearch"]
 	node1-->node6
 	node1-->node7
 	node2-->node6
@@ -18,5 +19,7 @@ flowchart TD
 	node4-->node6
 	node5-->node2
 	node5-->node4
+	node7-->node10
+	node8-->node10
 	node9-->node3
 ```
