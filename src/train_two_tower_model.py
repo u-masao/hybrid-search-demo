@@ -1,3 +1,4 @@
+import click
 import torch
 import pandas as pd
 from two_tower_model import train_two_tower_model
@@ -22,9 +23,13 @@ def main(user_embeddings_file, article_embeddings_file, model_output_file, label
     model = train_two_tower_model(user_embeddings, article_embeddings, labels)
     torch.save(model.state_dict(), model_output_file)
 
+@click.command()
+@click.argument("user_embeddings_file", type=click.Path(exists=True))
+@click.argument("article_embeddings_file", type=click.Path(exists=True))
+@click.argument("model_output_file", type=click.Path())
+@click.argument("labels_file", type=click.Path(exists=True))
+def cli(user_embeddings_file, article_embeddings_file, model_output_file, labels_file):
+    main(user_embeddings_file, article_embeddings_file, model_output_file, labels_file)
+
 if __name__ == "__main__":
-    import sys
-    if len(sys.argv) != 5:
-        print("Usage: python train_two_tower_model.py <user_embeddings_file> <article_embeddings_file> <model_output_file> <labels_file>")
-        sys.exit(1)
-    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+    cli()
