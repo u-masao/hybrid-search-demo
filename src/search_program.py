@@ -91,18 +91,19 @@ def search(es_host, index_name, query_text):
     for i, result in enumerate(vector_results):
         print(f"{i + 1}: {result['_source']['title']}")
 
-    # Prompt user to select a result for more details
-    try:
-        selection = int(input("Select a result to view details (0 to skip): ")) - 1
-        if 0 <= selection < len(vector_results):
-            print("\nVector Search Result Details:")
-            print("\nSelected Vector Search Result Details:")
-            print(f"Title: {vector_results[selection]['_source']['title']}")
-            print(f"Content: {vector_results[selection]['_source']['content']}")
-        else:
-            print("Invalid selection. Skipping details view.")
-    except ValueError:
-        print("Invalid input. Please enter a number.")
+    while True:
+        try:
+            selection = int(input("Select a result to view details (0 to skip, -1 to exit): ")) - 1
+            if selection == -2:
+                break
+            elif 0 <= selection < len(vector_results):
+                print("\nSelected Vector Search Result Details:")
+                print(f"Title: {vector_results[selection]['_source']['title']}")
+                print(f"Content: {vector_results[selection]['_source']['content']}")
+            else:
+                print("Invalid selection. Please try again.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
 
     # Perform BM25 search
     bm25_results = perform_bm25_search(es_host, index_name, query_text)
@@ -110,18 +111,19 @@ def search(es_host, index_name, query_text):
     for i, result in enumerate(bm25_results):
         print(f"{i + 1}: {result['_source']['title']}")
 
-    # Prompt user to select a result for more details
-    try:
-        selection = int(input("Select a result to view details (0 to skip): ")) - 1
-        if 0 <= selection < len(bm25_results):
-            print("\nBM25 Search Result Details:")
-            print("\nSelected BM25 Search Result Details:")
-            print(f"Title: {bm25_results[selection]['_source']['title']}")
-            print(f"Content: {bm25_results[selection]['_source']['content']}")
-        else:
-            print("Invalid selection. Skipping details view.")
-    except ValueError:
-        print("Invalid input. Please enter a number.")
+    while True:
+        try:
+            selection = int(input("Select a result to view details (0 to skip, -1 to exit): ")) - 1
+            if selection == -2:
+                break
+            elif 0 <= selection < len(bm25_results):
+                print("\nSelected BM25 Search Result Details:")
+                print(f"Title: {bm25_results[selection]['_source']['title']}")
+                print(f"Content: {bm25_results[selection]['_source']['content']}")
+            else:
+                print("Invalid selection. Please try again.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
 
 
 if __name__ == "__main__":
