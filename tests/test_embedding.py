@@ -45,14 +45,10 @@ class TestEmbedding:
         vector2 = np.array([0, 1, 0])
         similarity = self.embedding.compute_similarity(vector1, vector2)
         # 直交ベクトルの類似度が0であることを確認
-        self.assertAlmostEqual(similarity, 0.0)
+        assert similarity == pytest.approx(0.0)
 
         # 非直交ベクトルでcompute_similarityメソッドをテスト
         vector3 = np.array([1, 1, 0])
-        similarity = self.embedding.compute_similarity(vector1, vector3)
+        similarity = embedding.compute_similarity(vector1, vector3)
         # 類似度が約0.707であることを確認
-        self.assertAlmostEqual(similarity, 0.707, places=3)
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert similarity == pytest.approx(0.707, rel=1e-3)
