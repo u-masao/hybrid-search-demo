@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from sentence_transformers import SentenceTransformer
 
 app = Flask(__name__)
-model = SentenceTransformer('multilingual-e5-small')
+model = SentenceTransformer('intfloat/multilingual-e5-small')
 
 @app.route('/embed', methods=['POST'])
 def embed():
