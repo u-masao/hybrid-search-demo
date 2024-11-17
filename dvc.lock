@@ -263,10 +263,10 @@ stages:
       size: 7054
     - path: src/two_tower_model.py
       hash: md5
-      md5: a1c95322f72cfa26cc3bc8b1ed224762
-      size: 1773
+      md5: 1f5161bcd4229c735e01743ba889c444
+      size: 1774
     outs:
     - path: data/two_tower_model.pth
       hash: md5
-      md5: 29c60e343abddccb198ae8c1878c75b1
+      md5: 6a135a534933d75168be4e35c4cfaa64
       size: 71520
