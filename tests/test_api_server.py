@@ -33,4 +33,3 @@ def test_embed_endpoint():
     if is_server_running("http://localhost:5000"):
         # Terminate the server process after the test
         server_process.terminate()
-    test_embed_endpoint()
