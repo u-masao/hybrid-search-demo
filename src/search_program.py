@@ -17,10 +17,7 @@ def perform_vector_search(es_host, index_name, query_text, top_k=5):
 
     es = Elasticsearch(
         [es_host],
-        basic_auth=(
-            os.getenv("ELASTIC_USERNAME"),
-            os.getenv("ELASTIC_PASSWORD"),
-        ),
+        basic_auth=(os.getenv("ELASTIC_USERNAME"), os.getenv("ELASTIC_PASSWORD")),
         ca_certs="certs/http_ca.crt",
     )
 
@@ -111,9 +108,7 @@ def search(es_host, index_name, query_text):
                 print(
                     f"Title: {vector_results[selection]['_source']['title']}"
                 )
-                print(
-                    f"Content: {vector_results[selection]['_source']['content']}"
-                )
+                print(f"Content: {vector_results[selection]['_source']['content']}")
                 input("\nPress Enter to continue...")
             elif selection == -1:
                 print("Skipping detailed view.")
@@ -144,9 +139,7 @@ def search(es_host, index_name, query_text):
             elif 0 <= selection < len(bm25_results):
                 print("\nSelected BM25 Search Result Details:")
                 print(f"Title: {bm25_results[selection]['_source']['title']}")
-                print(
-                    f"Content: {bm25_results[selection]['_source']['content']}"
-                )
+                print(f"Content: {bm25_results[selection]['_source']['content']}")
                 input("\nPress Enter to continue...")
             elif selection == -1:
                 print("Skipping detailed view.")
