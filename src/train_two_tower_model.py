@@ -1,7 +1,8 @@
 import click
 import torch
 import pandas as pd
-from two_tower_model import train_two_tower_model
+from two_tower_model import train_two_tower_model, TwoTowerModel
+import torch.nn.functional as F
 
 def load_embeddings(file_path):
     df = pd.read_parquet(file_path)
@@ -24,7 +25,21 @@ def main(user_embeddings_file, article_embeddings_file, model_output_file, label
     # Load labels for training
     labels = load_labels(labels_file)
 
-    model = train_two_tower_model(user_embeddings, article_embeddings, labels)
+    model = TwoTowerModel(user_embeddings.size(1), article_embeddings.size(1))
+    model.train()
+    
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    criterion = torch.nn.BCELoss()
+
+    for epoch in range(30):  # Assuming 30 epochs
+        optimizer.zero_grad()
+        outputs = model(user_embeddings, article_embeddings)
+        outputs = torch.sigmoid(outputs)  # Apply sigmoid to normalize outputs
+        loss = criterion(outputs.view(-1), labels)
+        loss.backward()
+        optimizer.step()
+    
+    torch.save(model.state_dict(), model_output_file)
     torch.save(model.state_dict(), model_output_file)
 
 @click.command()
