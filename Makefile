@@ -31,4 +31,3 @@ test:
 	sleep 5
 	SERVER_PID=$$!
 	PYTHONPATH=$(shell pwd) poetry run pytest tests
-	kill $$SERVER_PID
