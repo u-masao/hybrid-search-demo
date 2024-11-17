@@ -1,6 +1,6 @@
 import torch
 import pandas as pd
-from src.two_tower_model import train_two_tower_model
+from two_tower_model import train_two_tower_model
 
 def load_embeddings(file_path):
     return pd.read_parquet(file_path).values
