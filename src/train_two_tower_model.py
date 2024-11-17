@@ -9,8 +9,13 @@ from two_tower_model import TwoTowerModel
 
 def load_embeddings(file_path):
     df = pd.read_parquet(file_path)
-    # Select only numeric columns
-    numeric_df = df.select_dtypes(include=["number"])
+    print("DataFrame shape:", df.shape)  # Debug statement
+    print("DataFrame dtypes:", df.dtypes)  # Debug statement
+
+    # Select only columns that contain 'embedding' in their names
+    embedding_df = df.filter(like='embedding')
+    if embedding_df.empty:
+        raise ValueError("No 'embedding' columns found in the DataFrame.")
     return numeric_df.astype("float32").to_numpy()
 
 
