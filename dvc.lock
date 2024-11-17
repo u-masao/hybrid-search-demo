@@ -226,11 +226,11 @@ stages:
     deps:
     - path: data/load_articles_timestamp.txt
       hash: md5
-      md5: 1ea29aa6675ab266e76f58cd309aa6c5
+      md5: 70009d7261941a121df420e511cc946e
       size: 43
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: cd4df1d1e9942ff3981f1f341ab402c7
+      md5: 74976b590ec95e94cbbd96baaa9513f4
       size: 43
     - path: src/embedding/embedding.py
       hash: md5
@@ -238,10 +238,10 @@ stages:
       size: 3840
     - path: src/search_program.py
       hash: md5
-      md5: 83689f63926df5c9f70862142d862cc0
-      size: 2307
+      md5: 59a0292f88364d529946878f91b5dde8
+      size: 3140
     outs:
     - path: data/search_timestamp.txt
       hash: md5
-      md5: 7084e50d49dee0dd3c415e6048034396
+      md5: 575b0a4d1a75b6f96c490be672dede3a
       size: 43
