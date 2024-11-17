@@ -1,29 +1,32 @@
 import hashlib
 import os
-import unittest
+import pytest
 
 import numpy as np
 
 from src.embedding.embedding import Embedding
 
 
-class TestEmbedding(unittest.TestCase):
+@pytest.fixture
+def embedding():
+    return Embedding(dimension=384)
 
-    def setUp(self):
+
+class TestEmbedding:
         self.embedding = Embedding(dimension=384)
 
-    def test_split_text(self):
+    def test_split_text(self, embedding):
         # サンプルテキストでsplit_textメソッドをテスト
         text = (
             "This is a sample text to test the splitting functionality. " * 20
         )
-        chunks = self.embedding.split_text(text, max_length=50, overlap=10)
+        chunks = embedding.split_text(text, max_length=50, overlap=10)
         # 各チャンクが指定されたmax_length内であることを確認
         self.assertTrue(all(len(chunk) <= 50 for chunk in chunks))
         # テキストが複数のチャンクに分割されていることを確認
         self.assertTrue(len(chunks) > 1)
 
-    def test_generate_embedding(self):
+    def test_generate_embedding(self, embedding):
         # generate_embeddingメソッドとキャッシュメカニズムをテスト
         text = "This is a test sentence."
         embedding = self.embedding.generate_embedding(text)
@@ -36,7 +39,7 @@ class TestEmbedding(unittest.TestCase):
         cache_path = os.path.join(cache_dir, f"{text_hash}.pkl")
         self.assertTrue(os.path.exists(cache_path))
 
-    def test_compute_similarity(self):
+    def test_compute_similarity(self, embedding):
         # 直交ベクトルでcompute_similarityメソッドをテスト
         vector1 = np.array([1, 0, 0])
         vector2 = np.array([0, 1, 0])
