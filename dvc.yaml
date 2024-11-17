@@ -112,4 +112,4 @@ stages:
       - data/article_embeddings.parquet
       - data/user_history.parquet
     outs:
-      - data/two_tower_model.pth
+      - models/two_tower_model.pth
