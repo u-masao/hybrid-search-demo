@@ -1,6 +1,7 @@
 import click
 import mlflow
 import mlflow.pytorch
+import numpy as np
 import pandas as pd
 import torch
 
@@ -10,24 +11,22 @@ from two_tower_model import TwoTowerModel
 def load_embeddings(file_path):
     df = pd.read_parquet(file_path)
     print("DataFrame shape:", df.shape)  # Debug statement
-    print("DataFrame dtypes:", df.dtypes)  # Debug statement
 
     # Select only columns that contain 'embedding' in their names
-    embedding_df = df.filter(like='embedding')
+    embedding_df = df["embedding"]
     if embedding_df.empty:
         raise ValueError("No 'embedding' columns found in the DataFrame.")
-    return embedding_df.astype("float32").to_numpy()
+    result = np.stack(embedding_df.values)
+    print(f"embed shape: {result.shape}")
+    return torch.tensor(result, dtype=torch.float32)
 
 
 def load_labels(labels_file):
     # Load labels from a Parquet file
     labels_df = pd.read_parquet(labels_file)
-    print("Columns in labels file:", labels_df.columns)  # Debug statement
-    if "label" not in labels_df.columns:
-        raise KeyError("The 'label' column is missing from the labels file.")
-    return torch.tensor(
-        labels_df["label"].astype("float32").values, dtype=torch.float32
-    )
+    labels_df = labels_df[["article_id", "user_id"]].drop_duplicates()
+
+    return torch.tensor(labels_df.values, dtype=torch.int8)
 
 
 def main(
@@ -37,15 +36,11 @@ def main(
     labels_file,
 ):
     print("Loading user embeddings...")
-    user_embeddings = torch.tensor(
-        load_embeddings(user_embeddings_file), dtype=torch.float32
-    )
+    user_embeddings = load_embeddings(user_embeddings_file)
     print("User embeddings shape:", user_embeddings.shape)
 
     print("Loading article embeddings...")
-    article_embeddings = torch.tensor(
-        load_embeddings(article_embeddings_file), dtype=torch.float32
-    )
+    article_embeddings = load_embeddings(article_embeddings_file)
     print("Article embeddings shape:", article_embeddings.shape)
 
     # Load labels for training
@@ -54,21 +49,28 @@ def main(
 
     print("Labels shape:", labels.shape)
 
-    model = TwoTowerModel(user_embeddings.size(1), article_embeddings.size(1))
-    mlflow.log_param("user_embedding_dim", user_embeddings.size(1))
-    mlflow.log_param("article_embedding_dim", article_embeddings.size(1))
-    model.train()
-
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-    criterion = torch.nn.BCELoss()
-
     with mlflow.start_run():
-        for epoch in range(30):  # Assuming 30 epochs
+        model = TwoTowerModel(
+            user_embeddings.size(1), article_embeddings.size(1)
+        )
+        mlflow.log_param("user_embedding_dim", user_embeddings.size(1))
+        mlflow.log_param("article_embedding_dim", article_embeddings.size(1))
+        model.train()
+
+        optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+        criterion = torch.nn.BCELoss()
+
+        for epoch in range(10):  # Assuming 30 epochs
             optimizer.zero_grad()
             outputs = model(user_embeddings, article_embeddings)
-            outputs = torch.sigmoid(outputs)  # Apply sigmoid to normalize outputs
+            outputs = torch.sigmoid(
+                outputs
+            )  # Apply sigmoid to normalize outputs
             if outputs.shape != labels.shape:
-                raise ValueError(f"Output shape {outputs.shape} does not match labels shape {labels.shape}")
+                raise ValueError(
+                    f"Output shape {outputs.shape} does not match labels shape"
+                    f" {labels.shape}"
+                )
             loss = criterion(outputs.view(-1), labels)
             loss.backward()
             optimizer.step()
