@@ -1,4 +1,6 @@
 import requests
+import subprocess
+import time
 
 def is_server_running(url):
     try:
@@ -10,7 +12,14 @@ def is_server_running(url):
 def test_embed_endpoint():
     url = "http://localhost:5000/embed"
     if not is_server_running("http://localhost:5000"):
-        raise RuntimeError("API server is not running. Please start the server and try again.")
+        # Start the server in a subprocess
+        server_process = subprocess.Popen(
+            ["poetry", "run", "python", "src/api_server.py"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        # Wait for the server to start
+        time.sleep(5)
     
     payload = {"query": "test query"}
     response = requests.post(url, json=payload)
@@ -21,5 +30,7 @@ def test_embed_endpoint():
     assert isinstance(data['embedding'], list)
     assert len(data['embedding']) > 0
 
-if __name__ == "__main__":
+    if is_server_running("http://localhost:5000"):
+        # Terminate the server process after the test
+        server_process.terminate()
     test_embed_endpoint()
