@@ -79,11 +79,9 @@ stages:
       --es_host=https://localhost:9200
       --index_name=user_sentences
       --embedding_file=data/user_embeddings.parquet
-      data/users_with_sentences.parquet
       && echo `date` > data/load_users_timestamp.txt
     deps:
       - src/load_to_elasticsearch.py
-      - data/users_with_sentences.parquet
       - data/user_embeddings.parquet
     outs:
       - data/load_users_timestamp.txt
@@ -94,11 +92,9 @@ stages:
       --es_host=https://localhost:9200
       --index_name=article_data
       --embedding_file=data/article_embeddings.parquet
-      data/formatted_dataset.parquet
       && echo `date` > data/load_articles_timestamp.txt
     deps:
       - src/load_to_elasticsearch.py
-      - data/formatted_dataset.parquet
       - data/article_embeddings.parquet
     outs:
       - data/load_articles_timestamp.txt
