@@ -109,7 +109,7 @@ stages:
       - src/two_tower_model.py
       - data/user_embeddings.parquet
       - data/article_embeddings.parquet
-      - data/labels.csv
+      - data/user_history.parquet
     outs:
       - data/two_tower_model.pth
     cmd: >-
@@ -117,4 +117,4 @@ stages:
       data/user_embeddings.parquet
       data/article_embeddings.parquet
       data/two_tower_model.pth
-      data/labels.csv
+      data/user_history.parquet
