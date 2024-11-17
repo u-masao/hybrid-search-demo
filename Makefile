@@ -27,5 +27,5 @@ test:
 	poetry run python -m unittest discover tests
 
 run_ui:
-	poetry run gradio src/search_ui.py
+	PYTHONPATH=src poetry run gradio src/search_ui.py
 
