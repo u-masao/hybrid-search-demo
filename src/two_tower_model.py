@@ -1,6 +1,6 @@
-import torch
 import torch.nn as nn
 import torch.optim as optim
+
 
 class TwoTowerModel(nn.Module):
     def __init__(self, user_embedding_dim, article_embedding_dim):
@@ -9,13 +9,13 @@ class TwoTowerModel(nn.Module):
             nn.Linear(user_embedding_dim, 128),
             nn.ReLU(),
             nn.Linear(128, 64),
-            nn.Dropout(0.5)
+            nn.Dropout(0.5),
         )
         self.article_tower = nn.Sequential(
             nn.Linear(article_embedding_dim, 128),
             nn.ReLU(),
             nn.Linear(128, 64),
-            nn.Dropout(0.5)
+            nn.Dropout(0.5),
         )
         self.cosine_similarity = nn.CosineSimilarity(dim=1)
 
@@ -24,7 +24,10 @@ class TwoTowerModel(nn.Module):
         article_vector = self.article_tower(article_embedding)
         return self.cosine_similarity(user_vector, article_vector)
 
-def train_two_tower_model(user_embeddings, article_embeddings, labels, epochs=30, lr=0.0001):
+
+def train_two_tower_model(
+    user_embeddings, article_embeddings, labels, epochs=30, lr=0.0001
+):
     # Ensure the number of user and article embeddings match
     min_samples = min(user_embeddings.shape[0], article_embeddings.shape[0])
     user_embeddings = user_embeddings[:min_samples]
@@ -33,7 +36,9 @@ def train_two_tower_model(user_embeddings, article_embeddings, labels, epochs=30
     # Ensure the number of labels matches the number of samples
     labels = labels[:min_samples].view(-1, 1)
 
-    model = TwoTowerModel(user_embeddings.shape[1], article_embeddings.shape[1])
+    model = TwoTowerModel(
+        user_embeddings.shape[1], article_embeddings.shape[1]
+    )
     criterion = nn.BCELoss()
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
@@ -44,6 +49,6 @@ def train_two_tower_model(user_embeddings, article_embeddings, labels, epochs=30
         loss = criterion(outputs.view(-1, 1), labels)
         loss.backward()
         optimizer.step()
-        print(f'Epoch {epoch+1}/{epochs}, Loss: {loss.item()}')
+        print(f"Epoch {epoch+1}/{epochs}, Loss: {loss.item()}")
 
     return model

@@ -1,5 +1,7 @@
 import warnings
+
 import pytest
+
 
 @pytest.fixture(autouse=True)
 def suppress_pydantic_warnings():

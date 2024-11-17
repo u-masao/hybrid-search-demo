@@ -34,8 +34,6 @@ def load_data_to_elasticsearch(es_host, index_name, embedding_file):
     helpers.bulk(es, actions)
 
 
-
-
 if __name__ == "__main__":
     import click
 

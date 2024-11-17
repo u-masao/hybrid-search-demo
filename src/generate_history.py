@@ -5,7 +5,9 @@ import click
 import pandas as pd
 
 
-def generate_user_history(df, user_profiles, max_views=10, label_probability=0.5):
+def generate_user_history(
+    df, user_profiles, max_views=10, label_probability=0.5
+):
     """
     Generate browsing history for each article.
 

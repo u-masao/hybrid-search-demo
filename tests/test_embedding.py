@@ -1,8 +1,8 @@
 import hashlib
 import os
-import pytest
 
 import numpy as np
+import pytest
 
 from src.embedding.embedding import Embedding
 

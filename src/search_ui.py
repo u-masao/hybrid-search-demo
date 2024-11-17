@@ -19,7 +19,9 @@ def search_articles(query_text, top_k=5):
 
 def search_users(query_text, top_k=5):
     # Perform a BM25 search on the users index
-    result_bm25 = perform_bm25_search(es_host, "user_sentences", query_text, top_k)
+    result_bm25 = perform_bm25_search(
+        es_host, "user_sentences", query_text, top_k
+    )
     result_vector = perform_vector_search(
         es_host, "user_sentences", query_text, top_k
     )
@@ -33,18 +35,28 @@ with gr.Blocks() as demo:
 
     with gr.Row():
         with gr.Column():
-            bm25_user_results = gr.Dataset(components=["text"], label="BM25 User Results")
-            vector_user_results = gr.Dataset(components=["text"], label="Vector Search User Results")
+            bm25_user_results = gr.Dataset(
+                components=["text"], label="BM25 User Results"
+            )
+            vector_user_results = gr.Dataset(
+                components=["text"], label="Vector Search User Results"
+            )
         with gr.Column():
-            bm25_article_results = gr.Dataset(components=["text"], label="BM25 Article Results")
-            vector_article_results = gr.Dataset(components=["text"], label="Vector Search Article Results")
+            bm25_article_results = gr.Dataset(
+                components=["text"], label="BM25 Article Results"
+            )
+            vector_article_results = gr.Dataset(
+                components=["text"], label="Vector Search Article Results"
+            )
 
     details_output = gr.Textbox(label="Details", interactive=False)
 
     def display_details(item):
-        return f"ID: {item['_source'].get('id', 'N/A')}\n" \
-               f"Score: {item['_score']}\n" \
-               f"Sentence: {item['_source'].get('sentence', '')}"
+        return (
+            f"ID: {item['_source'].get('id', 'N/A')}\n"
+            f"Score: {item['_score']}\n"
+            f"Sentence: {item['_source'].get('sentence', '')}"
+        )
 
     query_input.submit(
         fn=search_articles,
@@ -56,10 +68,20 @@ with gr.Blocks() as demo:
         outputs=[bm25_user_results, vector_user_results],
     )
 
-    bm25_article_results.select(display_details, inputs=[bm25_article_results], outputs=details_output)
-    vector_article_results.select(display_details, inputs=[vector_article_results], outputs=details_output)
-    bm25_user_results.select(display_details, inputs=[bm25_user_results], outputs=details_output)
-    vector_user_results.select(display_details, inputs=[vector_user_results], outputs=details_output)
+    bm25_article_results.select(
+        display_details, inputs=[bm25_article_results], outputs=details_output
+    )
+    vector_article_results.select(
+        display_details,
+        inputs=[vector_article_results],
+        outputs=details_output,
+    )
+    bm25_user_results.select(
+        display_details, inputs=[bm25_user_results], outputs=details_output
+    )
+    vector_user_results.select(
+        display_details, inputs=[vector_user_results], outputs=details_output
+    )
 
 if __name__ == "__main__":
     demo.launch()
