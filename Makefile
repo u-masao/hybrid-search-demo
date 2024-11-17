@@ -27,4 +27,8 @@ visualize:
 	poetry run streamlit run src/visualize.py
 
 test:
-	PYTHONPATH=$(shell pwd) poetry run pytest tests
+	PYTHONPATH=$(shell pwd) poetry run python src/api_server.py &
+	SERVER_PID=$!; \
+	sleep 5; \
+	PYTHONPATH=$(shell pwd) poetry run pytest tests; \
+	kill $$SERVER_PID
