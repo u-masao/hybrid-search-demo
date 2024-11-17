@@ -1,9 +1,9 @@
 # Makefile for code formatting and linting
 
-.PHONY: format lint repro visualize check_commit run
+.PHONY: format lint repro visualize check_commit run run_api_server
 
-run:
-	PYTHONPATH=. poetry run python -m src.app
+run_api_server:
+	PYTHONPATH=. poetry run python src/api_server.py
 
 format:
 	poetry run isort src tests
