@@ -20,16 +20,16 @@ class TestEmbedding:
         )
         chunks = embedding.split_text(text, max_length=50, overlap=10)
         # 各チャンクが指定されたmax_length内であることを確認
-        self.assertTrue(all(len(chunk) <= 50 for chunk in chunks))
+        assert all(len(chunk) <= 50 for chunk in chunks)
         # テキストが複数のチャンクに分割されていることを確認
-        self.assertTrue(len(chunks) > 1)
+        assert len(chunks) > 1
 
     def test_generate_embedding(self, embedding):
         # generate_embeddingメソッドとキャッシュメカニズムをテスト
         text = "This is a test sentence."
-        embedding = self.embedding.generate_embedding(text)
+        embedding_vector = embedding.generate_embedding(text)
         # 埋め込みが正しい次元を持っていることを確認
-        self.assertEqual(embedding.shape[0], self.embedding.dimension)
+        assert embedding_vector.shape[0] == embedding.dimension
 
         # 埋め込みがキャッシュされているか確認
         cache_dir = ".cache/md5"
