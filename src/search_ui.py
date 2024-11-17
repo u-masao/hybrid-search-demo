@@ -1,9 +1,9 @@
 import gradio as gr
 from elasticsearch import Elasticsearch
-from src.search_program import perform_vector_search, perform_bm25_search
+from .src.search_program import perform_vector_search, perform_bm25_search
 
 # Initialize Elasticsearch client
-es_host = "http://localhost:9200"
+es_host = "https://localhost:9200"
 
 def search_articles(query_text, top_k=5):
     # Perform a BM25 search on the articles index
