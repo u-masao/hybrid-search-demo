@@ -57,11 +57,11 @@ with gr.Blocks() as demo:
 
     with gr.Row():
         with gr.Column():
-            bm25_user_results = gr.Markdown(label="BM25 User Results")
-            vector_user_results = gr.Markdown(label="Vector Search User Results")
+            bm25_user_results = gr.Markdown(label="BM25 User Results", style="border: 3px solid gray;")
+            vector_user_results = gr.Markdown(label="Vector Search User Results", style="border: 3px solid gray;")
         with gr.Column():
-            bm25_article_results = gr.Markdown(label="BM25 Article Results")
-            vector_article_results = gr.Markdown(label="Vector Search Article Results")
+            bm25_article_results = gr.Markdown(label="BM25 Article Results", style="border: 3px solid gray;")
+            vector_article_results = gr.Markdown(label="Vector Search Article Results", style="border: 3px solid gray;")
 
     query_input.submit(
         fn=search_articles,
