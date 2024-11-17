@@ -25,7 +25,7 @@ def main(user_embeddings_file, article_embeddings_file, model_output_file, label
 @click.argument("user_embeddings_file", type=click.Path(exists=True))
 @click.argument("article_embeddings_file", type=click.Path(exists=True))
 @click.argument("model_output_file", type=click.Path())
-@click.argument("labels_file", type=click.Path(exists=True), default="data/user_history.parquet")
+@click.argument("labels_file", type=click.Path(), default="data/user_history.parquet")
 def cli(user_embeddings_file, article_embeddings_file, model_output_file, labels_file):
     main(user_embeddings_file, article_embeddings_file, model_output_file, labels_file)
 
