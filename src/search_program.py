@@ -27,13 +27,21 @@ def perform_vector_search(es_host, index_name, query_text, top_k=5):
     # Generate embedding for the query text
     query_vector = embedding_model.generate_embedding(query_text)
 
-    # Retrieve all vectors from the index
-    response = es.search(index=index_name, body={"query": {"match_all": {}}})
-    vectors = [hit["_source"]["embedding"] for hit in response["hits"]["hits"]]
-
-    # Perform vector search
-    top_indices = embedding_model.vector_search(query_vector, vectors, top_k)
-    return [response["hits"]["hits"][i] for i in top_indices]
+    # Perform vector search using Elasticsearch's knn query
+    response = es.search(
+        index=index_name,
+        body={
+            "size": top_k,
+            "query": {
+                "knn": {
+                    "field": "embedding",
+                    "query_vector": query_vector,
+                    "k": top_k
+                }
+            }
+        }
+    )
+    return response["hits"]["hits"]
 
 
 def perform_bm25_search(es_host, index_name, query_text, top_k=5):
