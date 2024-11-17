@@ -7,10 +7,8 @@ def load_embeddings(file_path):
     return pd.read_parquet(file_path).values
 
 def load_labels(labels_file):
-    # Implement the logic to load labels from a file
-    # For example, assuming labels are stored in a CSV file
-    import pandas as pd
-    labels_df = pd.read_csv(labels_file)
+    # Load labels from a Parquet file
+    labels_df = pd.read_parquet(labels_file)
     return torch.tensor(labels_df['label'].values, dtype=torch.float32)
 
 def main(user_embeddings_file, article_embeddings_file, model_output_file, labels_file):
@@ -27,7 +25,7 @@ def main(user_embeddings_file, article_embeddings_file, model_output_file, label
 @click.argument("user_embeddings_file", type=click.Path(exists=True))
 @click.argument("article_embeddings_file", type=click.Path(exists=True))
 @click.argument("model_output_file", type=click.Path())
-@click.argument("labels_file", type=click.Path(exists=True))
+@click.argument("labels_file", type=click.Path(exists=True), default="data/user_history.parquet")
 def cli(user_embeddings_file, article_embeddings_file, model_output_file, labels_file):
     main(user_embeddings_file, article_embeddings_file, model_output_file, labels_file)
 
