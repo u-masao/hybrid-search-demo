@@ -88,14 +88,26 @@ def search(es_host, index_name, query_text):
     # Perform vector search
     vector_results = perform_vector_search(es_host, index_name, query_text)
     print("Vector Search Results:")
-    for result in vector_results:
-        print(result)
+    for i, result in enumerate(vector_results):
+        print(f"{i + 1}: {result['_source']['title']}")
+
+    # Prompt user to select a result for more details
+    selection = int(input("Select a result to view details (0 to skip): ")) - 1
+    if 0 <= selection < len(vector_results):
+        print("\nVector Search Result Details:")
+        print(vector_results[selection])
 
     # Perform BM25 search
     bm25_results = perform_bm25_search(es_host, index_name, query_text)
     print("\nBM25 Search Results:")
-    for result in bm25_results:
-        print(result)
+    for i, result in enumerate(bm25_results):
+        print(f"{i + 1}: {result['_source']['title']}")
+
+    # Prompt user to select a result for more details
+    selection = int(input("Select a result to view details (0 to skip): ")) - 1
+    if 0 <= selection < len(bm25_results):
+        print("\nBM25 Search Result Details:")
+        print(bm25_results[selection])
 
 
 if __name__ == "__main__":
