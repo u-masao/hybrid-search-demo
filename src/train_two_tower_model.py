@@ -59,15 +59,15 @@ def main(
 @click.command()
 @click.argument("user_embeddings_file", type=click.Path(exists=True))
 @click.argument("article_embeddings_file", type=click.Path(exists=True))
-@click.argument("model_output_file", type=click.Path())
 @click.argument(
     "labels_file", type=click.Path(), default="data/user_history.parquet"
 )
+@click.argument("model_output_file", type=click.Path())
 def cli(
     user_embeddings_file,
     article_embeddings_file,
-    model_output_file,
     labels_file,
+    model_output_file,
 ):
     main(
         user_embeddings_file,
