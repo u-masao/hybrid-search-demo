@@ -9,8 +9,8 @@ def main(user_embeddings_file, article_embeddings_file, model_output_file):
     user_embeddings = torch.tensor(load_embeddings(user_embeddings_file), dtype=torch.float32)
     article_embeddings = torch.tensor(load_embeddings(article_embeddings_file), dtype=torch.float32)
     
-    # Assuming labels are generated elsewhere and loaded here
-    labels = torch.tensor([...], dtype=torch.float32)  # Replace with actual label loading logic
+    # Load labels for training
+    labels = load_labels()  # Implement this function to load your labels
 
     model = train_two_tower_model(user_embeddings, article_embeddings, labels)
     torch.save(model.state_dict(), model_output_file)
