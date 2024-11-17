@@ -10,6 +10,8 @@ def search_articles(query_text, top_k=5):
     # Perform a BM25 search on the articles index
     result = perform_bm25_search(es_host, "article_data", query_text, top_k)
     result = perform_vector_search(es_host, "article_data", query_text, top_k)
+    print("BM25 Search Result:", result)  # デバッグ用に追加
+    print("Vector Search Result:", result)  # デバッグ用に追加
     formatted_results = "\n".join(
         f"- **ID**: {item.get('id', 'N/A')}, **Sentence**: {item.get('sentence', '')[:200]}"
         for item in result
