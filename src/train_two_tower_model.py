@@ -1,6 +1,7 @@
 import click
 import pandas as pd
 import torch
+
 from two_tower_model import TwoTowerModel
 
 
@@ -17,14 +18,23 @@ def load_labels(labels_file):
     print("Columns in labels file:", labels_df.columns)  # Debug statement
     if "label" not in labels_df.columns:
         raise KeyError("The 'label' column is missing from the labels file.")
-    return torch.tensor(labels_df["label"].astype("float32").values, dtype=torch.float32)
+    return torch.tensor(
+        labels_df["label"].astype("float32").values, dtype=torch.float32
+    )
 
 
 def main(
-    user_embeddings_file, article_embeddings_file, model_output_file, labels_file,
+    user_embeddings_file,
+    article_embeddings_file,
+    model_output_file,
+    labels_file,
 ):
-    user_embeddings = torch.tensor(load_embeddings(user_embeddings_file), dtype=torch.float32)
-    article_embeddings = torch.tensor(load_embeddings(article_embeddings_file), dtype=torch.float32)
+    user_embeddings = torch.tensor(
+        load_embeddings(user_embeddings_file), dtype=torch.float32
+    )
+    article_embeddings = torch.tensor(
+        load_embeddings(article_embeddings_file), dtype=torch.float32
+    )
 
     # Load labels for training
     labels = load_labels(labels_file)
