@@ -30,6 +30,7 @@ def test_embed_endpoint():
     assert isinstance(data['embedding'], list)
     assert len(data['embedding']) > 0
 
-    if is_server_running("http://localhost:5000"):
+    if 'server_process' in locals():
         # Terminate the server process after the test
         server_process.terminate()
+        server_process.wait()
