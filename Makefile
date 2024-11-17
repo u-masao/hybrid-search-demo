@@ -28,7 +28,7 @@ visualize:
 
 test:
 	PYTHONPATH=$(shell pwd) poetry run python src/api_server.py &
-	SERVER_PID=$!; \
-	sleep 5; \
-	PYTHONPATH=$(shell pwd) poetry run pytest tests; \
+	sleep 5
+	SERVER_PID=$$!
+	PYTHONPATH=$(shell pwd) poetry run pytest tests
 	kill $$SERVER_PID
