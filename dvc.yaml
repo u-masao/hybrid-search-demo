@@ -99,6 +99,16 @@ stages:
     outs:
       - data/load_articles_timestamp.txt
 
+  use_elasticsearch:
+    cmd: >-
+      echo use elasticsearch
+      && echo `date` > data/use_elasticsearch.txt
+    deps:
+      - data/load_users_timestamp.txt
+      - data/load_articles_timestamp.txt
+    outs:
+      - data/use_elasticsearch.txt
+
   learn_two_tower_model:
     cmd: >-
       poetry run python src/train_two_tower_model.py
