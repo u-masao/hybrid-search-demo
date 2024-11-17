@@ -1,6 +1,5 @@
 import time
 
-import torch
 from flask import Flask, jsonify, request
 from transformers import AutoModel, AutoTokenizer
 
