@@ -78,7 +78,7 @@ stages:
       poetry run python src/load_to_elasticsearch.py
       --es_host=https://localhost:9200
       --index_name=user_sentences
-      --embedding_file=data/user_embeddings.parquet
+      data/user_embeddings.parquet
       && echo `date` > data/load_users_timestamp.txt
     deps:
       - src/load_to_elasticsearch.py
@@ -91,7 +91,7 @@ stages:
       poetry run python src/load_to_elasticsearch.py
       --es_host=https://localhost:9200
       --index_name=article_data
-      --embedding_file=data/article_embeddings.parquet
+      data/article_embeddings.parquet
       && echo `date` > data/load_articles_timestamp.txt
     deps:
       - src/load_to_elasticsearch.py
