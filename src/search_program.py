@@ -101,6 +101,9 @@ def search(es_host, index_name, query_text):
                 print(f"Title: {vector_results[selection]['_source']['title']}")
                 print(f"Content: {vector_results[selection]['_source']['content']}")
                 input("\nPress Enter to continue...")
+            elif selection == -1:
+                print("Skipping detailed view.")
+                break
             else:
                 print("Invalid selection. Please try again.")
         except ValueError:
@@ -122,6 +125,9 @@ def search(es_host, index_name, query_text):
                 print(f"Title: {bm25_results[selection]['_source']['title']}")
                 print(f"Content: {bm25_results[selection]['_source']['content']}")
                 input("\nPress Enter to continue...")
+            elif selection == -1:
+                print("Skipping detailed view.")
+                break
             else:
                 print("Invalid selection. Please try again.")
         except ValueError:
