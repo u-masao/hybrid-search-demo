@@ -11,18 +11,9 @@ def perform_vector_search(es_host, index_name, query_text, top_k=5):
     elastic_password = os.getenv("ELASTIC_PASSWORD")
 
     if not elastic_username or not elastic_password:
-        raise ValueError(
-            "Elasticsearch username or password not set in environment variables."
-        )
+        raise ValueError("Elasticsearch username or password not set in environment variables.")
 
-    es = Elasticsearch(
-        [es_host],
-        basic_auth=(
-            os.getenv("ELASTIC_USERNAME"),
-            os.getenv("ELASTIC_PASSWORD"),
-        ),
-        ca_certs="certs/http_ca.crt",
-    )
+    es = Elasticsearch([es_host], basic_auth=(os.getenv("ELASTIC_USERNAME"), os.getenv("ELASTIC_PASSWORD")), ca_certs="certs/http_ca.crt")
 
     # Check if the index exists
     if not es.indices.exists(index=index_name):
@@ -97,12 +88,7 @@ def search(es_host, index_name, query_text):
     while True:
         try:
             selection = (
-                int(
-                    input(
-                        "Select a result to view details (0 to skip, -1 to exit): "
-                    )
-                )
-                - 1
+                int(input("Select a result to view details (0 to skip, -1 to exit): ")) - 1
             )
             if selection == -2:
                 break
