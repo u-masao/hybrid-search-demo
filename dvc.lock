@@ -197,12 +197,12 @@ stages:
       size: 334516
     - path: src/load_to_elasticsearch.py
       hash: md5
-      md5: 6d43d66aeb9fef851f854c71ba97e537
-      size: 1877
+      md5: 14a9628b152c6633fc3368acea1fe885
+      size: 1352
     outs:
     - path: data/load_articles_timestamp.txt
       hash: md5
-      md5: 1ea29aa6675ab266e76f58cd309aa6c5
+      md5: 70009d7261941a121df420e511cc946e
       size: 43
   load_users_to_elasticsearch:
     cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
@@ -214,12 +214,12 @@ stages:
       size: 68678
     - path: src/load_to_elasticsearch.py
       hash: md5
-      md5: 6d43d66aeb9fef851f854c71ba97e537
-      size: 1877
+      md5: 14a9628b152c6633fc3368acea1fe885
+      size: 1352
     outs:
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: cd4df1d1e9942ff3981f1f341ab402c7
+      md5: 74976b590ec95e94cbbd96baaa9513f4
       size: 43
   search_demo:
     cmd: poetry run python -m src.search_program && echo `date` > data/search_timestamp.txt
