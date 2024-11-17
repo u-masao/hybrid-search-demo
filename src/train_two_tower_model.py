@@ -1,4 +1,6 @@
 import click
+import mlflow
+import mlflow.pytorch
 import pandas as pd
 import torch
 
@@ -29,29 +31,46 @@ def main(
     model_output_file,
     labels_file,
 ):
+    print("Loading user embeddings...")
     user_embeddings = torch.tensor(
         load_embeddings(user_embeddings_file), dtype=torch.float32
     )
+    print("User embeddings shape:", user_embeddings.shape)
+
+    print("Loading article embeddings...")
     article_embeddings = torch.tensor(
         load_embeddings(article_embeddings_file), dtype=torch.float32
     )
+    print("Article embeddings shape:", article_embeddings.shape)
 
     # Load labels for training
+    print("Loading labels...")
     labels = load_labels(labels_file)
 
+    print("Labels shape:", labels.shape)
+
     model = TwoTowerModel(user_embeddings.size(1), article_embeddings.size(1))
+    mlflow.log_param("user_embedding_dim", user_embeddings.size(1))
+    mlflow.log_param("article_embedding_dim", article_embeddings.size(1))
     model.train()
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     criterion = torch.nn.BCELoss()
 
-    for epoch in range(30):  # Assuming 30 epochs
-        optimizer.zero_grad()
-        outputs = model(user_embeddings, article_embeddings)
-        outputs = torch.sigmoid(outputs)  # Apply sigmoid to normalize outputs
-        loss = criterion(outputs.view(-1), labels)
-        loss.backward()
-        optimizer.step()
+    with mlflow.start_run():
+        for epoch in range(30):  # Assuming 30 epochs
+            optimizer.zero_grad()
+            outputs = model(user_embeddings, article_embeddings)
+            outputs = torch.sigmoid(outputs)  # Apply sigmoid to normalize outputs
+            loss = criterion(outputs.view(-1), labels)
+            loss.backward()
+            optimizer.step()
+
+            # Log metrics
+            mlflow.log_metric("loss", loss.item(), step=epoch)
+
+        # Log the model
+        mlflow.pytorch.log_model(model, "two_tower_model")
 
     torch.save(model.state_dict(), model_output_file)
 
