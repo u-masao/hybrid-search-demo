@@ -134,13 +134,4 @@ def search(es_host, index_name, query_text):
             print("Invalid input. Please enter a number.")
 
 
-if __name__ == "__main__":
-    es_host = "https://localhost:9200"
-
-    index_name = "article_data"
-    query_text = "スマホ"
-    search(es_host, index_name, query_text)
-
-    index_name = "user_sentences"
-    query_text = "スマホ"
-    search(es_host, index_name, query_text)
+# Removed command-line interaction code

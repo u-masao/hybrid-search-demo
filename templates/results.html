@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Vector Search Results</h1>
+    <ul>
+        {% for result in vector_results %}
+        <li>
+            <a href="#" onclick="alert('Title: {{ result._source.title }}\nContent: {{ result._source.content }}')">
+                {{ result._source.title }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h1>BM25 Search Results</h1>
+    <ul>
+        {% for result in bm25_results %}
+        <li>
+            <a href="#" onclick="alert('Title: {{ result._source.title }}\nContent: {{ result._source.content }}')">
+                {{ result._source.title }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <a href="/">Back to Search</a>
+</body>
+</html>
