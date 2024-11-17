@@ -31,17 +31,23 @@ def search_articles(query_text, top_k=5):
 
 def search_users(query_text, top_k=5):
     # Perform a BM25 search on the users index
-    result = perform_bm25_search(es_host, "user_sentences", query_text, top_k)
-    result = perform_vector_search(
+    result_bm25 = perform_bm25_search(es_host, "user_sentences", query_text, top_k)
+    result_vector = perform_vector_search(
         es_host, "user_sentences", query_text, top_k
     )
     formatted_results = "\n".join(
         f"- **ID**: {item['_source'].get('id', 'N/A')},"
         f" **Score**: {item['_score']},"
         f" **Sentence**: {item['_source'].get('sentence', '')[:200]}"
-        for item in result
+        for item in result_vector
     )
-    return formatted_results
+    formatted_results_bm25 = "\n".join(
+        f"- **ID**: {item['_source'].get('id', 'N/A')},"
+        f" **Score**: {item['_score']},"
+        f" **Sentence**: {item['_source'].get('sentence', '')[:200]}"
+        for item in result_bm25
+    )
+    return formatted_results_bm25, formatted_results
 
 
 with gr.Blocks() as demo:
