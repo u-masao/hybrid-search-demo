@@ -35,13 +35,13 @@ class TestEmbedding:
         cache_dir = ".cache/md5"
         text_hash = hashlib.md5(text.encode("utf-8")).hexdigest()
         cache_path = os.path.join(cache_dir, f"{text_hash}.pkl")
-        self.assertTrue(os.path.exists(cache_path))
+        assert os.path.exists(cache_path)
 
     def test_compute_similarity(self, embedding):
         # 直交ベクトルでcompute_similarityメソッドをテスト
         vector1 = np.array([1, 0, 0])
         vector2 = np.array([0, 1, 0])
-        similarity = self.embedding.compute_similarity(vector1, vector2)
+        similarity = embedding.compute_similarity(vector1, vector2)
         # 直交ベクトルの類似度が0であることを確認
         assert similarity == pytest.approx(0.0)
 
