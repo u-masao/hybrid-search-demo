@@ -27,4 +27,4 @@ visualize:
 	poetry run streamlit run src/visualize.py
 
 test:
-	PYTHONPATH=$(shell pwd) poetry run pytest tests/test_embedding.py
+	PYTHONPATH=$(shell pwd) poetry run pytest tests/test_format_dataset.py
