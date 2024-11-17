@@ -4,7 +4,7 @@ import mlflow.pytorch
 import pandas as pd
 import torch
 
-from two_tower_model import TwoTowerModel
+from src.two_tower_model import TwoTowerModel
 
 
 def load_embeddings(file_path):
@@ -67,6 +67,8 @@ def main(
             optimizer.zero_grad()
             outputs = model(user_embeddings, article_embeddings)
             outputs = torch.sigmoid(outputs)  # Apply sigmoid to normalize outputs
+            if outputs.shape != labels.shape:
+                raise ValueError(f"Output shape {outputs.shape} does not match labels shape {labels.shape}")
             loss = criterion(outputs.view(-1), labels)
             loss.backward()
             optimizer.step()
