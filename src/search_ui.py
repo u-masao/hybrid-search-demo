@@ -14,25 +14,7 @@ def search_articles(query_text, top_k=5):
     result_vector = perform_vector_search(
         es_host, "article_data", query_text, top_k
     )
-    formatted_results = "<br>".join(
-        f"<div style='border: 3px solid gray; padding: 5px; margin: 5px;'>"
-        f"<strong>ID</strong>: {item['_source'].get('id', 'N/A')}, "
-        f"<strong>Score</strong>: {item['_score']}, "
-        f"<strong>Sentence</strong>: {item['_source'].get('sentence', '')[:200]}"
-        f"</div>"
-        for item in result_vector
-    )
-    formatted_results_bm25 = "<br>".join(
-        f"<div style='border: 3px solid gray; padding: 5px; margin: 5px;'>"
-        f"<strong>ID</strong>: {item['_source'].get('id', 'N/A')}, "
-        f"<strong>Score</strong>: {item['_score']}, "
-        f"<strong>Sentence</strong>: {item['_source'].get('sentence', '')[:200]}"
-        f"</div>"
-        for item in result_bm25
-    )
-    count_bm25 = f"<strong>BM25 Results Count:</strong> {len(result_bm25)}<br>"
-    count_vector = f"<strong>Vector Results Count:</strong> {len(result_vector)}<br>"
-    return count_bm25 + formatted_results_bm25, count_vector + formatted_results
+    return result_bm25, result_vector
 
 
 def search_users(query_text, top_k=5):
@@ -41,25 +23,7 @@ def search_users(query_text, top_k=5):
     result_vector = perform_vector_search(
         es_host, "user_sentences", query_text, top_k
     )
-    formatted_results = "<br>".join(
-        f"<div style='border: 3px solid gray; padding: 5px; margin: 5px;'>"
-        f"<strong>ID</strong>: {item['_source'].get('id', 'N/A')}, "
-        f"<strong>Score</strong>: {item['_score']}, "
-        f"<strong>Sentence</strong>: {item['_source'].get('sentence', '')[:200]}"
-        f"</div>"
-        for item in result_vector
-    )
-    formatted_results_bm25 = "<br>".join(
-        f"<div style='border: 3px solid gray; padding: 5px; margin: 5px;'>"
-        f"<strong>ID</strong>: {item['_source'].get('id', 'N/A')}, "
-        f"<strong>Score</strong>: {item['_score']}, "
-        f"<strong>Sentence</strong>: {item['_source'].get('sentence', '')[:200]}"
-        f"</div>"
-        for item in result_bm25
-    )
-    count_bm25 = f"<strong>BM25 Results Count:</strong> {len(result_bm25)}<br>"
-    count_vector = f"<strong>Vector Results Count:</strong> {len(result_vector)}<br>"
-    return count_bm25 + formatted_results_bm25, count_vector + formatted_results
+    return result_bm25, result_vector
 
 
 with gr.Blocks() as demo:
@@ -69,22 +33,31 @@ with gr.Blocks() as demo:
 
     with gr.Row():
         with gr.Column():
-            bm25_user_results = gr.HTML(value="", label="BM25 User Results")
-            vector_user_results = gr.HTML(value="", label="Vector Search User Results")
+            bm25_user_results = gr.Dataset(components=["text"], label="BM25 User Results")
+            vector_user_results = gr.Dataset(components=["text"], label="Vector Search User Results")
         with gr.Column():
-            bm25_article_results = gr.HTML(value="", label="BM25 Article Results")
-            vector_article_results = gr.HTML(value="", label="Vector Search Article Results")
+            bm25_article_results = gr.Dataset(components=["text"], label="BM25 Article Results")
+            vector_article_results = gr.Dataset(components=["text"], label="Vector Search Article Results")
+
+    def display_details(item):
+        return f"ID: {item['_source'].get('id', 'N/A')}\n" \
+               f"Score: {item['_score']}\n" \
+               f"Sentence: {item['_source'].get('sentence', '')}"
 
     query_input.submit(
         fn=search_articles,
         inputs=[query_input],
         outputs=[bm25_article_results, vector_article_results],
-    )
-    query_input.submit(
+    ).then(
         fn=search_users,
         inputs=[query_input],
         outputs=[bm25_user_results, vector_user_results],
     )
+
+    bm25_article_results.select(display_details, inputs=[bm25_article_results], outputs="text")
+    vector_article_results.select(display_details, inputs=[vector_article_results], outputs="text")
+    bm25_user_results.select(display_details, inputs=[bm25_user_results], outputs="text")
+    vector_user_results.select(display_details, inputs=[vector_user_results], outputs="text")
 
 if __name__ == "__main__":
     demo.launch()
