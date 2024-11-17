@@ -29,7 +29,7 @@ def train_two_tower_model(user_embeddings, article_embeddings, labels, epochs=10
     article_embeddings = article_embeddings[:min_samples]
 
     # Ensure the number of labels matches the number of samples
-    labels = labels[:min_samples]
+    labels = labels[:min_samples].view(-1, 1)
 
     model = TwoTowerModel(user_embeddings.shape[1], article_embeddings.shape[1])
     criterion = nn.BCELoss()
