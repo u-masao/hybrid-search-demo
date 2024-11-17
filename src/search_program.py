@@ -96,7 +96,9 @@ def search(es_host, index_name, query_text):
         selection = int(input("Select a result to view details (0 to skip): ")) - 1
         if 0 <= selection < len(vector_results):
             print("\nVector Search Result Details:")
-            print(vector_results[selection])
+            print("\nSelected Vector Search Result Details:")
+            print(f"Title: {vector_results[selection]['_source']['title']}")
+            print(f"Content: {vector_results[selection]['_source']['content']}")
         else:
             print("Invalid selection. Skipping details view.")
     except ValueError:
@@ -113,7 +115,9 @@ def search(es_host, index_name, query_text):
         selection = int(input("Select a result to view details (0 to skip): ")) - 1
         if 0 <= selection < len(bm25_results):
             print("\nBM25 Search Result Details:")
-            print(bm25_results[selection])
+            print("\nSelected BM25 Search Result Details:")
+            print(f"Title: {bm25_results[selection]['_source']['title']}")
+            print(f"Content: {bm25_results[selection]['_source']['content']}")
         else:
             print("Invalid selection. Skipping details view.")
     except ValueError:
