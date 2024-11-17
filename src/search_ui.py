@@ -14,16 +14,20 @@ def search_articles(query_text, top_k=5):
     result_vector = perform_vector_search(
         es_host, "article_data", query_text, top_k
     )
-    formatted_results = "\n".join(
-        f"- **ID**: {item['_source'].get('id', 'N/A')},"
-        f" **Score**: {item['_score']},"
-        f" **Sentence**: {item['_source'].get('sentence', '')[:200]}"
+    formatted_results = "<br>".join(
+        f"<div style='border: 3px solid gray; padding: 5px; margin: 5px;'>"
+        f"<strong>ID</strong>: {item['_source'].get('id', 'N/A')}, "
+        f"<strong>Score</strong>: {item['_score']}, "
+        f"<strong>Sentence</strong>: {item['_source'].get('sentence', '')[:200]}"
+        f"</div>"
         for item in result_vector
     )
-    formatted_results_bm25 = "\n".join(
-        f"- **ID**: {item['_source'].get('id', 'N/A')},"
-        f" **Score**: {item['_score']},"
-        f" **Sentence**: {item['_source'].get('sentence', '')[:200]}"
+    formatted_results_bm25 = "<br>".join(
+        f"<div style='border: 3px solid gray; padding: 5px; margin: 5px;'>"
+        f"<strong>ID</strong>: {item['_source'].get('id', 'N/A')}, "
+        f"<strong>Score</strong>: {item['_score']}, "
+        f"<strong>Sentence</strong>: {item['_source'].get('sentence', '')[:200]}"
+        f"</div>"
         for item in result_bm25
     )
     return formatted_results_bm25, formatted_results
