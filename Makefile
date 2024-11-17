@@ -16,6 +16,7 @@ check_commit:
 	git diff-index --quiet HEAD --
 
 repro: check_commit PIPELINE.md
+	PYTHONPATH=. 
 	poetry run dvc repro
 	git commit dvc.lock -m 'run dvc repro' || true
 
