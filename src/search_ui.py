@@ -45,7 +45,7 @@ with gr.Blocks() as demo:
         article_query = gr.Textbox(label="Search Articles")
         article_results = gr.Markdown()
         article_search_button = gr.Button("Search")
-        article_search_button.click(
+        article_query.submit(
             fn=search_articles,
             inputs=[article_query],
             outputs=[article_results],
@@ -55,7 +55,7 @@ with gr.Blocks() as demo:
         user_query = gr.Textbox(label="Search Users")
         user_results = gr.Markdown()
         user_search_button = gr.Button("Search")
-        user_search_button.click(
+        user_query.submit(
             fn=search_users, inputs=[user_query], outputs=[user_results]
         )
 
