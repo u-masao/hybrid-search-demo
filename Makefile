@@ -33,3 +33,7 @@ test:
 run_ui:
 	PYTHONPATH=. poetry run gradio src/search_ui.py
 
+.PHONY: test
+
+test:
+	pytest tests/
