@@ -39,6 +39,8 @@ with gr.Blocks() as demo:
             bm25_article_results = gr.Dataset(components=["text"], label="BM25 Article Results")
             vector_article_results = gr.Dataset(components=["text"], label="Vector Search Article Results")
 
+    details_output = gr.Textbox(label="Details", interactive=False)
+
     def display_details(item):
         return f"ID: {item['_source'].get('id', 'N/A')}\n" \
                f"Score: {item['_score']}\n" \
@@ -54,10 +56,10 @@ with gr.Blocks() as demo:
         outputs=[bm25_user_results, vector_user_results],
     )
 
-    bm25_article_results.select(display_details, inputs=[bm25_article_results], outputs="text")
-    vector_article_results.select(display_details, inputs=[vector_article_results], outputs="text")
-    bm25_user_results.select(display_details, inputs=[bm25_user_results], outputs="text")
-    vector_user_results.select(display_details, inputs=[vector_user_results], outputs="text")
+    bm25_article_results.select(display_details, inputs=[bm25_article_results], outputs=details_output)
+    vector_article_results.select(display_details, inputs=[vector_article_results], outputs=details_output)
+    bm25_user_results.select(display_details, inputs=[bm25_user_results], outputs=details_output)
+    vector_user_results.select(display_details, inputs=[vector_user_results], outputs=details_output)
 
 if __name__ == "__main__":
     demo.launch()
