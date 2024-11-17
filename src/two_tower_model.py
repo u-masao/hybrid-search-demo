@@ -31,7 +31,9 @@ def train_two_tower_model(
     user_embeddings, article_embeddings, labels, epochs=30, lr=0.0001
 ):
     # Ensure the number of user, article embeddings, and labels match
-    min_samples = min(user_embeddings.shape[0], article_embeddings.shape[0], labels.shape[0])
+    min_samples = min(
+        user_embeddings.shape[0], article_embeddings.shape[0], labels.shape[0]
+    )
     user_embeddings = user_embeddings[:min_samples]
     article_embeddings = article_embeddings[:min_samples]
     labels = labels[:min_samples]
