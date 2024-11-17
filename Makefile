@@ -3,7 +3,7 @@
 .PHONY: format lint repro visualize check_commit run
 
 run:
-	PYTHONPATH=src poetry run python src/app.py
+	PYTHONPATH=. poetry run python -m src.app
 
 format:
 	poetry run isort src tests
