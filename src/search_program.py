@@ -92,10 +92,15 @@ def search(es_host, index_name, query_text):
         print(f"{i + 1}: {result['_source']['title']}")
 
     # Prompt user to select a result for more details
-    selection = int(input("Select a result to view details (0 to skip): ")) - 1
-    if 0 <= selection < len(vector_results):
-        print("\nVector Search Result Details:")
-        print(vector_results[selection])
+    try:
+        selection = int(input("Select a result to view details (0 to skip): ")) - 1
+        if 0 <= selection < len(vector_results):
+            print("\nVector Search Result Details:")
+            print(vector_results[selection])
+        else:
+            print("Invalid selection. Skipping details view.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
 
     # Perform BM25 search
     bm25_results = perform_bm25_search(es_host, index_name, query_text)
@@ -104,10 +109,15 @@ def search(es_host, index_name, query_text):
         print(f"{i + 1}: {result['_source']['title']}")
 
     # Prompt user to select a result for more details
-    selection = int(input("Select a result to view details (0 to skip): ")) - 1
-    if 0 <= selection < len(bm25_results):
-        print("\nBM25 Search Result Details:")
-        print(bm25_results[selection])
+    try:
+        selection = int(input("Select a result to view details (0 to skip): ")) - 1
+        if 0 <= selection < len(bm25_results):
+            print("\nBM25 Search Result Details:")
+            print(bm25_results[selection])
+        else:
+            print("Invalid selection. Skipping details view.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
 
 
 if __name__ == "__main__":
