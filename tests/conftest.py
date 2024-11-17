@@ -3,4 +3,4 @@ import pytest
 
 @pytest.fixture(autouse=True)
 def suppress_pydantic_warnings():
-    warnings.filterwarnings("ignore", category=DeprecationWarning, module="mlflow")
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
