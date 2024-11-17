@@ -24,4 +24,7 @@ def main(user_embeddings_file, article_embeddings_file, model_output_file, label
 
 if __name__ == "__main__":
     import sys
+    if len(sys.argv) != 5:
+        print("Usage: python train_two_tower_model.py <user_embeddings_file> <article_embeddings_file> <model_output_file> <labels_file>")
+        sys.exit(1)
     main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
