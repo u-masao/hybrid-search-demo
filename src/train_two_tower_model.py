@@ -4,12 +4,12 @@ import pandas as pd
 from two_tower_model import train_two_tower_model
 
 def load_embeddings(file_path):
-    return pd.read_parquet(file_path).to_numpy(dtype='float32')
+    return pd.read_parquet(file_path).astype('float32').to_numpy()
 
 def load_labels(labels_file):
     # Load labels from a Parquet file
     labels_df = pd.read_parquet(labels_file)
-    return torch.tensor(labels_df['label'].values, dtype=torch.float32)
+    return torch.tensor(labels_df['label'].astype('float32').values, dtype=torch.float32)
 
 def main(user_embeddings_file, article_embeddings_file, model_output_file, labels_file):
     user_embeddings = torch.tensor(load_embeddings(user_embeddings_file), dtype=torch.float32)
