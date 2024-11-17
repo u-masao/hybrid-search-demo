@@ -20,6 +20,7 @@ openai = "^1.54.4"
 python-dotenv = "^1.0.1"
 streamlit = "^1.40.1"
 elasticsearch = "^8.16.0"
+gradio = "^3.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
