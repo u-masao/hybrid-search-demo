@@ -14,8 +14,6 @@ def search_articles(query_text, top_k=5):
     result_vector = perform_vector_search(
         es_host, "article_data", query_text, top_k
     )
-    print("BM25 Search Result:", result_bm25)  # デバッグ用に追加
-    print("Vector Search Result:", result_vector)  # デバッグ用に追加
     formatted_results = "\n".join(
         f"- **ID**: {item['_source'].get('id', 'N/A')},"
         f" **Score**: {item['_score']},"
