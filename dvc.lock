@@ -151,13 +151,13 @@ stages:
       size: 12669
     - path: src/generate_history.py
       hash: md5
-      md5: c96f383bed3844df976f37a8446e15d7
-      size: 1719
+      md5: 149ea8f21ff4a3812ac6ac22c3f3c859
+      size: 1725
     outs:
     - path: data/user_history.parquet
       hash: md5
-      md5: 9f234f60f53eccbfe8d4437435146367
-      size: 7054
+      md5: 0cfa614b480aa83b7eec946d724fd538
+      size: 6533
   embed_users:
     cmd: poetry run python src/embed_sentences.py data/users_with_sentences.parquet
       data/user_embeddings.parquet
@@ -197,12 +197,12 @@ stages:
       size: 334516
     - path: src/load_to_elasticsearch.py
       hash: md5
-      md5: 14a9628b152c6633fc3368acea1fe885
-      size: 1352
+      md5: 7894e4194671bd1fc8f969a885374cec
+      size: 1350
     outs:
     - path: data/load_articles_timestamp.txt
       hash: md5
-      md5: 70009d7261941a121df420e511cc946e
+      md5: ae07d977d3df14a1ee84f6f5419a4d74
       size: 43
   load_users_to_elasticsearch:
     cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
@@ -214,12 +214,12 @@ stages:
       size: 68678
     - path: src/load_to_elasticsearch.py
       hash: md5
-      md5: 14a9628b152c6633fc3368acea1fe885
-      size: 1352
+      md5: 7894e4194671bd1fc8f969a885374cec
+      size: 1350
     outs:
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: 74976b590ec95e94cbbd96baaa9513f4
+      md5: c131bdf210b9ab003d29f293a41da7ed
       size: 43
   search_demo:
     cmd: poetry run python -m src.search_program && echo `date` > data/search_timestamp.txt
