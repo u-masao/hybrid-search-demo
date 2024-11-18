@@ -118,5 +118,7 @@ stages:
       - src/train_two_tower_model.py
       - data/user_history.parquet
       - src/two_tower_model.py
+    params:
+      - epochs
     outs:
       - models/two_tower_model.pth

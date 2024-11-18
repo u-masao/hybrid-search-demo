@@ -25,7 +25,7 @@ def load_data(file_path):
     )
 
 
-def main(user_history, model_output_path):
+def main(user_history, model_output_path, epochs):
     user_embeddings, article_embeddings, labels = load_data(user_history)
 
     with mlflow.start_run():
@@ -39,7 +39,7 @@ def main(user_history, model_output_path):
         optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         criterion = torch.nn.CosineEmbeddingLoss()
 
-        for epoch in tqdm(range(10), desc="Training Progress"):  # Assuming 30 epochs
+        for epoch in tqdm(range(epochs), desc="Training Progress"):
             optimizer.zero_grad()
             outputs = model(user_embeddings, article_embeddings)
             outputs = torch.sigmoid(
@@ -70,8 +70,8 @@ def main(user_history, model_output_path):
 @click.command()
 @click.argument("user_history", type=click.Path(exists=True))
 @click.argument("model_output_path", type=click.Path())
-def cli(user_history, model_output_path):
-    main(user_history, model_output_path)
+def cli(user_history, model_output_path, epochs):
+    main(user_history, model_output_path, epochs)
 
 
 if __name__ == "__main__":
