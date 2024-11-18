@@ -40,7 +40,7 @@ def main(user_history, model_output_path, epochs, patience=10):
         optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         criterion = torch.nn.CosineEmbeddingLoss()
 
-        best_loss = float('inf')
+        best_loss = float("inf")
         patience_counter = 0
 
         for epoch in range(epochs):
