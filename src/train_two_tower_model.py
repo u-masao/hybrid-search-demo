@@ -21,9 +21,9 @@ def load_data(file_path):
     print(f"Labels shape: {labels.shape}")
 
     return (
-        torch.tensor(user_embeddings, dtype=torch.float32),
-        torch.tensor(article_embeddings, dtype=torch.float32),
-        torch.tensor(labels, dtype=torch.float32),
+        torch.tensor(user_embeddings, dtype=torch.float32, requires_grad=True),
+        torch.tensor(article_embeddings, dtype=torch.float32, requires_grad=True),
+        torch.tensor(labels, dtype=torch.float32, requires_grad=True),
     )
 
 
