@@ -1,3 +1,4 @@
+import os
 import click
 import mlflow
 import mlflow.pytorch
@@ -69,6 +70,8 @@ def main(user_history, model_output_path):
         # Log the model
         mlflow.pytorch.log_model(model, "two_tower_model")
 
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(model_output_path), exist_ok=True)
     torch.save(model.state_dict(), model_output_path)
 
 
