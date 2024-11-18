@@ -9,6 +9,8 @@ def load_user_embeddings(file_path):
     return torch.tensor(np.stack(df["embedding"].values), dtype=torch.float32)
 
 def save_user_translation(df, translations, output_file):
+    print("DataFrame shape before adding translations:", df.shape)
+    print("Translations shape:", translations.shape)
     df["user_translation"] = translations
     df.to_parquet(output_file, index=False)
 
