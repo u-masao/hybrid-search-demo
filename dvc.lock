@@ -253,6 +253,10 @@ stages:
       hash: md5
       md5: 78495a5ad47c1c7d5b47b5e1182144b9
       size: 255733
+    - path: src/train_two_tower_model.py
+      hash: md5
+      md5: 19bb23342414110a7be30a12bb4bb807
+      size: 2363
     - path: src/two_tower_model.py
       hash: md5
       md5: d0c601d519b426795d1b76c6f1860d11
@@ -260,7 +264,7 @@ stages:
     outs:
     - path: models/two_tower_model.pth
       hash: md5
-      md5: f6a115526481dd4b8528e59c4c9f0f9f
+      md5: ca17b48b21ef25d4876130d617b68bf0
       size: 463840
   use_elasticsearch:
     cmd: echo use elasticsearch && echo `date` > data/use_elasticsearch.txt
