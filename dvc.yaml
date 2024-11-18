@@ -8,8 +8,6 @@ stages:
       data/users_with_sentences.parquet
     deps:
       - src/generate_users.py
-    params:
-      - num_users
     outs:
       - data/users_with_sentences.parquet
 
@@ -114,11 +112,11 @@ stages:
       poetry run python src/train_two_tower_model.py
       data/user_history.parquet
       models/two_tower_model.pth
+      --epochs=${epochs}
+      --patience=${patience}
     deps:
       - src/train_two_tower_model.py
       - data/user_history.parquet
       - src/two_tower_model.py
-    params:
-      - epochs
     outs:
       - models/two_tower_model.pth
