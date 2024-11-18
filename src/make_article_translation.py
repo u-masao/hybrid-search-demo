@@ -11,7 +11,7 @@ def load_article_embeddings(file_path):
 def save_article_translation(df, translations, output_file):
     print("DataFrame shape before adding translations:", df.shape)
     print("Translations shape:", translations.shape)
-    df["article_translation"] = translations.tolist()
+    df["translation"] = translations
     df.to_parquet(output_file, index=False)
 
 def main(article_embeddings_file, article_translation_file, model_path):
