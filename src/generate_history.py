@@ -43,13 +43,27 @@ def generate_user_history(
 @click.command()
 @click.argument("articles_file", type=click.Path(exists=True))
 @click.argument("user_profiles_file", type=click.Path(exists=True))
+@click.argument("article_embeddings_file", type=click.Path(exists=True))
+@click.argument("user_embeddings_file", type=click.Path(exists=True))
 @click.argument("output_file", type=click.Path())
 @click.option("--max_views", type=int, default=10)
-def main(articles_file, user_profiles_file, output_file, max_views):
+def main(articles_file, user_profiles_file, article_embeddings_file, user_embeddings_file, output_file, max_views):
     """Generate browsing history and save to a parquet file."""
     df = pd.read_parquet(articles_file)
     user_profiles = pd.read_parquet(user_profiles_file).to_dict(orient="index")
     df_history = generate_user_history(df, user_profiles, max_views=max_views)
+    
+    # Load embeddings
+    article_embeddings = pd.read_parquet(article_embeddings_file)
+    user_embeddings = pd.read_parquet(user_embeddings_file)
+
+    # Merge embeddings with history
+    df_history = df_history.merge(article_embeddings, left_on='article_id', right_index=True, how='left')
+    df_history = df_history.merge(user_embeddings, left_on='user_id', right_index=True, how='left')
+
+    # Select relevant columns
+    df_history = df_history[['article_embedding', 'user_embedding', 'label']]
+
     df_history.to_parquet(output_file)
 
 
