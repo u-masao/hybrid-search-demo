@@ -132,6 +132,8 @@ stages:
       - models/two_tower_model.pth
     outs:
       - data/article_translation.parquet
+
+  learn_two_tower_model:
     cmd: >-
       poetry run python src/train_two_tower_model.py
       data/user_history.parquet
