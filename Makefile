@@ -28,3 +28,6 @@ visualize:
 
 test:
 	PYTHONPATH=$(shell pwd) poetry run pytest tests
+
+docker_start:
+	docker compose start
