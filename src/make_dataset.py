@@ -20,12 +20,16 @@ def make_dataset(output_file):
     for split_name, split in dataset.items():
         df = pd.DataFrame.from_dict(split)
         # URLから数値IDを抽出し、新しい列として追加
-        df["id"] = df["url"].apply(
-            lambda x: (
-                re.search(r"/(\d+)/", x).group(1)
-                if re.search(r"/(\d+)/", x)
-                else None
+        df["id"] = (
+            df["url"]
+            .apply(
+                lambda x: (
+                    re.search(r"/(\d+)/", x).group(1)
+                    if re.search(r"/(\d+)/", x)
+                    else None
+                )
             )
+            .astype(int)
         )
 
         # 出力ファイル名の'train'を現在の分割名に置き換え
