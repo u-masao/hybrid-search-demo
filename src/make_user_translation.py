@@ -11,7 +11,7 @@ def load_user_embeddings(file_path):
 def save_user_translation(df, translations, output_file):
     print("DataFrame shape before adding translations:", df.shape)
     print("Translations shape:", translations.shape)
-    df["user_translation"] = translations
+    df["user_translation"] = translations.tolist()
     df.to_parquet(output_file, index=False)
 
 def main(user_embeddings_file, user_translation_file, model_path):
