@@ -13,10 +13,8 @@ flowchart TD
 	node11["make_user_translation"]
 	node12["use_elasticsearch"]
 	node1-->node4
-	node1-->node7
 	node1-->node9
 	node2-->node4
-	node2-->node8
 	node2-->node11
 	node3-->node1
 	node4-->node6
@@ -25,5 +23,7 @@ flowchart TD
 	node6-->node11
 	node7-->node12
 	node8-->node12
+	node9-->node7
 	node10-->node3
+	node11-->node8
 ```
