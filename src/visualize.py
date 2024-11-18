@@ -52,7 +52,7 @@ def main():
         )
 
     # Load and display user profiles
-    user_profiles = load_data("data/user_profiles.parquet")
+    user_profiles = load_data("data/users_with_sentences.parquet")
     st.header("User Profiles")
     st.write(user_profiles.head())
     st.write(user_profiles.describe())
@@ -64,7 +64,7 @@ def main():
     st.write(formatted_dataset.describe())
 
     # Load and display embeddings
-    embeddings = load_data("data/embeddings.parquet")
+    embeddings = load_data("data/article_embeddings.parquet")
     st.header("Embeddings")
     st.write(embeddings.head())
     st.write(embeddings.describe())
