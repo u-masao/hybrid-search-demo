@@ -5,6 +5,7 @@ from two_tower_model import TwoTowerModel
 
 def load_user_embeddings(file_path):
     df = pd.read_parquet(file_path)
+    print("Columns in user embeddings file:", df.columns)
     return torch.tensor(np.stack(df["user_embedding"].values), dtype=torch.float32)
 
 def save_user_translation(translations, output_file):
