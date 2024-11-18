@@ -76,11 +76,11 @@ stages:
       poetry run python src/load_to_elasticsearch.py
       --es_host=https://localhost:9200
       --index_name=user_sentences
-      data/user_embeddings.parquet
+      data/user_translation.parquet
       && echo `date` > data/load_users_timestamp.txt
     deps:
       - src/load_to_elasticsearch.py
-      - data/user_embeddings.parquet
+      - data/user_translation.parquet
     outs:
       - data/load_users_timestamp.txt
 
@@ -89,11 +89,11 @@ stages:
       poetry run python src/load_to_elasticsearch.py
       --es_host=https://localhost:9200
       --index_name=article_data
-      data/article_embeddings.parquet
+      data/article_translation.parquet
       && echo `date` > data/load_articles_timestamp.txt
     deps:
       - src/load_to_elasticsearch.py
-      - data/article_embeddings.parquet
+      - data/article_translation.parquet
     outs:
       - data/load_articles_timestamp.txt
 
