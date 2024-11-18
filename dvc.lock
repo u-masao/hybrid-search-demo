@@ -151,13 +151,13 @@ stages:
       size: 68678
     - path: src/generate_history.py
       hash: md5
-      md5: 624b5b3f67dca41d11e676036426438c
-      size: 2804
+      md5: b0e34968285073f1e533001ae799e4e9
+      size: 2835
     outs:
     - path: data/user_history.parquet
       hash: md5
-      md5: 704ea314e3cd46530de28d04142e4d4b
-      size: 193215
+      md5: 78495a5ad47c1c7d5b47b5e1182144b9
+      size: 255733
   embed_users:
     cmd: poetry run python src/embed_sentences.py data/users_with_sentences.parquet
       data/user_embeddings.parquet
