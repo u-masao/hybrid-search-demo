@@ -1,11 +1,11 @@
 import os
+
 import click
 import mlflow
 import mlflow.pytorch
 import numpy as np
 import pandas as pd
 import torch
-from tqdm import tqdm
 
 from two_tower_model import TwoTowerModel
 
@@ -17,10 +17,11 @@ def load_data(file_path):
     article_embeddings = np.stack(df["article_embedding"].values)
     labels = df["label"].values
 
-
     return (
         torch.tensor(user_embeddings, dtype=torch.float32, requires_grad=True),
-        torch.tensor(article_embeddings, dtype=torch.float32, requires_grad=True),
+        torch.tensor(
+            article_embeddings, dtype=torch.float32, requires_grad=True
+        ),
         torch.tensor(labels, dtype=torch.float32),
     )
 
@@ -39,19 +40,12 @@ def main(user_history, model_output_path, epochs):
         optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         criterion = torch.nn.CosineEmbeddingLoss()
 
-        for epoch in tqdm(range(epochs), desc="Training Progress"):
+        for epoch in range(epochs):
             optimizer.zero_grad()
-            outputs = model(user_embeddings, article_embeddings)
-            outputs = torch.sigmoid(
-                outputs
-            )  # Apply sigmoid to normalize outputs
-            if outputs.shape != labels.shape:
-                raise ValueError(
-                    f"Output shape {outputs.shape} does not match labels shape"
-                    f" {labels.shape}"
-                )
-            loss = criterion(user_embeddings, article_embeddings, labels)
-
+            article_vector, user_vector = model(
+                user_embeddings, article_embeddings
+            )
+            loss = criterion(article_vector, user_vector, labels)
             loss.backward()
             optimizer.step()
 
