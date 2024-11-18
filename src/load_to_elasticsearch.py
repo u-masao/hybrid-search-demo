@@ -23,6 +23,8 @@ def load_data_to_elasticsearch(es_host, index_name, embedding_file):
 
     df = pd.read_parquet(embedding_file)
 
+    print(f"Uploading data with columns: {df.columns.tolist()}")
+
     actions = [
         {
             "_index": index_name,
