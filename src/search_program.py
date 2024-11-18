@@ -7,7 +7,7 @@ from elasticsearch import Elasticsearch
 from src.embedding.embedding import Embedding
 
 
-def perform_vector_search(es_host, index_name, query_text, top_k=5):
+def perform_vector_search(es_host, index_name, query_text, target_column="embedding", top_k=5):
     # Initialize Elasticsearch client
     elastic_username = os.getenv("ELASTIC_USERNAME")
     elastic_password = os.getenv("ELASTIC_PASSWORD")
@@ -37,6 +37,10 @@ def perform_vector_search(es_host, index_name, query_text, top_k=5):
     # Generate embedding for the query text
     query_vector = embedding_model.generate_embedding(query_text)
 
+    # Validate target column
+    if target_column not in ["embedding", "translation"]:
+        raise ValueError("Invalid target column. Choose 'embedding' or 'translation'.")
+
     # Perform vector search using Elasticsearch's knn query
     response = es.search(
         index=index_name,
@@ -44,7 +48,7 @@ def perform_vector_search(es_host, index_name, query_text, top_k=5):
             "size": top_k,
             "query": {
                 "knn": {
-                    "field": "embedding",
+                    "field": target_column,
                     "query_vector": query_vector,
                     "k": top_k,
                 }
@@ -90,9 +94,9 @@ def perform_bm25_search(es_host, index_name, query_text, top_k=5):
     return bm25_search(es, index_name, query_text, top_k)
 
 
-def search(es_host, index_name, query_text):
+def search(es_host, index_name, query_text, target_column="embedding"):
     # Perform vector search
-    vector_results = perform_vector_search(es_host, index_name, query_text)
+    vector_results = perform_vector_search(es_host, index_name, query_text, target_column)
     print("Vector Search Results:")
     for i, result in enumerate(vector_results):
         print(f"{i + 1}: {result['_source']['title'][:79]}")
