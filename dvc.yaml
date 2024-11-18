@@ -120,7 +120,18 @@ stages:
     outs:
       - data/user_translation.parquet
 
-  learn_two_tower_model:
+  make_article_translation:
+    cmd: >-
+      poetry run python src/make_article_translation.py
+      data/article_embeddings.parquet
+      data/article_translation.parquet
+      models/two_tower_model.pth
+    deps:
+      - src/make_article_translation.py
+      - data/article_embeddings.parquet
+      - models/two_tower_model.pth
+    outs:
+      - data/article_translation.parquet
     cmd: >-
       poetry run python src/train_two_tower_model.py
       data/user_history.parquet
