@@ -53,7 +53,7 @@ def main(user_history, model_output_path):
                     f"Output shape {outputs.shape} does not match labels shape"
                     f" {labels.shape}"
                 )
-            loss = criterion(outputs, article_embeddings, labels)
+            loss = criterion(user_embeddings, article_embeddings, labels)
             loss.backward()
             optimizer.step()
 
