@@ -107,6 +107,19 @@ stages:
     outs:
       - data/use_elasticsearch.txt
 
+  make_user_translation:
+    cmd: >-
+      poetry run python src/make_user_translation.py
+      data/user_embeddings.parquet
+      data/user_translation.parquet
+      models/two_tower_model.pth
+    deps:
+      - src/make_user_translation.py
+      - data/user_embeddings.parquet
+      - models/two_tower_model.pth
+    outs:
+      - data/user_translation.parquet
+
   learn_two_tower_model:
     cmd: >-
       poetry run python src/train_two_tower_model.py
