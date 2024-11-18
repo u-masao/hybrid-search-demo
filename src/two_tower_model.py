@@ -1,21 +1,39 @@
 import torch.nn as nn
 
 
+class UserTower(nn.Module):
+    def __init__(self, embedding_dim):
+        super(UserTower, self).__init__()
+        self.network = nn.Sequential(
+            nn.Linear(embedding_dim, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
+            nn.Dropout(0.5),
+        )
+
+    def forward(self, x):
+        return self.network(x)
+
+
+class ArticleTower(nn.Module):
+    def __init__(self, embedding_dim):
+        super(ArticleTower, self).__init__()
+        self.network = nn.Sequential(
+            nn.Linear(embedding_dim, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
+            nn.Dropout(0.5),
+        )
+
+    def forward(self, x):
+        return self.network(x)
+
+
 class TwoTowerModel(nn.Module):
     def __init__(self, user_embedding_dim, article_embedding_dim):
         super(TwoTowerModel, self).__init__()
-        self.user_tower = nn.Sequential(
-            nn.Linear(user_embedding_dim, 128),
-            nn.ReLU(),
-            nn.Linear(128, 64),
-            nn.Dropout(0.5),
-        )
-        self.article_tower = nn.Sequential(
-            nn.Linear(article_embedding_dim, 128),
-            nn.ReLU(),
-            nn.Linear(128, 64),
-            nn.Dropout(0.5),
-        )
+        self.user_tower = UserTower(user_embedding_dim)
+        self.article_tower = ArticleTower(article_embedding_dim)
 
     def forward(self, user_embedding, article_embedding):
         # Ensure the embeddings have the same batch size
