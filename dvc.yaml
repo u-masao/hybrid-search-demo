@@ -112,14 +112,12 @@ stages:
   learn_two_tower_model:
     cmd: >-
       poetry run python src/train_two_tower_model.py
-      data/user_embeddings.parquet
-      data/article_embeddings.parquet
+      data/user_history.parquet
+      data/user_history.parquet
       data/user_history.parquet
       models/two_tower_model.pth
     deps:
       - src/two_tower_model.py
-      - data/user_embeddings.parquet
-      - data/article_embeddings.parquet
       - data/user_history.parquet
     outs:
       - models/two_tower_model.pth
