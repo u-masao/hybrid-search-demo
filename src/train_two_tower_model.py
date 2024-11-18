@@ -11,15 +11,11 @@ from two_tower_model import TwoTowerModel
 
 def load_data(file_path):
     df = pd.read_parquet(file_path)
-    print("DataFrame shape:", df.shape)  # Debug statement
 
     user_embeddings = np.stack(df["user_embedding"].values)
     article_embeddings = np.stack(df["article_embedding"].values)
     labels = df["label"].values
 
-    print(f"User embeddings shape: {user_embeddings.shape}")
-    print(f"Article embeddings shape: {article_embeddings.shape}")
-    print(f"Labels shape: {labels.shape}")
 
     return (
         torch.tensor(user_embeddings, dtype=torch.float32, requires_grad=True),
@@ -29,7 +25,6 @@ def load_data(file_path):
 
 
 def main(user_history, model_output_path):
-    print("Loading data...")
     user_embeddings, article_embeddings, labels = load_data(user_history)
 
     with mlflow.start_run():
@@ -55,11 +50,6 @@ def main(user_history, model_output_path):
                     f" {labels.shape}"
                 )
             loss = criterion(user_embeddings, article_embeddings, labels)
-            print(f"Loss: {loss.item()}")
-            print(f"Outputs require grad: {outputs.requires_grad}")
-            print(f"User embeddings require grad: {user_embeddings.requires_grad}")
-            print(f"Article embeddings require grad: {article_embeddings.requires_grad}")
-            print(f"Model parameters require grad: {[p.requires_grad for p in model.parameters()]}")
 
             loss.backward()
             optimizer.step()
