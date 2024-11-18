@@ -51,6 +51,10 @@ def main(article_embeddings_file, user_embeddings_file, output_file, max_views):
     article_embeddings = pd.read_parquet(article_embeddings_file)
     user_embeddings = pd.read_parquet(user_embeddings_file)
 
+    # Generate user history
+    user_profiles = {}  # Assuming user_profiles is empty or needs to be defined
+    df_history = generate_user_history(article_embeddings, user_profiles, max_views=max_views)
+
     # Merge embeddings with history
     df_history = df_history.merge(article_embeddings, left_on='article_id', right_index=True, how='left')
     df_history = df_history.merge(user_embeddings, left_on='user_id', right_index=True, how='left')
