@@ -26,7 +26,7 @@ def load_data(file_path):
     )
 
 
-def main(user_history, model_output_path, epochs):
+def main(user_history, model_output_path, epochs, patience=10):
     user_embeddings, article_embeddings, labels = load_data(user_history)
 
     with mlflow.start_run():
@@ -40,7 +40,13 @@ def main(user_history, model_output_path, epochs):
         optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         criterion = torch.nn.CosineEmbeddingLoss()
 
+        best_loss = float('inf')
+        patience_counter = 0
+
         for epoch in range(epochs):
+            if patience_counter >= patience:
+                print("Early stopping triggered")
+                break
             optimizer.zero_grad()
             article_vector, user_vector = model(
                 user_embeddings, article_embeddings
@@ -53,7 +59,12 @@ def main(user_history, model_output_path, epochs):
             print(f"Epoch {epoch + 1}, Loss: {loss.item()}")
             mlflow.log_metric("loss", loss.item(), step=epoch)
 
-        # Log the model
+            # Check for early stopping
+            if loss.item() < best_loss:
+                best_loss = loss.item()
+                patience_counter = 0
+            else:
+                patience_counter += 1
         mlflow.pytorch.log_model(model, "two_tower_model")
 
     # Ensure the directory exists
@@ -65,8 +76,8 @@ def main(user_history, model_output_path, epochs):
 @click.argument("user_history", type=click.Path(exists=True))
 @click.argument("model_output_path", type=click.Path())
 @click.option("--epochs", default=10, help="Number of training epochs")
-def cli(user_history, model_output_path, epochs):
-    main(user_history, model_output_path, epochs)
+def cli(user_history, model_output_path, epochs, patience):
+    main(user_history, model_output_path, epochs, patience)
 
 
 if __name__ == "__main__":
