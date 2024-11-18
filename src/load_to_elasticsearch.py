@@ -17,9 +17,26 @@ def load_data_to_elasticsearch(es_host, index_name, embedding_file):
         ),
         ca_certs="certs/http_ca.crt",
     )
-    # Delete the index if it exists to ensure all data is overwritten
+    # Define the index mapping with dense_vector fields
+    index_mapping = {
+        "mappings": {
+            "properties": {
+                "embedding": {
+                    "type": "dense_vector",
+                    "dims": 512  # Adjust the dimension as needed
+                },
+                "translation": {
+                    "type": "dense_vector",
+                    "dims": 512  # Adjust the dimension as needed
+                }
+            }
+        }
+    }
     if es.indices.exists(index=index_name):
         es.indices.delete(index=index_name)
+
+    # Create the index with the specified mapping
+    es.indices.create(index=index_name, body=index_mapping)
 
     df = pd.read_parquet(embedding_file)
 
