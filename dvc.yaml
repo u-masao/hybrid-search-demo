@@ -70,6 +70,8 @@ stages:
       - src/generate_history.py
       - data/formatted_dataset.parquet
       - data/users_with_sentences.parquet
+      - data/article_embeddings.parquet
+      - data/user_embeddings.parquet
     outs:
       - data/user_history.parquet
 
