@@ -7,7 +7,7 @@ from elasticsearch import Elasticsearch
 from src.embedding.embedding import Embedding
 
 
-def perform_vector_search(es_host, index_name, query_text, target_column="embedding", top_k=5):
+def perform_vector_search(es_host, index_name, query_text, target_column, top_k=5):
     # Initialize Elasticsearch client
     elastic_username = os.getenv("ELASTIC_USERNAME")
     elastic_password = os.getenv("ELASTIC_PASSWORD")

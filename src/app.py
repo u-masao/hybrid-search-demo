@@ -12,12 +12,14 @@ def search():
         es_host = "https://localhost:9200"
         index_name = "article_data"
 
-        vector_results = perform_vector_search(es_host, index_name, query_text)
+        target_column = request.form.get("target_column", "embedding")
+        vector_results = perform_vector_search(es_host, index_name, query_text, target_column)
         bm25_results = perform_bm25_search(es_host, index_name, query_text)
 
         return render_template(
             "results.html",
             vector_results=vector_results,
+            target_column=target_column,
             bm25_results=bm25_results,
         )
 
