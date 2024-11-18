@@ -70,6 +70,7 @@ def main(user_history, model_output_path, epochs):
 @click.command()
 @click.argument("user_history", type=click.Path(exists=True))
 @click.argument("model_output_path", type=click.Path())
+@click.option("--epochs", default=10, help="Number of training epochs")
 def cli(user_history, model_output_path, epochs):
     main(user_history, model_output_path, epochs)
 
