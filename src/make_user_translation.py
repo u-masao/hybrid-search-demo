@@ -14,7 +14,7 @@ def load_user_embeddings(file_path):
 def save_user_translation(df, translations, output_file):
     print("DataFrame shape before adding translations:", df.shape)
     print("Translations shape:", translations.shape)
-    df["translation"] = df.index.map(lambda idx: translations[idx]).astype(np.float32)
+    df["translation"] = df.progress_apply(lambda row: translations[row.name], axis=1).astype(np.float32)
     df.to_parquet(output_file, index=False)
 
 def main(user_embeddings_file, user_translation_file, model_path):
