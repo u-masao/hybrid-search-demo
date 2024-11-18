@@ -8,7 +8,7 @@ def load_user_embeddings(file_path):
     print("Columns in user embeddings file:", df.columns)
     return torch.tensor(np.stack(df["embedding"].values), dtype=torch.float32)
 
-def save_user_translation(translations, output_file):
+def save_user_translation(df, translations, output_file):
     df["user_translation"] = translations
     df.to_parquet(output_file, index=False)
 
@@ -24,7 +24,8 @@ def main(user_embeddings_file, user_translation_file, model_path):
     with torch.no_grad():
         user_translations = model.user_tower(user_embeddings).numpy()
 
-    save_user_translation(user_translations, user_translation_file)
+    df = pd.read_parquet(user_embeddings_file)
+    save_user_translation(df, user_translations, user_translation_file)
 
 if __name__ == "__main__":
     import sys
