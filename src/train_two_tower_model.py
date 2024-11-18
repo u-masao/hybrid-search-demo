@@ -54,6 +54,12 @@ def main(user_history, model_output_path):
                     f" {labels.shape}"
                 )
             loss = criterion(user_embeddings, article_embeddings, labels)
+            print(f"Loss: {loss.item()}")
+            print(f"Outputs require grad: {outputs.requires_grad}")
+            print(f"User embeddings require grad: {user_embeddings.requires_grad}")
+            print(f"Article embeddings require grad: {article_embeddings.requires_grad}")
+            print(f"Model parameters require grad: {[p.requires_grad for p in model.parameters()]}")
+
             loss.backward()
             optimizer.step()
 
