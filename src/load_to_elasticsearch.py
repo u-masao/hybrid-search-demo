@@ -23,11 +23,11 @@ def load_data_to_elasticsearch(es_host, index_name, embedding_file):
             "properties": {
                 "embedding": {
                     "type": "dense_vector",
-                    "dims": 512  # Adjust the dimension as needed
+                    "dims": 384 # Adjust the dimension as needed
                 },
                 "translation": {
                     "type": "dense_vector",
-                    "dims": 512  # Adjust the dimension as needed
+                    "dims": 64  # Adjust the dimension as needed
                 }
             }
         }
