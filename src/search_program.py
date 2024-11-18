@@ -1,5 +1,7 @@
 import os
+from dotenv import load_dotenv
 
+load_dotenv('.credential')
 from elasticsearch import Elasticsearch
 
 from src.embedding.embedding import Embedding
