@@ -22,6 +22,8 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
         df = pd.read_parquet(input_file)
         input_length = len(df)
 
+        logger.info(f"DataFrame loaded with shape: {df.shape} and columns: {df.columns}")
+
     # 制限が指定されている場合は行数を制限
     if limit > 0:
         df = df.head(min(limit, len(df)))
@@ -37,6 +39,7 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
     )
 
     # 埋め込みを含むDataFrameをParquetファイルに保存
+    logger.info(f"Saving embeddings to {output_file}")
     df.to_parquet(output_file)
     output_length = len(df)
     mlflow.log_metric("input_length", input_length)
