@@ -20,7 +20,7 @@ def load_data(file_path):
     return (
         torch.tensor(user_embeddings, dtype=torch.float32, requires_grad=True),
         torch.tensor(article_embeddings, dtype=torch.float32, requires_grad=True),
-        torch.tensor(labels, dtype=torch.float32, requires_grad=True),
+        torch.tensor(labels, dtype=torch.float32),
     )
 
 
