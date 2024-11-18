@@ -14,6 +14,7 @@ def save_user_translation(df, translations, output_file):
 
 def main(user_embeddings_file, user_translation_file, model_path):
     user_embeddings = load_user_embeddings(user_embeddings_file)
+    print("Loaded user embeddings shape:", user_embeddings.shape)
     
     # Load the model
     model = TwoTowerModel(user_embeddings.size(1), user_embeddings.size(1))
@@ -24,6 +25,9 @@ def main(user_embeddings_file, user_translation_file, model_path):
     with torch.no_grad():
         user_translations = model.user_tower(user_embeddings).numpy()
 
+    print("Generated user translations shape:", user_translations.shape)
+    print("Sample user translations:", user_translations[:5])
+    
     df = pd.read_parquet(user_embeddings_file)
     save_user_translation(df, user_translations, user_translation_file)
 
