@@ -189,12 +189,13 @@ stages:
       size: 1166
   load_articles_to_elasticsearch:
     cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
-      --index_name=article_data data/article_embeddings.parquet && echo `date` > data/load_articles_timestamp.txt
+      --index_name=article_data data/article_translation.parquet && echo `date` >
+      data/load_articles_timestamp.txt
     deps:
-    - path: data/article_embeddings.parquet
+    - path: data/article_translation.parquet
       hash: md5
-      md5: e68c5d51385079ebb4ff08fedc94b767
-      size: 349612
+      md5: dd55cb993c7a125b8359d3cd44a4e2eb
+      size: 373681
     - path: src/load_to_elasticsearch.py
       hash: md5
       md5: 7894e4194671bd1fc8f969a885374cec
@@ -202,16 +203,16 @@ stages:
     outs:
     - path: data/load_articles_timestamp.txt
       hash: md5
-      md5: aa77df57f75e676f016c677d2bff9689
+      md5: 2e3887327fd3488c817fac63837a680a
       size: 43
   load_users_to_elasticsearch:
     cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
-      --index_name=user_sentences data/user_embeddings.parquet && echo `date` > data/load_users_timestamp.txt
+      --index_name=user_sentences data/user_translation.parquet && echo `date` > data/load_users_timestamp.txt
     deps:
-    - path: data/user_embeddings.parquet
+    - path: data/user_translation.parquet
       hash: md5
-      md5: 3803a5dc6124e90ed9789f280519f311
-      size: 68678
+      md5: 939ae78ead39a1cacd396d74fdc2bd9e
+      size: 80440
     - path: src/load_to_elasticsearch.py
       hash: md5
       md5: 7894e4194671bd1fc8f969a885374cec
@@ -219,7 +220,7 @@ stages:
     outs:
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: c131bdf210b9ab003d29f293a41da7ed
+      md5: 7fdd2e0abda3973326c3ce6ad9b7ef84
       size: 43
   search_demo:
     cmd: poetry run python -m src.search_program && echo `date` > data/search_timestamp.txt
@@ -271,16 +272,16 @@ stages:
     deps:
     - path: data/load_articles_timestamp.txt
       hash: md5
-      md5: aa77df57f75e676f016c677d2bff9689
+      md5: 2e3887327fd3488c817fac63837a680a
       size: 43
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: c131bdf210b9ab003d29f293a41da7ed
+      md5: 7fdd2e0abda3973326c3ce6ad9b7ef84
       size: 43
     outs:
     - path: data/use_elasticsearch.txt
       hash: md5
-      md5: aa77df57f75e676f016c677d2bff9689
+      md5: 2e3887327fd3488c817fac63837a680a
       size: 43
   make_user_translation:
     cmd: poetry run python src/make_user_translation.py data/user_embeddings.parquet
