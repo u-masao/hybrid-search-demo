@@ -1,7 +1,10 @@
 import numpy as np
 import pandas as pd
 import torch
+from tqdm import tqdm
 from two_tower_model import TwoTowerModel
+
+tqdm.pandas()
 
 def load_user_embeddings(file_path):
     df = pd.read_parquet(file_path)
@@ -11,7 +14,7 @@ def load_user_embeddings(file_path):
 def save_user_translation(df, translations, output_file):
     print("DataFrame shape before adding translations:", df.shape)
     print("Translations shape:", translations.shape)
-    df["translation"] = translations.tolist()
+    df["translation"] = df.progress_apply(lambda row: translations[row.name], axis=1)
     df.to_parquet(output_file, index=False)
 
 def main(user_embeddings_file, user_translation_file, model_path):
