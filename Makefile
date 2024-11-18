@@ -31,3 +31,6 @@ test:
 
 docker_start:
 	docker compose start
+
+run:
+	PYTHONPATH=$(shell pwd) poetry run python src/search_program.py
