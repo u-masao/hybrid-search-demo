@@ -5,6 +5,7 @@ import mlflow.pytorch
 import numpy as np
 import pandas as pd
 import torch
+from tqdm import tqdm
 
 from two_tower_model import TwoTowerModel
 
@@ -38,7 +39,7 @@ def main(user_history, model_output_path):
         optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
         criterion = torch.nn.CosineEmbeddingLoss()
 
-        for epoch in range(10):  # Assuming 30 epochs
+        for epoch in tqdm(range(10), desc="Training Progress"):  # Assuming 30 epochs
             optimizer.zero_grad()
             outputs = model(user_embeddings, article_embeddings)
             outputs = torch.sigmoid(
@@ -54,7 +55,8 @@ def main(user_history, model_output_path):
             loss.backward()
             optimizer.step()
 
-            # Log metrics
+            # Log metrics and print loss
+            print(f"Epoch {epoch + 1}, Loss: {loss.item()}")
             mlflow.log_metric("loss", loss.item(), step=epoch)
 
         # Log the model
