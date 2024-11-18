@@ -117,5 +117,6 @@ stages:
     deps:
       - src/two_tower_model.py
       - data/user_history.parquet
+      - src/two_tower_model.py
     outs:
       - models/two_tower_model.pth
