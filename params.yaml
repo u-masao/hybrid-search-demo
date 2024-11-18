@@ -1,4 +1,4 @@
-epochs: 10
+epochs: 100
 dataset:
   limit: 50
 embedding:
