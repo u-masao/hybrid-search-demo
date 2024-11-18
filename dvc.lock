@@ -92,21 +92,21 @@ stages:
     deps:
     - path: src/make_dataset.py
       hash: md5
-      md5: c67a625ae978784b517fadd9470ae53e
-      size: 1919
+      md5: 64034da9936a628afe6f2ffb9164d416
+      size: 2005
     outs:
     - path: data/train.parquet
       hash: md5
-      md5: 53361d2369e0a6f49667d3876258c691
-      size: 12022017
+      md5: d1a625111c1e7a071cf6e1e4dba0e96e
+      size: 12013185
   format_articles:
     cmd: poetry run python src/format_dataset.py data/train.parquet data/formatted_dataset.parquet
       --limit=50
     deps:
     - path: data/train.parquet
       hash: md5
-      md5: 53361d2369e0a6f49667d3876258c691
-      size: 12022017
+      md5: d1a625111c1e7a071cf6e1e4dba0e96e
+      size: 12013185
     - path: src/format_dataset.py
       hash: md5
       md5: adc72400124e4c3fb41d79e60446cf16
@@ -114,16 +114,16 @@ stages:
     outs:
     - path: data/formatted_dataset.parquet
       hash: md5
-      md5: f077683c3f92b21425373dcc66fd4c56
-      size: 220900
+      md5: 5d2926b8b6cd98b9fb9fc42f2fc68013
+      size: 235988
   embed_articles:
     cmd: poetry run python src/embed_sentences.py data/formatted_dataset.parquet data/article_embeddings.parquet
       --dimension=384 --model_name=intfloat/multilingual-e5-small
     deps:
     - path: data/formatted_dataset.parquet
       hash: md5
-      md5: f077683c3f92b21425373dcc66fd4c56
-      size: 220900
+      md5: 5d2926b8b6cd98b9fb9fc42f2fc68013
+      size: 235988
     - path: src/embed_sentences.py
       hash: md5
       md5: 5de3e9fa1cf1657daf5bce71c84cab5d
@@ -135,29 +135,29 @@ stages:
     outs:
     - path: data/article_embeddings.parquet
       hash: md5
-      md5: 4429adb07b9899ff8eae7ee6a80c4931
-      size: 334516
+      md5: e68c5d51385079ebb4ff08fedc94b767
+      size: 349612
   generate_history:
-    cmd: poetry run python src/generate_history.py data/formatted_dataset.parquet
-      data/users_with_sentences.parquet data/user_history.parquet --max_views=10
+    cmd: poetry run python src/generate_history.py data/article_embeddings.parquet
+      data/user_embeddings.parquet data/user_history.parquet --max_views=10
     deps:
-    - path: data/formatted_dataset.parquet
+    - path: data/article_embeddings.parquet
       hash: md5
-      md5: f077683c3f92b21425373dcc66fd4c56
-      size: 220900
-    - path: data/users_with_sentences.parquet
+      md5: e68c5d51385079ebb4ff08fedc94b767
+      size: 349612
+    - path: data/user_embeddings.parquet
       hash: md5
-      md5: f70468e5eba8b3c32e219d9a7e022c6d
-      size: 12669
+      md5: 3803a5dc6124e90ed9789f280519f311
+      size: 68678
     - path: src/generate_history.py
       hash: md5
-      md5: 149ea8f21ff4a3812ac6ac22c3f3c859
-      size: 1725
+      md5: 624b5b3f67dca41d11e676036426438c
+      size: 2804
     outs:
     - path: data/user_history.parquet
       hash: md5
-      md5: 0cfa614b480aa83b7eec946d724fd538
-      size: 6533
+      md5: 704ea314e3cd46530de28d04142e4d4b
+      size: 193215
   embed_users:
     cmd: poetry run python src/embed_sentences.py data/users_with_sentences.parquet
       data/user_embeddings.parquet
@@ -193,8 +193,8 @@ stages:
     deps:
     - path: data/article_embeddings.parquet
       hash: md5
-      md5: 4429adb07b9899ff8eae7ee6a80c4931
-      size: 334516
+      md5: e68c5d51385079ebb4ff08fedc94b767
+      size: 349612
     - path: src/load_to_elasticsearch.py
       hash: md5
       md5: 7894e4194671bd1fc8f969a885374cec
@@ -202,7 +202,7 @@ stages:
     outs:
     - path: data/load_articles_timestamp.txt
       hash: md5
-      md5: ae07d977d3df14a1ee84f6f5419a4d74
+      md5: aa77df57f75e676f016c677d2bff9689
       size: 43
   load_users_to_elasticsearch:
     cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
@@ -275,7 +275,7 @@ stages:
     deps:
     - path: data/load_articles_timestamp.txt
       hash: md5
-      md5: ae07d977d3df14a1ee84f6f5419a4d74
+      md5: aa77df57f75e676f016c677d2bff9689
       size: 43
     - path: data/load_users_timestamp.txt
       hash: md5
@@ -284,5 +284,5 @@ stages:
     outs:
     - path: data/use_elasticsearch.txt
       hash: md5
-      md5: 62c90c9e3481ee755b7d17035ea5ea7c
+      md5: aa77df57f75e676f016c677d2bff9689
       size: 43
