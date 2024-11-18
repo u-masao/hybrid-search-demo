@@ -247,7 +247,7 @@ stages:
       size: 43
   learn_two_tower_model:
     cmd: poetry run python src/train_two_tower_model.py data/user_history.parquet
-      models/two_tower_model.pth
+      models/two_tower_model.pth --epochs=2000 --patience=100
     deps:
     - path: data/user_history.parquet
       hash: md5
@@ -255,19 +255,16 @@ stages:
       size: 255733
     - path: src/train_two_tower_model.py
       hash: md5
-      md5: 69593304e4d0c216039ab821df4d39f9
-      size: 2571
+      md5: 06de0ef778778c61e4247d803c4ab942
+      size: 2723
     - path: src/two_tower_model.py
       hash: md5
-      md5: d0c601d519b426795d1b76c6f1860d11
-      size: 1977
-    params:
-      params.yaml:
-        epochs: 10
+      md5: 3d49af1cc83d4da991849462f2f7599d
+      size: 991
     outs:
     - path: models/two_tower_model.pth
       hash: md5
-      md5: 7fb6dd975c1200647eb0eeaaddc6c213
+      md5: 8cd8337b128b9bd22f041486ffdfcc65
       size: 463840
   use_elasticsearch:
     cmd: echo use elasticsearch && echo `date` > data/use_elasticsearch.txt
