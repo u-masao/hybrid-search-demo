@@ -27,14 +27,9 @@ def load_data(file_path):
     )
 
 
-def main(
-    user_embeddings_file,
-    article_embeddings_file,
-    model_output_file,
-    labels_file,
-):
+def main(user_history, model_output_path):
     print("Loading data...")
-    user_embeddings, article_embeddings, labels = load_data(labels_file)
+    user_embeddings, article_embeddings, labels = load_data(user_history)
 
     with mlflow.start_run():
         model = TwoTowerModel(
@@ -68,28 +63,14 @@ def main(
         # Log the model
         mlflow.pytorch.log_model(model, "two_tower_model")
 
-    torch.save(model.state_dict(), model_output_file)
+    torch.save(model.state_dict(), model_output_path)
 
 
 @click.command()
-@click.argument("user_embeddings_file", type=click.Path(exists=True))
-@click.argument("article_embeddings_file", type=click.Path(exists=True))
-@click.argument(
-    "labels_file", type=click.Path(), default="data/user_history.parquet"
-)
-@click.argument("model_output_file", type=click.Path())
-def cli(
-    user_embeddings_file,
-    article_embeddings_file,
-    labels_file,
-    model_output_file,
-):
-    main(
-        user_embeddings_file,
-        article_embeddings_file,
-        model_output_file,
-        labels_file,
-    )
+@click.argument("user_history", type=click.Path(exists=True))
+@click.argument("model_output_path", type=click.Path())
+def cli(user_history, model_output_path):
+    main(user_history, model_output_path)
 
 
 if __name__ == "__main__":
