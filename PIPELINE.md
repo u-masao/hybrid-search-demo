@@ -11,10 +11,8 @@ flowchart TD
 	node9["make_articles"]
 	node10["use_elasticsearch"]
 	node1-->node4
-	node1-->node6
 	node1-->node7
 	node2-->node4
-	node2-->node6
 	node2-->node8
 	node3-->node1
 	node4-->node6
