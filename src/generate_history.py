@@ -51,7 +51,9 @@ def main(article_embeddings_file, user_embeddings_file, output_file, max_views):
     article_embeddings = pd.read_parquet(article_embeddings_file)
     user_embeddings = pd.read_parquet(user_embeddings_file)
 
-    # Generate user history
+    # Debug output for input columns
+    print("Article Embeddings Columns:", article_embeddings.columns)
+    print("User Embeddings Columns:", user_embeddings.columns)
     user_profiles = {}  # Assuming user_profiles is empty or needs to be defined
     df_history = generate_user_history(article_embeddings, user_profiles, max_views=max_views)
 
