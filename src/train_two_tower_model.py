@@ -8,25 +8,23 @@ import torch
 from two_tower_model import TwoTowerModel
 
 
-def load_embeddings(file_path):
+def load_data(file_path):
     df = pd.read_parquet(file_path)
     print("DataFrame shape:", df.shape)  # Debug statement
 
-    # Select only columns that contain 'embedding' in their names
-    embedding_df = df["embedding"]
-    if embedding_df.empty:
-        raise ValueError("No 'embedding' columns found in the DataFrame.")
-    result = np.stack(embedding_df.values)
-    print(f"embed shape: {result.shape}")
-    return torch.tensor(result, dtype=torch.float32)
+    user_embeddings = np.stack(df["user_embedding"].values)
+    article_embeddings = np.stack(df["article_embedding"].values)
+    labels = df["label"].values
 
+    print(f"User embeddings shape: {user_embeddings.shape}")
+    print(f"Article embeddings shape: {article_embeddings.shape}")
+    print(f"Labels shape: {labels.shape}")
 
-def load_labels(labels_file):
-    # Load labels from a Parquet file
-    labels_df = pd.read_parquet(labels_file)
-    labels_df = labels_df[["article_id", "user_id"]].drop_duplicates()
-
-    return torch.tensor(labels_df.values, dtype=torch.int8)
+    return (
+        torch.tensor(user_embeddings, dtype=torch.float32),
+        torch.tensor(article_embeddings, dtype=torch.float32),
+        torch.tensor(labels, dtype=torch.float32),
+    )
 
 
 def main(
@@ -35,19 +33,8 @@ def main(
     model_output_file,
     labels_file,
 ):
-    print("Loading user embeddings...")
-    user_embeddings = load_embeddings(user_embeddings_file)
-    print("User embeddings shape:", user_embeddings.shape)
-
-    print("Loading article embeddings...")
-    article_embeddings = load_embeddings(article_embeddings_file)
-    print("Article embeddings shape:", article_embeddings.shape)
-
-    # Load labels for training
-    print("Loading labels...")
-    labels = load_labels(labels_file)
-
-    print("Labels shape:", labels.shape)
+    print("Loading data...")
+    user_embeddings, article_embeddings, labels = load_data(labels_file)
 
     with mlflow.start_run():
         model = TwoTowerModel(
@@ -58,7 +45,7 @@ def main(
         model.train()
 
         optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-        criterion = torch.nn.BCELoss()
+        criterion = torch.nn.CosineEmbeddingLoss()
 
         for epoch in range(10):  # Assuming 30 epochs
             optimizer.zero_grad()
@@ -71,7 +58,7 @@ def main(
                     f"Output shape {outputs.shape} does not match labels shape"
                     f" {labels.shape}"
                 )
-            loss = criterion(outputs.view(-1), labels)
+            loss = criterion(outputs, article_embeddings, labels)
             loss.backward()
             optimizer.step()
 
