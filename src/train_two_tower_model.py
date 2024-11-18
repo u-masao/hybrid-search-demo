@@ -76,6 +76,7 @@ def main(user_history, model_output_path, epochs, patience=10):
 @click.argument("user_history", type=click.Path(exists=True))
 @click.argument("model_output_path", type=click.Path())
 @click.option("--epochs", default=10, help="Number of training epochs")
+@click.option("--patience", default=10, help="Early stopping patience")
 def cli(user_history, model_output_path, epochs, patience):
     main(user_history, model_output_path, epochs, patience)
 
