@@ -126,8 +126,8 @@ stages:
       size: 235988
     - path: src/embed_sentences.py
       hash: md5
-      md5: 5de3e9fa1cf1657daf5bce71c84cab5d
-      size: 2197
+      md5: 9e4e16a179d00fccc8cc81da3ec90855
+      size: 2343
     - path: src/embedding/embedding.py
       hash: md5
       md5: 1d3ae2f3553d85d2da013a0ff03dca3d
@@ -168,8 +168,8 @@ stages:
       size: 12669
     - path: src/embed_sentences.py
       hash: md5
-      md5: 5de3e9fa1cf1657daf5bce71c84cab5d
-      size: 2197
+      md5: 9e4e16a179d00fccc8cc81da3ec90855
+      size: 2343
     outs:
     - path: data/user_embeddings.parquet
       hash: md5
@@ -259,13 +259,13 @@ stages:
       size: 2723
     - path: src/two_tower_model.py
       hash: md5
-      md5: 0e23f4920b724773c65eccd104d7b7f3
-      size: 931
+      md5: 85fd73adaba94ca351a3468ee8013ce3
+      size: 1374
     outs:
     - path: models/two_tower_model.pth
       hash: md5
-      md5: d538f7a39d8f76d8beb4f334f942dd43
-      size: 463776
+      md5: c9787b1703dca481923c51826018b402
+      size: 464032
   use_elasticsearch:
     cmd: echo use elasticsearch && echo `date` > data/use_elasticsearch.txt
     deps:
@@ -282,3 +282,45 @@ stages:
       hash: md5
       md5: aa77df57f75e676f016c677d2bff9689
       size: 43
+  make_user_translation:
+    cmd: poetry run python src/make_user_translation.py data/user_embeddings.parquet
+      data/user_translation.parquet models/two_tower_model.pth
+    deps:
+    - path: data/user_embeddings.parquet
+      hash: md5
+      md5: 3803a5dc6124e90ed9789f280519f311
+      size: 68678
+    - path: models/two_tower_model.pth
+      hash: md5
+      md5: c9787b1703dca481923c51826018b402
+      size: 464032
+    - path: src/make_user_translation.py
+      hash: md5
+      md5: ddd95adbd04911caf75928c2dca61960
+      size: 1423
+    outs:
+    - path: data/user_translation.parquet
+      hash: md5
+      md5: 939ae78ead39a1cacd396d74fdc2bd9e
+      size: 80440
+  make_article_translation:
+    cmd: poetry run python src/make_article_translation.py data/article_embeddings.parquet
+      data/article_translation.parquet models/two_tower_model.pth
+    deps:
+    - path: data/article_embeddings.parquet
+      hash: md5
+      md5: e68c5d51385079ebb4ff08fedc94b767
+      size: 349612
+    - path: models/two_tower_model.pth
+      hash: md5
+      md5: c9787b1703dca481923c51826018b402
+      size: 464032
+    - path: src/make_article_translation.py
+      hash: md5
+      md5: 1175c035136f1ab687f8efc8ae689a13
+      size: 1495
+    outs:
+    - path: data/article_translation.parquet
+      hash: md5
+      md5: dd55cb993c7a125b8359d3cd44a4e2eb
+      size: 373681
