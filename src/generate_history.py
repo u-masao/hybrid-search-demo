@@ -30,7 +30,7 @@ def generate_user_history(
             )
             history.append(
                 {
-                    "article_id": index,
+                    "article_id": row["id"],
                     "user_id": user_id,
                     "timestamp": timestamp,
                     "label": 1 if random.random() < label_probability else -1,
@@ -56,13 +56,9 @@ def main(
     # Debug output for input columns
     print("Article Embeddings Columns:", article_embeddings.columns)
     print("User Embeddings Columns:", user_embeddings.columns)
-    print("Article Embeddings Columns:", article_embeddings.dtypes)
-    print("User Embeddings Columns:", user_embeddings.dtypes)
     df_history = generate_user_history(
         article_embeddings, user_embeddings, max_views=max_views
     )
-
-    print(f"{df_history.dtypes=}")
 
     # Merge embeddings with history
     df_history = df_history.merge(
@@ -83,9 +79,21 @@ def main(
     )
 
     # Select relevant columns
-    df_history = df_history[["article_embedding", "user_embedding", "label"]]
+    df_history = df_history[
+        [
+            "article_embedding",
+            "user_embedding",
+            "article_id",
+            "user_id",
+            "label",
+        ]
+    ]
 
     df_history.to_parquet(output_file)
+
+    print(df_history)
+    print(df_history.iloc[0])
+    print(df_history.columns)
 
 
 if __name__ == "__main__":
