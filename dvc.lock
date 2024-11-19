@@ -204,7 +204,7 @@ stages:
       size: 43
   load_users_to_elasticsearch:
     cmd: poetry run python -m src.batch_processing.load_to_elasticsearch --es_host=https://localhost:9200
-      --index_name=user_sentences data/user_translation.parquet && echo `date` > data/load_users_timestamp.txt
+      --index_name=users_develop data/user_translation.parquet && echo `date` > data/load_users_timestamp.txt
     deps:
     - path: data/user_translation.parquet
       hash: md5
@@ -217,7 +217,7 @@ stages:
     outs:
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: e1c33ef7bd3eeb61d7cacb7d2a922900
+      md5: 053d7a91eb9828d55bb4d00b051d9560
       size: 43
   search_demo:
     cmd: poetry run python -m src.search_program && echo `date` > data/search_timestamp.txt
@@ -269,16 +269,16 @@ stages:
     deps:
     - path: data/load_items_timestamp.txt
       hash: md5
-      md5: 6d745dd7c0df89bf187af0dd5baa2d55
+      md5: 51a9800ac07a0805def5573d0c222c4d
       size: 43
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: e1c33ef7bd3eeb61d7cacb7d2a922900
+      md5: 053d7a91eb9828d55bb4d00b051d9560
       size: 43
     outs:
     - path: data/use_elasticsearch.txt
       hash: md5
-      md5: 6d745dd7c0df89bf187af0dd5baa2d55
+      md5: 51a9800ac07a0805def5573d0c222c4d
       size: 43
   make_user_translation:
     cmd: poetry run python -m src.batch_processing.make_user_translation data/user_embeddings.parquet
@@ -395,7 +395,7 @@ stages:
       size: 367296
   load_items_to_elasticsearch:
     cmd: poetry run python -m src.batch_processing.load_to_elasticsearch --es_host=https://localhost:9200
-      --index_name=item_data data/item_translation.parquet && echo `date` > data/load_items_timestamp.txt
+      --index_name=item_develop data/item_translation.parquet && echo `date` > data/load_items_timestamp.txt
     deps:
     - path: data/item_translation.parquet
       hash: md5
@@ -408,5 +408,5 @@ stages:
     outs:
     - path: data/load_items_timestamp.txt
       hash: md5
-      md5: 6d745dd7c0df89bf187af0dd5baa2d55
+      md5: 51a9800ac07a0805def5573d0c222c4d
       size: 43
