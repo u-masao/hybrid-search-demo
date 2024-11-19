@@ -27,7 +27,7 @@ stages:
       poetry run python src/batch_processing/make_dataset.py
       data/train.parquet
     deps:
-      - src/batch_processing/batch_processing/make_dataset.py
+      - src/batch_processing/make_dataset.py
     outs:
       - data/train.parquet
 
