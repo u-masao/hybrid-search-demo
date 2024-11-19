@@ -13,7 +13,7 @@ stages:
 
   embed_users:
     cmd: >-
-      poetry run python src/embed_sentences.py
+      poetry run python src/batch_processing/embed_sentences.py
       data/users_with_sentences.parquet
       data/user_embeddings.parquet
     deps:
@@ -45,7 +45,7 @@ stages:
 
   embed_articles:
     cmd: >-
-      poetry run python src/embed_sentences.py
+      poetry run python src/batch_processing/embed_sentences.py
       data/formatted_dataset.parquet
       data/article_embeddings.parquet
       --dimension=${embedding.dimension}
