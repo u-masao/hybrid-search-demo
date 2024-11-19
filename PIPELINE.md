@@ -1,15 +1,15 @@
 ```mermaid
 flowchart TD
-	node1["embed_articles"]
+	node1["embed_items"]
 	node2["embed_users"]
-	node3["format_articles"]
+	node3["format_items"]
 	node4["generate_history"]
 	node5["generate_user_profiles"]
 	node6["learn_two_tower_model"]
-	node7["load_articles_to_elasticsearch"]
+	node7["load_items_to_elasticsearch"]
 	node8["load_users_to_elasticsearch"]
-	node9["make_article_translation"]
-	node10["make_articles"]
+	node9["make_item_translation"]
+	node10["make_items"]
 	node11["make_user_translation"]
 	node12["use_elasticsearch"]
 	node1-->node4
