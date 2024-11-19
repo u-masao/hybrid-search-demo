@@ -51,21 +51,18 @@ stages:
       md5: 3c0988c6eb2450da5aa9fdbae9395363
       size: 613280
   generate_user_profiles:
-    cmd: poetry run python src/generate_users.py --num_users=25 --categories="technology,sports,music,art"
+    cmd: poetry run python -m src.batch_processing.generate_users --num_users=25 --categories="technology,sports,music,art"
       data/users_with_sentences.parquet
     deps:
-    - path: src/generate_users.py
+    - path: src/batch_processing/generate_users.py
       hash: md5
       md5: 7d66976bf9ee0ba305f62344281cf4b8
       size: 2932
-    params:
-      params.yaml:
-        num_users: 25
     outs:
     - path: data/users_with_sentences.parquet
       hash: md5
-      md5: f70468e5eba8b3c32e219d9a7e022c6d
-      size: 12669
+      md5: d83bd01bb20215debd0b423927466f06
+      size: 12834
   generate_user_history:
     cmd: poetry run python src/generate_history.py data/formatted_dataset.parquet
       data/user_profiles.parquet data/user_history.parquet
@@ -88,9 +85,9 @@ stages:
       md5: 9058296124d4911436c02e96d8859cff
       size: 9122
   make_articles:
-    cmd: poetry run python src/make_dataset.py data/train.parquet
+    cmd: poetry run python -m src.batch_processing.make_dataset data/train.parquet
     deps:
-    - path: src/make_dataset.py
+    - path: src/batch_processing/make_dataset.py
       hash: md5
       md5: 64034da9936a628afe6f2ffb9164d416
       size: 2005
@@ -100,81 +97,81 @@ stages:
       md5: d1a625111c1e7a071cf6e1e4dba0e96e
       size: 12013185
   format_articles:
-    cmd: poetry run python src/format_dataset.py data/train.parquet data/formatted_dataset.parquet
-      --limit=50
+    cmd: poetry run python -m src.batch_processing.format_dataset data/train.parquet
+      data/formatted_dataset.parquet --limit=50
     deps:
     - path: data/train.parquet
       hash: md5
       md5: d1a625111c1e7a071cf6e1e4dba0e96e
       size: 12013185
-    - path: src/format_dataset.py
+    - path: src/batch_processing/format_dataset.py
       hash: md5
       md5: adc72400124e4c3fb41d79e60446cf16
       size: 1734
     outs:
     - path: data/formatted_dataset.parquet
       hash: md5
-      md5: 5d2926b8b6cd98b9fb9fc42f2fc68013
-      size: 235988
+      md5: 76209b5c0234ef35d1852bbb15fe17f8
+      size: 236578
   embed_articles:
-    cmd: poetry run python src/embed_sentences.py data/formatted_dataset.parquet data/article_embeddings.parquet
-      --dimension=384 --model_name=intfloat/multilingual-e5-small
+    cmd: poetry run python src/batch_processing/embed_sentences.py data/formatted_dataset.parquet
+      data/article_embeddings.parquet --dimension=384 --model_name=intfloat/multilingual-e5-small
     deps:
     - path: data/formatted_dataset.parquet
       hash: md5
-      md5: 5d2926b8b6cd98b9fb9fc42f2fc68013
-      size: 235988
-    - path: src/embed_sentences.py
+      md5: 48807c63c1bee8eeda1d31d3ca3a8208
+      size: 197153
+    - path: src/batch_processing/embed_sentences.py
       hash: md5
-      md5: 9e4e16a179d00fccc8cc81da3ec90855
-      size: 2343
-    - path: src/embedding/embedding.py
+      md5: 39cb86adaeb702b1901c95a65cba2646
+      size: 2355
+    - path: src/batch_processing/embedding.py
       hash: md5
       md5: 1d3ae2f3553d85d2da013a0ff03dca3d
       size: 3840
     outs:
     - path: data/article_embeddings.parquet
       hash: md5
-      md5: e68c5d51385079ebb4ff08fedc94b767
-      size: 349612
+      md5: 2cd7fb0bcc5e3171e635346d0224377a
+      size: 310773
   generate_history:
-    cmd: poetry run python src/generate_history.py data/article_embeddings.parquet
+    cmd: poetry run python src/batch_processing/generate_history.py data/article_embeddings.parquet
       data/user_embeddings.parquet data/user_history.parquet --max_views=10
     deps:
     - path: data/article_embeddings.parquet
       hash: md5
-      md5: e68c5d51385079ebb4ff08fedc94b767
-      size: 349612
+      md5: 2cd7fb0bcc5e3171e635346d0224377a
+      size: 310773
     - path: data/user_embeddings.parquet
       hash: md5
-      md5: 3803a5dc6124e90ed9789f280519f311
-      size: 68678
-    - path: src/generate_history.py
+      md5: 1942558f9776e29b2a895dcfddc59dbf
+      size: 68324
+    - path: src/batch_processing/generate_history.py
       hash: md5
       md5: b0e34968285073f1e533001ae799e4e9
       size: 2835
     outs:
     - path: data/user_history.parquet
       hash: md5
-      md5: 78495a5ad47c1c7d5b47b5e1182144b9
-      size: 255733
+      md5: a20fb1c2a184ea8fe6e67e5dc8cf5e6f
+      size: 286979
   embed_users:
-    cmd: poetry run python src/embed_sentences.py data/users_with_sentences.parquet
+    cmd: poetry run python -m src.batch_processing.embed_sentences data/users_with_sentences.parquet
       data/user_embeddings.parquet
     deps:
     - path: data/users_with_sentences.parquet
       hash: md5
-      md5: f70468e5eba8b3c32e219d9a7e022c6d
-      size: 12669
-    - path: src/embed_sentences.py
+      md5: d83bd01bb20215debd0b423927466f06
+      size: 12834
+    - path: src/batch_processing/embed_sentences.py
       hash: md5
-      md5: 9e4e16a179d00fccc8cc81da3ec90855
-      size: 2343
+      md5: bc18e3aee247532f6f924bcbbfdeb517
+      size: 2381
     outs:
     - path: data/user_embeddings.parquet
       hash: md5
-      md5: 3803a5dc6124e90ed9789f280519f311
-      size: 68678
+      md5: 40d68ab8b5104b694780b7f09bb468e8
+      size: 68847
   load_to_elasticsearch:
     cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
       --index_name=user_sentences data/users_with_sentences.parquet
@@ -188,39 +185,39 @@ stages:
       md5: 2a7e7b41fc2e74ebbbd36335fe480355
       size: 1166
   load_articles_to_elasticsearch:
-    cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
+    cmd: poetry run python src/batch_processing/load_to_elasticsearch.py --es_host=https://localhost:9200
       --index_name=article_data data/article_translation.parquet && echo `date` >
       data/load_articles_timestamp.txt
     deps:
     - path: data/article_translation.parquet
       hash: md5
-      md5: 63891ae3903247d0d6cf90c57e1c986b
-      size: 366717
-    - path: src/load_to_elasticsearch.py
+      md5: 0aac468be29fe80caec273a174d2f4b8
+      size: 327875
+    - path: src/batch_processing/load_to_elasticsearch.py
       hash: md5
-      md5: e9db0d73aa4b94a4090b2fbedf15f532
-      size: 1934
+      md5: 9ffc15d3f33d8b19124efc2724da5a0f
+      size: 1938
     outs:
     - path: data/load_articles_timestamp.txt
       hash: md5
-      md5: 34cc90e906c9089342b303e7d5cf5f92
+      md5: 7cfbe908a138f1d5693dae8bae21455a
       size: 43
   load_users_to_elasticsearch:
-    cmd: poetry run python src/load_to_elasticsearch.py --es_host=https://localhost:9200
+    cmd: poetry run python src/batch_processing/load_to_elasticsearch.py --es_host=https://localhost:9200
       --index_name=user_sentences data/user_translation.parquet && echo `date` > data/load_users_timestamp.txt
     deps:
     - path: data/user_translation.parquet
       hash: md5
-      md5: c1e74a2d77c85b14a8d66104983973ac
-      size: 76919
-    - path: src/load_to_elasticsearch.py
+      md5: a086ac2202b46d5b42a914f625c4e086
+      size: 76565
+    - path: src/batch_processing/load_to_elasticsearch.py
       hash: md5
-      md5: e9db0d73aa4b94a4090b2fbedf15f532
-      size: 1934
+      md5: 9ffc15d3f33d8b19124efc2724da5a0f
+      size: 1938
     outs:
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: c6afbd381ddfa12d181c5fbb62ac3f70
+      md5: 46ee1d3af5e6708f8071ad21e8b78299
       size: 43
   search_demo:
     cmd: poetry run python -m src.search_program && echo `date` > data/search_timestamp.txt
@@ -247,81 +244,81 @@ stages:
       md5: 575b0a4d1a75b6f96c490be672dede3a
       size: 43
   learn_two_tower_model:
-    cmd: poetry run python src/train_two_tower_model.py data/user_history.parquet
+    cmd: poetry run python src/batch_processing/train_two_tower_model.py data/user_history.parquet
       models/two_tower_model.pth --epochs=20000 --patience=500
     deps:
     - path: data/user_history.parquet
       hash: md5
-      md5: 78495a5ad47c1c7d5b47b5e1182144b9
-      size: 255733
-    - path: src/train_two_tower_model.py
+      md5: a20fb1c2a184ea8fe6e67e5dc8cf5e6f
+      size: 286979
+    - path: src/batch_processing/train_two_tower_model.py
       hash: md5
-      md5: 4af4e5af86e78784095cfa9f171f0ed5
-      size: 2723
-    - path: src/two_tower_model.py
+      md5: f3db7753144313ec0e16c4464de00b3c
+      size: 2722
+    - path: src/batch_processing/two_tower_model.py
       hash: md5
       md5: 85fd73adaba94ca351a3468ee8013ce3
       size: 1374
     outs:
     - path: models/two_tower_model.pth
       hash: md5
-      md5: c9787b1703dca481923c51826018b402
+      md5: 19d9e3285f369ff1d8fb73da4ed5ba3c
       size: 464032
   use_elasticsearch:
     cmd: echo use elasticsearch && echo `date` > data/use_elasticsearch.txt
     deps:
     - path: data/load_articles_timestamp.txt
       hash: md5
-      md5: 34cc90e906c9089342b303e7d5cf5f92
+      md5: 7cfbe908a138f1d5693dae8bae21455a
       size: 43
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: c6afbd381ddfa12d181c5fbb62ac3f70
+      md5: 46ee1d3af5e6708f8071ad21e8b78299
       size: 43
     outs:
     - path: data/use_elasticsearch.txt
       hash: md5
-      md5: 34cc90e906c9089342b303e7d5cf5f92
+      md5: 7cfbe908a138f1d5693dae8bae21455a
       size: 43
   make_user_translation:
-    cmd: poetry run python src/make_user_translation.py data/user_embeddings.parquet
+    cmd: poetry run python src/batch_processing/make_user_translation.py data/user_embeddings.parquet
       data/user_translation.parquet models/two_tower_model.pth
     deps:
     - path: data/user_embeddings.parquet
       hash: md5
-      md5: 3803a5dc6124e90ed9789f280519f311
-      size: 68678
+      md5: 1942558f9776e29b2a895dcfddc59dbf
+      size: 68324
     - path: models/two_tower_model.pth
       hash: md5
-      md5: c9787b1703dca481923c51826018b402
+      md5: 19d9e3285f369ff1d8fb73da4ed5ba3c
       size: 464032
-    - path: src/make_user_translation.py
+    - path: src/batch_processing/make_user_translation.py
       hash: md5
-      md5: c673e1d5d305108452950db2e5852695
-      size: 1530
+      md5: 3389319cf16d68deb4200e100b6e420c
+      size: 1541
     outs:
     - path: data/user_translation.parquet
       hash: md5
-      md5: c1e74a2d77c85b14a8d66104983973ac
-      size: 76919
+      md5: a086ac2202b46d5b42a914f625c4e086
+      size: 76565
   make_article_translation:
-    cmd: poetry run python src/make_article_translation.py data/article_embeddings.parquet
+    cmd: poetry run python src/batch_processing/make_article_translation.py data/article_embeddings.parquet
       data/article_translation.parquet models/two_tower_model.pth
     deps:
     - path: data/article_embeddings.parquet
       hash: md5
-      md5: e68c5d51385079ebb4ff08fedc94b767
-      size: 349612
+      md5: 2cd7fb0bcc5e3171e635346d0224377a
+      size: 310773
     - path: models/two_tower_model.pth
       hash: md5
-      md5: c9787b1703dca481923c51826018b402
+      md5: 19d9e3285f369ff1d8fb73da4ed5ba3c
       size: 464032
-    - path: src/make_article_translation.py
+    - path: src/batch_processing/make_article_translation.py
       hash: md5
-      md5: a73f55cb5f2e09961dde457a6b226674
-      size: 1599
+      md5: 4c5acb3965b79f7d9dfa330f6d88b915
+      size: 1638
     outs:
     - path: data/article_translation.parquet
       hash: md5
-      md5: 63891ae3903247d0d6cf90c57e1c986b
-      size: 366717
+      md5: 0aac468be29fe80caec273a174d2f4b8
+      size: 327875
