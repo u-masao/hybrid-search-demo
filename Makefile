@@ -13,7 +13,7 @@ run_embedding_api:
 
 ## search app
 run_search_app:
-	poetry run python -m src.search_app.main
+	FLASK_APP=src.search_app.main poetry run flask run --debugger --reload
 
 
 ### batch section ###
