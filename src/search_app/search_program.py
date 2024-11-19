@@ -63,11 +63,17 @@ def perform_vector_search(
                 },
             },
         )
-        return response["hits"]["hits"]
+        hits = response["hits"]["hits"]
+        print(f"Vector search results for index '{index_name}': {hits}")
+        return hits
 
     item_results = search_index(item_index_name)
     user_results = search_index(user_index_name)
 
+    print(f"Item vector search results: {item_results}")
+    print(f"User vector search results: {user_results}")
+    print(f"Item BM25 search results: {item_results}")
+    print(f"User BM25 search results: {user_results}")
     return item_results, user_results
 
 
@@ -89,7 +95,9 @@ def bm25_search(es, index_name, query, top_k=5):
         "size": top_k,
     }
     response = es.search(index=index_name, body=search_body)
-    return response["hits"]["hits"]
+    hits = response["hits"]["hits"]
+    print(f"BM25 search results for index '{index_name}': {hits}")
+    return hits
 
 
 def perform_bm25_search(es_host, item_index_name, user_index_name, query_text, top_k=5):
