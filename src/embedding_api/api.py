@@ -2,7 +2,6 @@ import time
 
 from flask import Flask, jsonify, request
 from transformers import AutoModel, AutoTokenizer
-from src.embedding_api.embedding import Embedding
 
 app = Flask(__name__)
 print("Initializing tokenizer...")

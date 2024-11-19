@@ -1,13 +1,16 @@
 import os
-from dotenv import load_dotenv
 
-load_dotenv('.credential')
+from dotenv import load_dotenv
 from elasticsearch import Elasticsearch
 
-from src.batch_processing.embed_sentences import Embedding
+from src.model.embedding import Embedding
+
+load_dotenv(".credential")
 
 
-def perform_vector_search(es_host, index_name, query_text, target_column, top_k=5):
+def perform_vector_search(
+    es_host, index_name, query_text, target_column, top_k=5
+):
     # Initialize Elasticsearch client
     elastic_username = os.getenv("ELASTIC_USERNAME")
     elastic_password = os.getenv("ELASTIC_PASSWORD")
@@ -39,7 +42,9 @@ def perform_vector_search(es_host, index_name, query_text, target_column, top_k=
 
     # Validate target column
     if target_column not in ["embedding", "translation"]:
-        raise ValueError("Invalid target column. Choose 'embedding' or 'translation'.")
+        raise ValueError(
+            "Invalid target column. Choose 'embedding' or 'translation'."
+        )
 
     # Perform vector search using Elasticsearch's knn query
     response = es.search(
@@ -96,7 +101,9 @@ def perform_bm25_search(es_host, index_name, query_text, top_k=5):
 
 def search(es_host, index_name, query_text, target_column="embedding"):
     # Perform vector search
-    vector_results = perform_vector_search(es_host, index_name, query_text, target_column)
+    vector_results = perform_vector_search(
+        es_host, index_name, query_text, target_column
+    )
     print("Vector Search Results:")
     for i, result in enumerate(vector_results):
         print(f"{i + 1}: {result['_source']['title'][:79]}")

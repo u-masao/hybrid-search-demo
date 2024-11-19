@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request
 
-from src.search_api.search_program import perform_bm25_search, perform_vector_search
+from src.search_api.search_program import (
+    perform_bm25_search,
+    perform_vector_search,
+)
 
 app = Flask(__name__, template_folder="../templates")
 
@@ -13,7 +16,9 @@ def search():
         index_name = "article_data"
 
         target_column = request.form.get("target_column", "embedding")
-        vector_results = perform_vector_search(es_host, index_name, query_text, target_column)
+        vector_results = perform_vector_search(
+            es_host, index_name, query_text, target_column
+        )
         bm25_results = perform_bm25_search(es_host, index_name, query_text)
 
         return render_template(

@@ -3,7 +3,7 @@ import pandas as pd
 from loguru import logger
 from tqdm import tqdm
 
-from embedding import Embedding
+from src.model.embedding import Embedding
 
 
 def embed_sentences(input_file, output_file, dimension, model_name, limit):
@@ -22,7 +22,10 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
         df = pd.read_parquet(input_file)
         input_length = len(df)
 
-        logger.info(f"DataFrame loaded with shape: {df.shape} and columns: {df.columns}")
+        logger.info(
+            f"DataFrame loaded with shape: {df.shape}"
+            f" and columns: {df.columns}"
+        )
 
     # 制限が指定されている場合は行数を制限
     if limit > 0:
