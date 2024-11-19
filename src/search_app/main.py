@@ -1,11 +1,15 @@
 from flask import Flask, render_template, request
 
-from src.search_api.search_program import (
+from src.search_app.search_program import (
     perform_bm25_search,
     perform_vector_search,
 )
 
-app = Flask(__name__, template_folder="../templates")
+app = Flask(__name__, template_folder="../../templates")
+
+
+item_index_name = "item_develop"
+user_index_name = "user_develop"
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -13,7 +17,7 @@ def search():
     if request.method == "POST":
         query_text = request.form.get("query")
         es_host = "https://localhost:9200"
-        index_name = "item_data"
+        index_name = "item_develop"
 
         target_column = request.form.get("target_column", "embedding")
         vector_results = perform_vector_search(
