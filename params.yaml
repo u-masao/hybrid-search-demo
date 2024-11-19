@@ -8,3 +8,5 @@ dataset:
 embedding:
   model_name: "intfloat/multilingual-e5-small"
   dimension: 384
+elastic:
+  index_suffix: "develop"
