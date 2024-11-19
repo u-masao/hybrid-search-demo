@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import torch
 from tqdm import tqdm
-from two_tower_model import TwoTowerModel
+from src.two_tower_model import TwoTowerModel
 
 tqdm.pandas()
 

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 
-from src.search_program import perform_bm25_search, perform_vector_search
+from src.search_api.search_program import perform_bm25_search, perform_vector_search
 
 app = Flask(__name__, template_folder="../templates")
 

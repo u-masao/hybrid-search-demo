@@ -7,7 +7,7 @@ stages:
       --categories="technology,sports,music,art"
       data/users_with_sentences.parquet
     deps:
-      - src/generate_users.py
+      - src/batch_processing/generate_users.py
     outs:
       - data/users_with_sentences.parquet
 
@@ -17,7 +17,7 @@ stages:
       data/users_with_sentences.parquet
       data/user_embeddings.parquet
     deps:
-      - src/embed_sentences.py
+      - src/embedding_api/embed_sentences.py
       - data/users_with_sentences.parquet
     outs:
       - data/user_embeddings.parquet
@@ -27,7 +27,7 @@ stages:
       poetry run python src/make_dataset.py
       data/train.parquet
     deps:
-      - src/make_dataset.py
+      - src/batch_processing/make_dataset.py
     outs:
       - data/train.parquet
 
@@ -38,7 +38,7 @@ stages:
       data/formatted_dataset.parquet
       --limit=${dataset.limit}
     deps:
-      - src/format_dataset.py
+      - src/batch_processing/format_dataset.py
       - data/train.parquet
     outs:
       - data/formatted_dataset.parquet
@@ -51,8 +51,8 @@ stages:
       --dimension=${embedding.dimension}
       --model_name=${embedding.model_name}
     deps:
-      - src/embed_sentences.py
-      - src/embedding/embedding.py
+      - src/embedding_api/embed_sentences.py
+      - src/embedding_api/embedding.py
       - data/formatted_dataset.parquet
     outs:
       - data/article_embeddings.parquet
@@ -65,7 +65,7 @@ stages:
       data/user_history.parquet
       --max_views=${max_views}
     deps:
-      - src/generate_history.py
+      - src/batch_processing/generate_history.py
       - data/article_embeddings.parquet
       - data/user_embeddings.parquet
     outs:
@@ -114,7 +114,7 @@ stages:
       data/user_translation.parquet
       models/two_tower_model.pth
     deps:
-      - src/make_user_translation.py
+      - src/batch_processing/make_user_translation.py
       - data/user_embeddings.parquet
       - models/two_tower_model.pth
     outs:
@@ -127,7 +127,7 @@ stages:
       data/article_translation.parquet
       models/two_tower_model.pth
     deps:
-      - src/make_article_translation.py
+      - src/batch_processing/make_article_translation.py
       - data/article_embeddings.parquet
       - models/two_tower_model.pth
     outs:

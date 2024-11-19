@@ -1,6 +1,6 @@
 import gradio as gr
 
-from src.search_program import perform_bm25_search, perform_vector_search
+from src.search_api.search_program import perform_bm25_search, perform_vector_search
 
 # Initialize Elasticsearch client
 es_host = "https://localhost:9200"
