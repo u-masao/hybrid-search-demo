@@ -2,7 +2,7 @@ stages:
 
   generate_user_profiles:
     cmd: >-
-      poetry run python src/batch_processing/generate_users.py
+      poetry run python src/generate_users.py
       --num_users=${num_users}
       --categories="technology,sports,music,art"
       data/users_with_sentences.parquet
