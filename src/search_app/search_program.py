@@ -50,6 +50,7 @@ def perform_vector_search(
             print(f"Index '{index_name}' created.")
 
         # Adjust the embedding model dimension if necessary
+        nonlocal embedding_model
         if embedding_model.dimension != dimension:
             embedding_model = Embedding(dimension=dimension)
         
