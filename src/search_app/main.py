@@ -21,7 +21,11 @@ def search():
 
         # Perform search on both item and user indices
         item_vector_results, user_vector_results = perform_vector_search(
-            es_host, item_index_name, user_index_name, query_text, target_column
+            es_host,
+            item_index_name,
+            user_index_name,
+            query_text,
+            target_column,
         )
         item_bm25_results, user_bm25_results = perform_bm25_search(
             es_host, item_index_name, user_index_name, query_text

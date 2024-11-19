@@ -14,7 +14,12 @@ embedding_model = Embedding(dimension=384)
 
 
 def perform_vector_search(
-    es_host, item_index_name, user_index_name, query_text, target_column, top_k=5
+    es_host,
+    item_index_name,
+    user_index_name,
+    query_text,
+    target_column,
+    top_k=5,
 ):
     global embedding_model
 
@@ -72,8 +77,6 @@ def perform_vector_search(
 
     # print(f"Item vector search results: {item_results}")
     # print(f"User vector search results: {user_results}")
-    # print(f"Item BM25 search results: {item_results}")
-    # print(f"User BM25 search results: {user_results}")
     return item_results, user_results
 
 
@@ -91,7 +94,7 @@ def bm25_search(es, index_name, query, top_k=5):
     A list of search results.
     """
     search_body = {
-        "query": {"match": {"content": query}},
+        "query": {"match": {"sentence": query}},
         "size": top_k,
     }
     response = es.search(index=index_name, body=search_body)
@@ -100,7 +103,9 @@ def bm25_search(es, index_name, query, top_k=5):
     return hits
 
 
-def perform_bm25_search(es_host, item_index_name, user_index_name, query_text, top_k=5):
+def perform_bm25_search(
+    es_host, item_index_name, user_index_name, query_text, top_k=5
+):
     # Initialize Elasticsearch client
     es = Elasticsearch(
         es_host,
@@ -116,6 +121,9 @@ def perform_bm25_search(es_host, item_index_name, user_index_name, query_text, t
 
     item_results = search_index(item_index_name)
     user_results = search_index(user_index_name)
+
+    # print(f"Item BM25 search results: {item_results}")
+    print(f"User BM25 search results: {user_results}")
 
     return item_results, user_results
 
