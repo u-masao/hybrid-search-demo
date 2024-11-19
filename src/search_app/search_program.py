@@ -53,7 +53,7 @@ def perform_vector_search(
         global embedding_model
         if embedding_model.dimension != dimension:
             embedding_model = Embedding(dimension=dimension)
-        
+
         query_vector = embedding_model.generate_embedding(query_text)
 
         if target_column not in ["embedding", "translation"]:
