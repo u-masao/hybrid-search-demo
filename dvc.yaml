@@ -17,7 +17,7 @@ stages:
       data/users_with_sentences.parquet
       data/user_embeddings.parquet
     deps:
-      - src/embedding_api/embed_sentences.py
+      - src/batch_processing/embed_sentences.py
       - data/users_with_sentences.parquet
     outs:
       - data/user_embeddings.parquet
@@ -51,7 +51,7 @@ stages:
       --dimension=${embedding.dimension}
       --model_name=${embedding.model_name}
     deps:
-      - src/embedding_api/embed_sentences.py
+      - src/batch_processing/embed_sentences.py
       - src/embedding_api/embedding.py
       - data/formatted_dataset.parquet
     outs:

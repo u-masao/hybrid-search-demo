@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv('.credential')
 from elasticsearch import Elasticsearch
 
-from src.embedding.embedding import Embedding
+from src.batch_processing.embed_sentences import Embedding
 
 
 def perform_vector_search(es_host, index_name, query_text, target_column, top_k=5):
