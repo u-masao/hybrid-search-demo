@@ -135,7 +135,7 @@ stages:
 
   learn_two_tower_model:
     cmd: >-
-      poetry run python src/batch_processing/train_two_tower_model.py
+      PYTHONPATH=src poetry run python src/batch_processing/train_two_tower_model.py
       data/user_history.parquet
       models/two_tower_model.pth
       --epochs=${epochs}
