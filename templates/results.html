@@ -32,9 +32,12 @@
     <ul>
         {% for result in user_vector_results %}
         <li>
-            <a href="#" onclick="alert('Title: {{ result._source.introduction }}\nContent: {{ result._source.introduction }}')">
-                {{ result._source.introduction}}
-            </a>
+            <form action="/user_vector_search" method="post" style="display:inline;">
+                <input type="hidden" name="user_translation" value="{{ result._source.translation }}">
+                <button type="submit" style="background:none;border:none;color:#1e90ff;cursor:pointer;">
+                    {{ result._source.introduction }}
+                </button>
+            </form>
         </li>
         {% endfor %}
     </ul>

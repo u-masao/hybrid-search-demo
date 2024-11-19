@@ -43,5 +43,27 @@ def search():
     return render_template("search.html")
 
 
-if __name__ == "__main__":
+@app.route("/user_vector_search", methods=["POST"])
+def user_vector_search():
+    user_translation = request.form.get("user_translation")
+    es_host = "https://localhost:9200"
+
+    # Perform vector search on item_develop index using user's translation vector
+    item_results, _ = perform_vector_search(
+        es_host,
+        item_index_name,
+        user_index_name,
+        user_translation,
+        "translation",
+    )
+
+    return render_template(
+        "results.html",
+        item_vector_results=item_results,
+        user_vector_results=[],
+        target_column="translation",
+        item_bm25_results=[],
+        user_bm25_results=[],
+    )
+
     app.run(debug=True)
