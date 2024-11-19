@@ -3,7 +3,7 @@ import pandas as pd
 from loguru import logger
 from tqdm import tqdm
 
-from src.batch_processing.embedding import Embedding
+from embedding import Embedding
 
 
 def embed_sentences(input_file, output_file, dimension, model_name, limit):
