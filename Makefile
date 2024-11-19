@@ -38,7 +38,7 @@ PIPELINE.md: dvc.yaml params.yaml
 	git commit PIPELINE.md -m 'dvc pipeline updated' || true
 
 test:
-	PYTHONPATH=$(shell pwd) poetry run pytest tests
+	PYTHONPATH=. poetry run pytest tests
 
 
 ### analyse section ###
