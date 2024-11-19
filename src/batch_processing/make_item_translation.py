@@ -29,9 +29,7 @@ def main(item_embeddings_file, item_translation_file, model_path):
     print("Loaded item embeddings shape:", item_embeddings.shape)
 
     # Load the model
-    model = TwoTowerModel(
-        item_embeddings.size(1), item_embeddings.size(1)
-    )
+    model = TwoTowerModel(item_embeddings.size(1), item_embeddings.size(1))
     model.load_state_dict(torch.load(model_path))
     model.eval()
 
@@ -43,9 +41,7 @@ def main(item_embeddings_file, item_translation_file, model_path):
     print("Sample item translations:", item_translations[:5])
 
     df = pd.read_parquet(item_embeddings_file)
-    save_item_translation(
-        df, item_translations, item_translation_file
-    )
+    save_item_translation(df, item_translations, item_translation_file)
 
 
 if __name__ == "__main__":

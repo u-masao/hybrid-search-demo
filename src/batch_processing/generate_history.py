@@ -45,9 +45,7 @@ def generate_user_history(
 @click.argument("user_embeddings_file", type=click.Path(exists=True))
 @click.argument("output_file", type=click.Path())
 @click.option("--max_views", type=int, default=10)
-def main(
-    item_embeddings_file, user_embeddings_file, output_file, max_views
-):
+def main(item_embeddings_file, user_embeddings_file, output_file, max_views):
     """Generate browsing history and save to a parquet file."""
     # Load embeddings
     item_embeddings = pd.read_parquet(item_embeddings_file)

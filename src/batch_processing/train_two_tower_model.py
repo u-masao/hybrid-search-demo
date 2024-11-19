@@ -19,9 +19,7 @@ def load_data(file_path):
 
     return (
         torch.tensor(user_embeddings, dtype=torch.float32, requires_grad=True),
-        torch.tensor(
-            item_embeddings, dtype=torch.float32, requires_grad=True
-        ),
+        torch.tensor(item_embeddings, dtype=torch.float32, requires_grad=True),
         torch.tensor(labels, dtype=torch.float32),
     )
 
@@ -30,9 +28,7 @@ def main(user_history, model_output_path, epochs, patience=10):
     user_embeddings, item_embeddings, labels = load_data(user_history)
 
     with mlflow.start_run():
-        model = TwoTowerModel(
-            user_embeddings.size(1), item_embeddings.size(1)
-        )
+        model = TwoTowerModel(user_embeddings.size(1), item_embeddings.size(1))
         mlflow.log_param("user_embedding_dim", user_embeddings.size(1))
         mlflow.log_param("item_embedding_dim", item_embeddings.size(1))
         model.train()
@@ -48,9 +44,7 @@ def main(user_history, model_output_path, epochs, patience=10):
                 print("Early stopping triggered")
                 break
             optimizer.zero_grad()
-            item_vector, user_vector = model(
-                user_embeddings, item_embeddings
-            )
+            item_vector, user_vector = model(user_embeddings, item_embeddings)
             loss = criterion(item_vector, user_vector, labels)
             loss.backward()
             optimizer.step()
