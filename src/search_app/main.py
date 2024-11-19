@@ -46,9 +46,11 @@ def search():
 @app.route("/user_vector_search", methods=["POST"])
 def user_vector_search():
     user_translation = request.form.get("user_translation")
+    print(user_translation)
     es_host = "https://localhost:9200"
 
-    # Perform vector search on item_develop index using user's translation vector
+    # Perform vector search on item_develop index
+    # using user's translation vector
     item_results, _ = perform_vector_search(
         es_host,
         item_index_name,
@@ -56,7 +58,7 @@ def user_vector_search():
         user_translation,
         "translation",
         top_k=5,
-        dimension=64  # Ensure the dimension is set to 64 for translation vectors
+        dimension=64,  # Ensure the dimension is set to 64
     )
 
     return render_template(
