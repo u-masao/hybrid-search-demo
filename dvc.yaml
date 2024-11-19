@@ -75,7 +75,7 @@ stages:
     cmd: >-
       poetry run python -m src.batch_processing.load_to_elasticsearch
       --es_host=https://localhost:9200
-      --index_name=users_${elastic.index_suffix}
+      --index_name=user_${elastic.index_suffix}
       data/user_translation.parquet
       && echo `date` > data/load_users_timestamp.txt
     deps:
