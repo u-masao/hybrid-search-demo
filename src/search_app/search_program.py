@@ -10,7 +10,7 @@ load_dotenv(".credential")
 # Initialize Embedding class
 embedding_model = Embedding(dimension=384)
 
-print("load embeddin model")
+# print("load embeddin model")
 
 
 def perform_vector_search(
@@ -64,16 +64,16 @@ def perform_vector_search(
             },
         )
         hits = response["hits"]["hits"]
-        print(f"Vector search results for index '{index_name}': {hits}")
+        # print(f"Vector search results for index '{index_name}': {hits}")
         return hits
 
     item_results = search_index(item_index_name)
     user_results = search_index(user_index_name)
 
-    print(f"Item vector search results: {item_results}")
-    print(f"User vector search results: {user_results}")
-    print(f"Item BM25 search results: {item_results}")
-    print(f"User BM25 search results: {user_results}")
+    # print(f"Item vector search results: {item_results}")
+    # print(f"User vector search results: {user_results}")
+    # print(f"Item BM25 search results: {item_results}")
+    # print(f"User BM25 search results: {user_results}")
     return item_results, user_results
 
 
@@ -96,7 +96,7 @@ def bm25_search(es, index_name, query, top_k=5):
     }
     response = es.search(index=index_name, body=search_body)
     hits = response["hits"]["hits"]
-    print(f"BM25 search results for index '{index_name}': {hits}")
+    # print(f"BM25 search results for index '{index_name}': {hits}")
     return hits
 
 
