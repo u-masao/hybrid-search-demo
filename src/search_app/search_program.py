@@ -39,7 +39,9 @@ def perform_vector_search(
 
     def search_index(index_name):
         if not es.indices.exists(index=index_name):
-            raise ValueError(f"Index '{index_name}' does not exist.")
+            # Create the index with default settings if it doesn't exist
+            es.indices.create(index=index_name)
+            print(f"Index '{index_name}' created.")
 
         query_vector = embedding_model.generate_embedding(query_text)
 
