@@ -2,7 +2,7 @@ stages:
 
   generate_user_profiles:
     cmd: >-
-      poetry run python src/batch_processing/generate_users.py
+      poetry run python -m src.batch_processing.generate_users
       --num_users=${num_users}
       --categories="technology,sports,music,art"
       data/users_with_sentences.parquet
@@ -13,7 +13,7 @@ stages:
 
   embed_users:
     cmd: >-
-      PYTHONPATH=src poetry run python src/batch_processing/embed_sentences.py
+      poetry run python -m src.batch_processing.embed_sentences
       data/users_with_sentences.parquet
       data/user_embeddings.parquet
     deps:
@@ -24,7 +24,7 @@ stages:
 
   make_articles:
     cmd: >-
-      poetry run python src/batch_processing/make_dataset.py
+      poetry run python -m src.batch_processing.make_dataset
       data/train.parquet
     deps:
       - src/batch_processing/make_dataset.py
@@ -33,7 +33,7 @@ stages:
 
   format_articles:
     cmd: >-
-      poetry run python src/batch_processing/format_dataset.py
+      poetry run python -m src.batch_processing.format_dataset
       data/train.parquet
       data/formatted_dataset.parquet
       --limit=${dataset.limit}
@@ -45,21 +45,21 @@ stages:
 
   embed_articles:
     cmd: >-
-      poetry run python src/batch_processing/embed_sentences.py
+      poetry run python -m src.batch_processing.embed_sentences
       data/formatted_dataset.parquet
       data/article_embeddings.parquet
       --dimension=${embedding.dimension}
       --model_name=${embedding.model_name}
     deps:
       - src/batch_processing/embed_sentences.py
-      - src/batch_processing/embedding.py
+      - src/model/embedding.py
       - data/formatted_dataset.parquet
     outs:
       - data/article_embeddings.parquet
 
   generate_history:
     cmd: >-
-      poetry run python src/batch_processing/generate_history.py
+      poetry run python -m src.batch_processing.generate_history
       data/article_embeddings.parquet
       data/user_embeddings.parquet
       data/user_history.parquet
@@ -73,7 +73,7 @@ stages:
 
   load_users_to_elasticsearch:
     cmd: >-
-      poetry run python src/batch_processing/load_to_elasticsearch.py
+      poetry run python -m src.batch_processing.load_to_elasticsearch
       --es_host=https://localhost:9200
       --index_name=user_sentences
       data/user_translation.parquet
@@ -86,7 +86,7 @@ stages:
 
   load_articles_to_elasticsearch:
     cmd: >-
-      poetry run python src/batch_processing/load_to_elasticsearch.py
+      poetry run python -m src.batch_processing.load_to_elasticsearch
       --es_host=https://localhost:9200
       --index_name=article_data
       data/article_translation.parquet
@@ -109,7 +109,7 @@ stages:
 
   make_user_translation:
     cmd: >-
-      poetry run python src/batch_processing/make_user_translation.py
+      poetry run python -m src.batch_processing.make_user_translation
       data/user_embeddings.parquet
       data/user_translation.parquet
       models/two_tower_model.pth
@@ -122,7 +122,7 @@ stages:
 
   make_article_translation:
     cmd: >-
-      poetry run python src/batch_processing/make_article_translation.py
+      poetry run python -m src.batch_processing.make_article_translation
       data/article_embeddings.parquet
       data/article_translation.parquet
       models/two_tower_model.pth
@@ -135,14 +135,14 @@ stages:
 
   learn_two_tower_model:
     cmd: >-
-      PYTHONPATH=src poetry run python src/batch_processing/train_two_tower_model.py
+      poetry run python -m src.batch_processing.train_two_tower_model
       data/user_history.parquet
       models/two_tower_model.pth
       --epochs=${epochs}
       --patience=${patience}
     deps:
       - src/batch_processing/train_two_tower_model.py
+      - src/model/two_tower_model.py
       - data/user_history.parquet
-      - src/batch_processing/two_tower_model.py
     outs:
       - models/two_tower_model.pth
