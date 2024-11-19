@@ -32,8 +32,8 @@
     <ul>
         {% for result in user_vector_results %}
         <li>
-            <a href="#" onclick="alert('Title: {{ result._source.title }}\nContent: {{ result._source.content }}')">
-                {{ result._source.title }}
+            <a href="#" onclick="alert('Title: {{ result._source.introduction }}\nContent: {{ result._source.introduction }}')">
+                {{ result._source.introduction}}
             </a>
         </li>
         {% endfor %}
@@ -54,8 +54,8 @@
     <ul>
         {% for result in user_bm25_results %}
         <li>
-            <a href="#" onclick="alert('Title: {{ result._source.title }}\nContent: {{ result._source.content }}')">
-                {{ result._source.title }}
+            <a href="#" onclick="alert('Title: {{ result._source.introduction }}\nContent: {{ result._source.introduction }}')">
+                {{ result._source.introduction }}
             </a>
         </li>
         {% endfor %}
