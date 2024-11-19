@@ -13,7 +13,7 @@ run_embedding_api:
 
 ## search app
 run_search_app:
-	poetry run python -m src.app
+	poetry run python -m src.search_app.main
 
 
 ### batch section ###
