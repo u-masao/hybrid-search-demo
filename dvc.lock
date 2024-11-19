@@ -267,18 +267,18 @@ stages:
   use_elasticsearch:
     cmd: echo use elasticsearch && echo `date` > data/use_elasticsearch.txt
     deps:
-    - path: data/load_articles_timestamp.txt
+    - path: data/load_items_timestamp.txt
       hash: md5
-      md5: 7cfbe908a138f1d5693dae8bae21455a
+      md5: 6d745dd7c0df89bf187af0dd5baa2d55
       size: 43
     - path: data/load_users_timestamp.txt
       hash: md5
-      md5: 46ee1d3af5e6708f8071ad21e8b78299
+      md5: e1c33ef7bd3eeb61d7cacb7d2a922900
       size: 43
     outs:
     - path: data/use_elasticsearch.txt
       hash: md5
-      md5: 7cfbe908a138f1d5693dae8bae21455a
+      md5: 6d745dd7c0df89bf187af0dd5baa2d55
       size: 43
   make_user_translation:
     cmd: poetry run python -m src.batch_processing.make_user_translation data/user_embeddings.parquet
@@ -372,3 +372,41 @@ stages:
       hash: md5
       md5: b7cef9e463735b5f3eaf1a9c58a1c5bb
       size: 350190
+  make_item_translation:
+    cmd: poetry run python -m src.batch_processing.make_item_translation data/item_embeddings.parquet
+      data/item_translation.parquet models/two_tower_model.pth
+    deps:
+    - path: data/item_embeddings.parquet
+      hash: md5
+      md5: b7cef9e463735b5f3eaf1a9c58a1c5bb
+      size: 350190
+    - path: models/two_tower_model.pth
+      hash: md5
+      md5: f8ed250627661629541246a80ddae760
+      size: 463968
+    - path: src/batch_processing/make_item_translation.py
+      hash: md5
+      md5: a66fb54628975a174d38c7c756dcd896
+      size: 1580
+    outs:
+    - path: data/item_translation.parquet
+      hash: md5
+      md5: e93417f7994777e33036152c140e75ca
+      size: 367296
+  load_items_to_elasticsearch:
+    cmd: poetry run python -m src.batch_processing.load_to_elasticsearch --es_host=https://localhost:9200
+      --index_name=item_data data/item_translation.parquet && echo `date` > data/load_items_timestamp.txt
+    deps:
+    - path: data/item_translation.parquet
+      hash: md5
+      md5: e93417f7994777e33036152c140e75ca
+      size: 367296
+    - path: src/batch_processing/load_to_elasticsearch.py
+      hash: md5
+      md5: 9ffc15d3f33d8b19124efc2724da5a0f
+      size: 1938
+    outs:
+    - path: data/load_items_timestamp.txt
+      hash: md5
+      md5: 6d745dd7c0df89bf187af0dd5baa2d55
+      size: 43
