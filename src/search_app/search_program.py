@@ -14,7 +14,7 @@ print("load embeddin model")
 
 
 def perform_vector_search(
-    es_host, index_name, query_text, target_column, top_k=5
+    es_host, item_index_name, user_index_name, query_text, target_column, top_k=5
 ):
     global embedding_model
 
@@ -37,34 +37,36 @@ def perform_vector_search(
         ca_certs="certs/http_ca.crt",
     )
 
-    # Check if the index exists
-    if not es.indices.exists(index=index_name):
-        raise ValueError(f"Index '{index_name}' does not exist.")
+    def search_index(index_name):
+        if not es.indices.exists(index=index_name):
+            raise ValueError(f"Index '{index_name}' does not exist.")
 
-    # Generate embedding for the query text
-    query_vector = embedding_model.generate_embedding(query_text)
+        query_vector = embedding_model.generate_embedding(query_text)
 
-    # Validate target column
-    if target_column not in ["embedding", "translation"]:
-        raise ValueError(
-            "Invalid target column. Choose 'embedding' or 'translation'."
-        )
+        if target_column not in ["embedding", "translation"]:
+            raise ValueError(
+                "Invalid target column. Choose 'embedding' or 'translation'."
+            )
 
-    # Perform vector search using Elasticsearch's knn query
-    response = es.search(
-        index=index_name,
-        body={
-            "size": top_k,
-            "query": {
-                "knn": {
-                    "field": target_column,
-                    "query_vector": query_vector,
-                    "k": top_k,
-                }
+        response = es.search(
+            index=index_name,
+            body={
+                "size": top_k,
+                "query": {
+                    "knn": {
+                        "field": target_column,
+                        "query_vector": query_vector,
+                        "k": top_k,
+                    }
+                },
             },
-        },
-    )
-    return response["hits"]["hits"]
+        )
+        return response["hits"]["hits"]
+
+    item_results = search_index(item_index_name)
+    user_results = search_index(user_index_name)
+
+    return item_results, user_results
 
 
 def bm25_search(es, index_name, query, top_k=5):
@@ -88,7 +90,7 @@ def bm25_search(es, index_name, query, top_k=5):
     return response["hits"]["hits"]
 
 
-def perform_bm25_search(es_host, index_name, query_text, top_k=5):
+def perform_bm25_search(es_host, item_index_name, user_index_name, query_text, top_k=5):
     # Initialize Elasticsearch client
     es = Elasticsearch(
         es_host,
@@ -99,8 +101,13 @@ def perform_bm25_search(es_host, index_name, query_text, top_k=5):
         ca_certs="certs/http_ca.crt",
     )
 
-    # Perform BM25 search
-    return bm25_search(es, index_name, query_text, top_k)
+    def search_index(index_name):
+        return bm25_search(es, index_name, query_text, top_k)
+
+    item_results = search_index(item_index_name)
+    user_results = search_index(user_index_name)
+
+    return item_results, user_results
 
 
 def search(es_host, index_name, query_text, target_column="embedding"):

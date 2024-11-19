@@ -17,19 +17,23 @@ def search():
     if request.method == "POST":
         query_text = request.form.get("query")
         es_host = "https://localhost:9200"
-        index_name = "item_develop"
-
         target_column = request.form.get("target_column", "embedding")
-        vector_results = perform_vector_search(
-            es_host, index_name, query_text, target_column
+
+        # Perform search on both item and user indices
+        item_vector_results, user_vector_results = perform_vector_search(
+            es_host, item_index_name, user_index_name, query_text, target_column
         )
-        bm25_results = perform_bm25_search(es_host, index_name, query_text)
+        item_bm25_results, user_bm25_results = perform_bm25_search(
+            es_host, item_index_name, user_index_name, query_text
+        )
 
         return render_template(
             "results.html",
-            vector_results=vector_results,
+            item_vector_results=item_vector_results,
+            user_vector_results=user_vector_results,
             target_column=target_column,
-            bm25_results=bm25_results,
+            item_bm25_results=item_bm25_results,
+            user_bm25_results=user_bm25_results,
         )
 
     return render_template("search.html")
