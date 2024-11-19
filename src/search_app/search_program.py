@@ -7,10 +7,17 @@ from src.model.embedding import Embedding
 
 load_dotenv(".credential")
 
+# Initialize Embedding class
+embedding_model = Embedding(dimension=384)
+
+print("load embeddin model")
+
 
 def perform_vector_search(
     es_host, index_name, query_text, target_column, top_k=5
 ):
+    global embedding_model
+
     # Initialize Elasticsearch client
     elastic_username = os.getenv("ELASTIC_USERNAME")
     elastic_password = os.getenv("ELASTIC_PASSWORD")
@@ -33,9 +40,6 @@ def perform_vector_search(
     # Check if the index exists
     if not es.indices.exists(index=index_name):
         raise ValueError(f"Index '{index_name}' does not exist.")
-
-    # Initialize Embedding class
-    embedding_model = Embedding(dimension=384)
 
     # Generate embedding for the query text
     query_vector = embedding_model.generate_embedding(query_text)
