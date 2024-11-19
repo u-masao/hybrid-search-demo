@@ -322,3 +322,53 @@ stages:
       hash: md5
       md5: 0aac468be29fe80caec273a174d2f4b8
       size: 327875
+  make_items:
+    cmd: poetry run python -m src.batch_processing.make_dataset data/train.parquet
+    deps:
+    - path: src/batch_processing/make_dataset.py
+      hash: md5
+      md5: 64034da9936a628afe6f2ffb9164d416
+      size: 2005
+    outs:
+    - path: data/train.parquet
+      hash: md5
+      md5: d1a625111c1e7a071cf6e1e4dba0e96e
+      size: 12013185
+  format_items:
+    cmd: poetry run python -m src.batch_processing.format_dataset data/train.parquet
+      data/formatted_dataset.parquet --limit=50
+    deps:
+    - path: data/train.parquet
+      hash: md5
+      md5: d1a625111c1e7a071cf6e1e4dba0e96e
+      size: 12013185
+    - path: src/batch_processing/format_dataset.py
+      hash: md5
+      md5: adc72400124e4c3fb41d79e60446cf16
+      size: 1734
+    outs:
+    - path: data/formatted_dataset.parquet
+      hash: md5
+      md5: 76209b5c0234ef35d1852bbb15fe17f8
+      size: 236578
+  embed_items:
+    cmd: poetry run python -m src.batch_processing.embed_sentences data/formatted_dataset.parquet
+      data/item_embeddings.parquet --dimension=384 --model_name=intfloat/multilingual-e5-small
+    deps:
+    - path: data/formatted_dataset.parquet
+      hash: md5
+      md5: 76209b5c0234ef35d1852bbb15fe17f8
+      size: 236578
+    - path: src/batch_processing/embed_sentences.py
+      hash: md5
+      md5: bc18e3aee247532f6f924bcbbfdeb517
+      size: 2381
+    - path: src/model/embedding.py
+      hash: md5
+      md5: 1d3ae2f3553d85d2da013a0ff03dca3d
+      size: 3840
+    outs:
+    - path: data/item_embeddings.parquet
+      hash: md5
+      md5: b7cef9e463735b5f3eaf1a9c58a1c5bb
+      size: 350190
