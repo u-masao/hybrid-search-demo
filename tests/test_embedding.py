@@ -4,7 +4,7 @@ import os
 import numpy as np
 import pytest
 
-from src.embedding.embedding import Embedding
+from src.model.embedding import Embedding
 
 
 @pytest.fixture

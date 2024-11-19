@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.format_dataset import create_sentence_column
+from src.batch_processing.format_dataset import create_sentence_column
 
 
 def test_create_sentence_column():
