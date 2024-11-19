@@ -13,7 +13,7 @@ def search():
     if request.method == "POST":
         query_text = request.form.get("query")
         es_host = "https://localhost:9200"
-        index_name = "article_data"
+        index_name = "item_data"
 
         target_column = request.form.get("target_column", "embedding")
         vector_results = perform_vector_search(

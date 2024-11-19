@@ -22,7 +22,7 @@ stages:
     outs:
       - data/user_embeddings.parquet
 
-  make_articles:
+  make_items:
     cmd: >-
       poetry run python -m src.batch_processing.make_dataset
       data/train.parquet
@@ -31,7 +31,7 @@ stages:
     outs:
       - data/train.parquet
 
-  format_articles:
+  format_items:
     cmd: >-
       poetry run python -m src.batch_processing.format_dataset
       data/train.parquet
@@ -43,11 +43,11 @@ stages:
     outs:
       - data/formatted_dataset.parquet
 
-  embed_articles:
+  embed_items:
     cmd: >-
       poetry run python -m src.batch_processing.embed_sentences
       data/formatted_dataset.parquet
-      data/article_embeddings.parquet
+      data/item_embeddings.parquet
       --dimension=${embedding.dimension}
       --model_name=${embedding.model_name}
     deps:
@@ -55,18 +55,18 @@ stages:
       - src/model/embedding.py
       - data/formatted_dataset.parquet
     outs:
-      - data/article_embeddings.parquet
+      - data/item_embeddings.parquet
 
   generate_history:
     cmd: >-
       poetry run python -m src.batch_processing.generate_history
-      data/article_embeddings.parquet
+      data/item_embeddings.parquet
       data/user_embeddings.parquet
       data/user_history.parquet
       --max_views=${max_views}
     deps:
       - src/batch_processing/generate_history.py
-      - data/article_embeddings.parquet
+      - data/item_embeddings.parquet
       - data/user_embeddings.parquet
     outs:
       - data/user_history.parquet
@@ -84,18 +84,18 @@ stages:
     outs:
       - data/load_users_timestamp.txt
 
-  load_articles_to_elasticsearch:
+  load_items_to_elasticsearch:
     cmd: >-
       poetry run python -m src.batch_processing.load_to_elasticsearch
       --es_host=https://localhost:9200
-      --index_name=article_data
-      data/article_translation.parquet
-      && echo `date` > data/load_articles_timestamp.txt
+      --index_name=item_data
+      data/item_translation.parquet
+      && echo `date` > data/load_items_timestamp.txt
     deps:
       - src/batch_processing/load_to_elasticsearch.py
-      - data/article_translation.parquet
+      - data/item_translation.parquet
     outs:
-      - data/load_articles_timestamp.txt
+      - data/load_items_timestamp.txt
 
   use_elasticsearch:
     cmd: >-
@@ -103,7 +103,7 @@ stages:
       && echo `date` > data/use_elasticsearch.txt
     deps:
       - data/load_users_timestamp.txt
-      - data/load_articles_timestamp.txt
+      - data/load_items_timestamp.txt
     outs:
       - data/use_elasticsearch.txt
 
@@ -120,18 +120,18 @@ stages:
     outs:
       - data/user_translation.parquet
 
-  make_article_translation:
+  make_item_translation:
     cmd: >-
-      poetry run python -m src.batch_processing.make_article_translation
-      data/article_embeddings.parquet
-      data/article_translation.parquet
+      poetry run python -m src.batch_processing.make_item_translation
+      data/item_embeddings.parquet
+      data/item_translation.parquet
       models/two_tower_model.pth
     deps:
-      - src/batch_processing/make_article_translation.py
-      - data/article_embeddings.parquet
+      - src/batch_processing/make_item_translation.py
+      - data/item_embeddings.parquet
       - models/two_tower_model.pth
     outs:
-      - data/article_translation.parquet
+      - data/item_translation.parquet
 
   learn_two_tower_model:
     cmd: >-

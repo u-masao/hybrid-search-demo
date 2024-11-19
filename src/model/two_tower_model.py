@@ -15,9 +15,9 @@ class UserTower(nn.Module):
         return self.network(x)
 
 
-class ArticleTower(nn.Module):
+class ItemTower(nn.Module):
     def __init__(self, embedding_dim):
-        super(ArticleTower, self).__init__()
+        super(ItemTower, self).__init__()
         self.network = nn.Sequential(
             nn.Linear(embedding_dim, 128),
             nn.ReLU(),
@@ -30,14 +30,14 @@ class ArticleTower(nn.Module):
 
 
 class TwoTowerModel(nn.Module):
-    def __init__(self, user_embedding_dim, article_embedding_dim):
+    def __init__(self, user_embedding_dim, item_embedding_dim):
         super(TwoTowerModel, self).__init__()
         self.user_tower = UserTower(user_embedding_dim)
-        self.article_tower = ArticleTower(article_embedding_dim)
+        self.item_tower = ItemTower(item_embedding_dim)
 
-    def forward(self, user_embedding, article_embedding):
+    def forward(self, user_embedding, item_embedding):
         # Ensure the embeddings have the same batch size
-        min_batch_size = min(user_embedding.size(0), article_embedding.size(0))
+        min_batch_size = min(user_embedding.size(0), item_embedding.size(0))
         user_vector = self.user_tower(user_embedding[:min_batch_size])
-        article_vector = self.article_tower(article_embedding[:min_batch_size])
-        return article_vector, user_vector
+        item_vector = self.item_tower(item_embedding[:min_batch_size])
+        return item_vector, user_vector

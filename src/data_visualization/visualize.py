@@ -64,7 +64,7 @@ def main():
     st.write(formatted_dataset.describe())
 
     # Load and display embeddings
-    embeddings = load_data("data/article_embeddings.parquet")
+    embeddings = load_data("data/item_embeddings.parquet")
     st.header("Embeddings")
     st.write(embeddings.head())
     st.write(embeddings.describe())

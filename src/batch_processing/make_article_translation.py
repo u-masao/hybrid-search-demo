@@ -8,13 +8,13 @@ from src.model.two_tower_model import TwoTowerModel
 tqdm.pandas()
 
 
-def load_article_embeddings(file_path):
+def load_item_embeddings(file_path):
     df = pd.read_parquet(file_path)
-    print("Columns in article embeddings file:", df.columns)
+    print("Columns in item embeddings file:", df.columns)
     return torch.tensor(np.stack(df["embedding"].values), dtype=torch.float32)
 
 
-def save_article_translation(df, translations, output_file):
+def save_item_translation(df, translations, output_file):
     print("DataFrame shape before adding translations:", df.shape)
     print("Translations shape:", translations.shape)
     df = df.reset_index(drop=True)
@@ -24,27 +24,27 @@ def save_article_translation(df, translations, output_file):
     df.to_parquet(output_file, index=False)
 
 
-def main(article_embeddings_file, article_translation_file, model_path):
-    article_embeddings = load_article_embeddings(article_embeddings_file)
-    print("Loaded article embeddings shape:", article_embeddings.shape)
+def main(item_embeddings_file, item_translation_file, model_path):
+    item_embeddings = load_item_embeddings(item_embeddings_file)
+    print("Loaded item embeddings shape:", item_embeddings.shape)
 
     # Load the model
     model = TwoTowerModel(
-        article_embeddings.size(1), article_embeddings.size(1)
+        item_embeddings.size(1), item_embeddings.size(1)
     )
     model.load_state_dict(torch.load(model_path))
     model.eval()
 
     # Generate translations
     with torch.no_grad():
-        article_translations = model.article_tower(article_embeddings).numpy()
+        item_translations = model.item_tower(item_embeddings).numpy()
 
-    print("Generated article translations shape:", article_translations.shape)
-    print("Sample article translations:", article_translations[:5])
+    print("Generated item translations shape:", item_translations.shape)
+    print("Sample item translations:", item_translations[:5])
 
-    df = pd.read_parquet(article_embeddings_file)
-    save_article_translation(
-        df, article_translations, article_translation_file
+    df = pd.read_parquet(item_embeddings_file)
+    save_item_translation(
+        df, item_translations, item_translation_file
     )
 
 

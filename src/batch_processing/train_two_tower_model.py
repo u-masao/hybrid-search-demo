@@ -14,27 +14,27 @@ def load_data(file_path):
     df = pd.read_parquet(file_path)
 
     user_embeddings = np.stack(df["user_embedding"].values)
-    article_embeddings = np.stack(df["article_embedding"].values)
+    item_embeddings = np.stack(df["item_embedding"].values)
     labels = df["label"].values
 
     return (
         torch.tensor(user_embeddings, dtype=torch.float32, requires_grad=True),
         torch.tensor(
-            article_embeddings, dtype=torch.float32, requires_grad=True
+            item_embeddings, dtype=torch.float32, requires_grad=True
         ),
         torch.tensor(labels, dtype=torch.float32),
     )
 
 
 def main(user_history, model_output_path, epochs, patience=10):
-    user_embeddings, article_embeddings, labels = load_data(user_history)
+    user_embeddings, item_embeddings, labels = load_data(user_history)
 
     with mlflow.start_run():
         model = TwoTowerModel(
-            user_embeddings.size(1), article_embeddings.size(1)
+            user_embeddings.size(1), item_embeddings.size(1)
         )
         mlflow.log_param("user_embedding_dim", user_embeddings.size(1))
-        mlflow.log_param("article_embedding_dim", article_embeddings.size(1))
+        mlflow.log_param("item_embedding_dim", item_embeddings.size(1))
         model.train()
 
         optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
@@ -48,10 +48,10 @@ def main(user_history, model_output_path, epochs, patience=10):
                 print("Early stopping triggered")
                 break
             optimizer.zero_grad()
-            article_vector, user_vector = model(
-                user_embeddings, article_embeddings
+            item_vector, user_vector = model(
+                user_embeddings, item_embeddings
             )
-            loss = criterion(article_vector, user_vector, labels)
+            loss = criterion(item_vector, user_vector, labels)
             loss.backward()
             optimizer.step()
 
