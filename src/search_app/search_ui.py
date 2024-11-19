@@ -11,9 +11,7 @@ es_host = "https://localhost:9200"
 
 def search_items(query_text, top_k=5):
     # Perform a BM25 search on the items index
-    result_bm25 = perform_bm25_search(
-        es_host, "item_data", query_text, top_k
-    )
+    result_bm25 = perform_bm25_search(es_host, "item_data", query_text, top_k)
     result_vector = perform_vector_search(
         es_host, "item_data", query_text, top_k
     )
