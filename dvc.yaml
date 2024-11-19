@@ -3,7 +3,7 @@ stages:
   generate_user_profiles:
     cmd: >-
       poetry run python -m src.batch_processing.generate_users
-      --num_users=${num_users}
+      --num_users=${dataset.num_users}
       --categories="technology,sports,music,art"
       data/users_with_sentences.parquet
     deps:
@@ -63,7 +63,7 @@ stages:
       data/item_embeddings.parquet
       data/user_embeddings.parquet
       data/user_history.parquet
-      --max_views=${max_views}
+      --max_views=${dataset.max_views}
     deps:
       - src/batch_processing/generate_history.py
       - data/item_embeddings.parquet
@@ -138,8 +138,8 @@ stages:
       poetry run python -m src.batch_processing.train_two_tower_model
       data/user_history.parquet
       models/two_tower_model.pth
-      --epochs=${epochs}
-      --patience=${patience}
+      --epochs=${train.epochs}
+      --patience=${train.patience}
     deps:
       - src/batch_processing/train_two_tower_model.py
       - src/model/two_tower_model.py

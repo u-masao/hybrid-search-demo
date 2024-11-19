@@ -1,9 +1,10 @@
-epochs: 20000
-patience: 500
+train:
+  epochs: 20000
+  patience: 500
 dataset:
   limit: 50
+  num_users: 25
+  max_views: 10
 embedding:
   model_name: "intfloat/multilingual-e5-small"
   dimension: 384
-num_users: 25
-max_views: 10
