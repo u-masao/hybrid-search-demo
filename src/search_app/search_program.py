@@ -20,6 +20,7 @@ def perform_vector_search(
     query_text,
     target_column,
     top_k=5,
+    dimension=384,  # Default to 384, but can be overridden
 ):
     global embedding_model
 
@@ -48,6 +49,10 @@ def perform_vector_search(
             es.indices.create(index=index_name)
             print(f"Index '{index_name}' created.")
 
+        # Adjust the embedding model dimension if necessary
+        if embedding_model.dimension != dimension:
+            embedding_model = Embedding(dimension=dimension)
+        
         query_vector = embedding_model.generate_embedding(query_text)
 
         if target_column not in ["embedding", "translation"]:

@@ -55,6 +55,8 @@ def user_vector_search():
         user_index_name,
         user_translation,
         "translation",
+        top_k=5,
+        dimension=64  # Ensure the dimension is set to 64 for translation vectors
     )
 
     return render_template(
