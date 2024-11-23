@@ -29,11 +29,6 @@ def load_dvc_yaml(file_path):
 def main():
     st.title("DVC Pipeline Outputs Summary")
 
-    # Load and display DVC YAML data
-    dvc_data = load_dvc_yaml("dvc.yaml")
-    st.header("DVC Pipeline Configuration")
-    st.json(dvc_data)
-
     # Load and display the Mermaid chart
     mermaid_chart = load_mermaid_chart("PIPELINE.md")
     if mermaid_chart:
@@ -48,8 +43,13 @@ def main():
                 mermaid.initialize({{ startOnLoad: true }});
             </script>
             """,
-            height=500,
+            height=700,
         )
+
+    # Load and display DVC YAML data
+    dvc_data = load_dvc_yaml("dvc.yaml")
+    st.header("DVC Pipeline Configuration")
+    st.json(dvc_data)
 
     # Load and display user profiles
     user_profiles = load_data("data/users_with_sentences.parquet")
