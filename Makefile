@@ -4,13 +4,20 @@
 
 
 ### backend section ###
+## run servers
+run_servers: docker_start run_embedding_api run_translation_api run_search_app
+
 ## elastic, kibana, 
 docker_start:
 	docker compose start
 
 ## embedding api
 run_embedding_api:
-	poetry run python -m src.embedding_api.api
+	poetry run python -m src.embedding_api.api --port 5001 --host 0.0.0.0
+
+## translation api
+run_translation_api:
+	poetry run python -m src.translation_api.api --port 5002 --host 0.0.0.0
 
 ## search app
 run_search_app:
