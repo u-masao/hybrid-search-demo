@@ -1,9 +1,31 @@
+from typing import List
+
 import requests
 
-def translation_user(user_id):
-    response = requests.post("http://localhost:5000/api/user_translation_search", json={"user_id": user_id})
-    return response.json()
 
-def translation_item(item_id):
-    response = requests.post("http://localhost:5000/api/item_translation_search", json={"item_id": item_id})
-    return response.json()
+def _build_url(schema, host, port, api):
+    return f"{schema}://{host}:{port}/{api}"
+
+
+def _post_request(url, data):
+    return requests.post(url, json=data)
+
+
+def translate_user(
+    text_embedding: List[float],
+    host: str = "localhost",
+    port: int = 5002,
+    schema="http",
+):
+    url = _build_url(schema, host, port, "translate/user")
+    return _post_request(url, {"embedding": text_embedding})
+
+
+def translate_item(
+    text_embedding: List[float],
+    host: str = "localhost",
+    port: int = 5002,
+    schema="http",
+):
+    url = _build_url(schema, host, port, "translate/user")
+    return _post_request(url, {"embedding": text_embedding})
