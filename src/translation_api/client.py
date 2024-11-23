@@ -1,12 +1,9 @@
-from src.model.embedding import Embedding
-
-# Initialize Embedding class for translation
-translation_model = Embedding(dimension=64)
+import requests
 
 def translation_user(user_id):
-    # Placeholder for user translation logic
-    pass
+    response = requests.post("http://localhost:5000/api/user_translation_search", json={"user_id": user_id})
+    return response.json()
 
 def translation_item(item_id):
-    # Placeholder for item translation logic
-    pass
+    response = requests.post("http://localhost:5000/api/item_translation_search", json={"item_id": item_id})
+    return response.json()
