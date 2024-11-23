@@ -2,6 +2,7 @@
 
 .PHONY: docker_start run_embedding_api run_search_app repro check_commit format lint check_commit test visualize
 
+all:
 
 ### backend section ###
 ## run servers
@@ -46,7 +47,7 @@ PIPELINE.md: dvc.yaml params.yaml
 	git commit PIPELINE.md -m 'dvc pipeline updated' || true
 
 test:
-	PYTHONPATH=. poetry run pytest tests
+	PYTHONPATH=. poetry run pytest -s tests
 
 
 ### analyse section ###
