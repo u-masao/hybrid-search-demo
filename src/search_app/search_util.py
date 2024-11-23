@@ -2,7 +2,7 @@ import click
 from src.search_app.utils import make_client
 
 @click.command()
-@click.option('--es-host', required=True, help='Elasticsearch host URL.')
+@click.option('--es-host', required=False, default='https://localhost:9200/', help='Elasticsearch host URL.')
 @click.option('--index-name', required=True, help='Name of the Elasticsearch index.')
 @click.option('--query', required=True, help='Search query for the sentence, translation, or embedding fields.')
 def search_db(es_host, index_name, query):
