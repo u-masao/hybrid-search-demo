@@ -8,7 +8,7 @@ app = Flask(__name__)
 # Load the model
 print("Loading TwoTowerModel...")
 model = TwoTowerModel(384, 384)  # Assuming 384 is the embedding dimension
-model.load_state_dict(torch.load("actual/path/to/your/model.pth", weights_only=True))  # Update with your model path
+model.load_state_dict(torch.load("models/two_tower_model.pth", weights_only=True))  # Update with your model path
 model.eval()
 print("Model loaded.")
 
