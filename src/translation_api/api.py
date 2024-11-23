@@ -1,16 +1,22 @@
 import time
 import torch
+import click
 from flask import Flask, jsonify, request
 from src.model.two_tower_model import TwoTowerModel
 
 app = Flask(__name__)
 
-# Load the model
-print("Loading TwoTowerModel...")
-model = TwoTowerModel(384, 384)  # Assuming 384 is the embedding dimension
-model.load_state_dict(torch.load("models/two_tower_model.pth", weights_only=True))  # Update with your model path
-model.eval()
-print("Model loaded.")
+@click.command()
+@click.option('--model-path', default='models/two_tower_model.pth', help='Path to the model file.')
+def main(model_path):
+    # Load the model
+    print("Loading TwoTowerModel...")
+    model = TwoTowerModel(384, 384)  # Assuming 384 is the embedding dimension
+    model.load_state_dict(torch.load(model_path, weights_only=True))
+    model.eval()
+    print("Model loaded.")
+
+    app.run(host="0.0.0.0", port=5002)
 
 @app.route("/translate/user", methods=["POST"])
 def translate_user():
@@ -36,8 +42,6 @@ def translate_item():
     print(f"Item translation response time: {elapsed_time:.4f} seconds")
     return response
 
-def main():
-    app.run(host="0.0.0.0", port=5002)
 
 if __name__ == "__main__":
     main()
