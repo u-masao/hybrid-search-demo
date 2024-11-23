@@ -5,7 +5,7 @@ from src.embedding_api.client import text_embedding
 def test_text_embedding():
     with patch('src.embedding_api.client.requests.post') as mock_post:
         # Mock the response from the POST request
-        mock_post.return_value.json.return_value = {'embedding': [0.1, 0.2, 0.3]}
+        mock_post.return_value.json.return_value = {'embedding': [0.1] * 384}
 
         text = "sample text"
         response = text_embedding(text)
@@ -17,4 +17,7 @@ def test_text_embedding():
         )
 
         # Assert that the response is as expected
-        assert response == {'embedding': [0.1, 0.2, 0.3]}
+        assert response == {'embedding': [0.1] * 384}
+
+        # Check that the embedding has the correct dimension
+        assert len(response['embedding']) == 384
