@@ -36,5 +36,8 @@ def translate_item():
     print(f"Item translation response time: {elapsed_time:.4f} seconds")
     return response
 
-if __name__ == "__main__":
+def main():
     app.run(host="0.0.0.0", port=5002)
+
+if __name__ == "__main__":
+    main()
