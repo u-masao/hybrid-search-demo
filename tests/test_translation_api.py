@@ -1,16 +1,26 @@
 import pytest
-from src.translation_api.translator import Translator
+import requests
 
-@pytest.fixture(scope="module")
-def translator():
-    return Translator("models/two_tower_model.pth", 384)
+BASE_URL = "http://localhost:5003"
 
-def test_translate_user(translator):
-    translation = translator.translate_user([0.1] * 384)
-    assert isinstance(translation, list)
-    assert len(translation) > 0
+@pytest.fixture
+def user_embedding():
+    return {"embedding": [0.1] * 384}
 
-def test_translate_item(translator):
-    translation = translator.translate_item([0.1] * 384)
-    assert isinstance(translation, list)
-    assert len(translation) > 0
+@pytest.fixture
+def item_embedding():
+    return {"embedding": [0.1] * 384}
+
+def test_translate_user(user_embedding):
+    response = requests.post(f"{BASE_URL}/translate/user", json=user_embedding)
+    assert response.status_code == 200
+    data = response.json()
+    assert "translation" in data
+    assert isinstance(data["translation"], list)
+
+def test_translate_item(item_embedding):
+    response = requests.post(f"{BASE_URL}/translate/item", json=item_embedding)
+    assert response.status_code == 200
+    data = response.json()
+    assert "translation" in data
+    assert isinstance(data["translation"], list)
