@@ -14,7 +14,7 @@ def search_db(es_host, index_name, query):
         "query": {
             "multi_match": {
                 "query": query,
-                "fields": ["sentence", "translation", "embedding"]
+                "fields": ["sentence", "translation"]
             }
         }
     }
