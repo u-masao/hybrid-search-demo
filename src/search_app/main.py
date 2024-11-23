@@ -1,73 +1,53 @@
-from flask import Flask, render_template, request
-
-from src.search_app.search_program import (
-    perform_bm25_search,
+from flask import Flask, jsonify, request
+from src.search_app.es_utils import (
     perform_vector_search,
+    get_user_info,
+    get_item_info,
+    perform_translation_search,
 )
+from src.embedding_api.client import text_embedding
+from src.translation_api.client import translation_user, translation_item
 
-app = Flask(__name__, template_folder="../../templates")
-
+app = Flask(__name__)
 
 item_index_name = "item_develop"
 user_index_name = "user_develop"
 
-
-@app.route("/", methods=["GET", "POST"])
-def search():
-    if request.method == "POST":
-        query_text = request.form.get("query")
-        es_host = "https://localhost:9200"
-        target_column = request.form.get("target_column", "embedding")
-
-        # Perform search on both item and user indices
-        item_vector_results, user_vector_results = perform_vector_search(
-            es_host,
-            item_index_name,
-            user_index_name,
-            query_text,
-            target_column,
-        )
-        item_bm25_results, user_bm25_results = perform_bm25_search(
-            es_host, item_index_name, user_index_name, query_text
-        )
-
-        return render_template(
-            "results.html",
-            item_vector_results=item_vector_results,
-            user_vector_results=user_vector_results,
-            target_column=target_column,
-            item_bm25_results=item_bm25_results,
-            user_bm25_results=user_bm25_results,
-        )
-
-    return render_template("search.html")
-
-
-@app.route("/user_vector_search", methods=["POST"])
-def user_vector_search():
-    user_translation = request.form.get("user_translation")
-    print(user_translation)
-    es_host = "https://localhost:9200"
-
-    # Perform vector search on item_develop index
-    # using user's translation vector
-    item_results, _ = perform_vector_search(
-        es_host,
-        item_index_name,
-        user_index_name,
-        user_translation,
-        "translation",
-        top_k=5,
-        dimension=64,  # Ensure the dimension is set to 64
+@app.route("/api/vector_search", methods=["POST"])
+def vector_search():
+    data = request.json
+    query_text = data.get("query_text")
+    query_vector = text_embedding(query_text)
+    item_results, user_results = perform_vector_search(
+        query_vector, item_index_name, user_index_name
     )
+    return jsonify({"item_results": item_results, "user_results": user_results})
 
-    return render_template(
-        "results.html",
-        item_vector_results=item_results,
-        user_vector_results=[],
-        target_column="translation",
-        item_bm25_results=[],
-        user_bm25_results=[],
-    )
+@app.route("/api/user_info/<int:user_id>", methods=["GET"])
+def user_info(user_id):
+    user_data = get_user_info(user_id, user_index_name)
+    return jsonify(user_data)
 
+@app.route("/api/item_info/<int:item_id>", methods=["GET"])
+def item_info(item_id):
+    item_data = get_item_info(item_id, item_index_name)
+    return jsonify(item_data)
+
+@app.route("/api/user_translation_search", methods=["POST"])
+def user_translation_search():
+    data = request.json
+    user_id = data.get("user_id")
+    translation_vector = translation_user(user_id)
+    results = perform_translation_search(translation_vector, user_index_name)
+    return jsonify(results)
+
+@app.route("/api/item_translation_search", methods=["POST"])
+def item_translation_search():
+    data = request.json
+    item_id = data.get("item_id")
+    translation_vector = translation_item(item_id)
+    results = perform_translation_search(translation_vector, item_index_name)
+    return jsonify(results)
+
+if __name__ == "__main__":
     app.run(debug=True)
