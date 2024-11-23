@@ -1,6 +1,6 @@
 import time
-import click
 
+import click
 from flask import Flask, jsonify, request
 from transformers import AutoModel, AutoTokenizer
 
@@ -52,6 +52,7 @@ def embed():
 @click.option("--port", default=5001, help="Port to run the server on.")
 def main(host, port):
     app.run(host=host, port=port)
+
 
 if __name__ == "__main__":
     main()
