@@ -9,6 +9,7 @@ app = Flask(__name__)
 @click.command()
 @click.option('--model-path', default='models/two_tower_model.pth', help='Path to the model file.')
 def main(model_path):
+    global model
     # Load the model
     print("Loading TwoTowerModel...")
     model = TwoTowerModel(384, 384)  # Assuming 384 is the embedding dimension
