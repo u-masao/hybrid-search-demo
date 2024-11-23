@@ -1,5 +1,5 @@
-import torch
 from transformers import AutoModel, AutoTokenizer
+
 
 class EmbeddingService:
     def __init__(self, model_name="intfloat/multilingual-e5-small"):
@@ -13,7 +13,11 @@ class EmbeddingService:
 
     def embed(self, query_text):
         prefixed_query = f"query: {query_text}"
-        inputs = self.tokenizer(prefixed_query, return_tensors="pt", truncation=True, padding=True)
+        inputs = self.tokenizer(
+            prefixed_query, return_tensors="pt", truncation=True, padding=True
+        )
         outputs = self.model(**inputs)
-        embedding = outputs.last_hidden_state.mean(dim=1).squeeze().detach().numpy()
+        embedding = (
+            outputs.last_hidden_state.mean(dim=1).squeeze().detach().numpy()
+        )
         return embedding.tolist()
