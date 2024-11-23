@@ -9,9 +9,9 @@ def test_make_client():
     assert isinstance(client, Elasticsearch)
 
 def test_perform_vector_search():
-    query_vector = [0.1, 0.2, 0.3]
-    item_index_name = "items"
-    user_index_name = "users"
+    query_vector = [0.1] * 384
+    item_index_name = "item_develop"
+    user_index_name = "user_develop"
     top_k = 5
 
     item_results, user_results = perform_vector_search(
