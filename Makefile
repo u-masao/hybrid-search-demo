@@ -1,6 +1,7 @@
 # Makefile for code formatting and linting
 
-.PHONY: format lint repro visualize check_commit run run_api_server
+.PHONY: docker_start run_embedding_api run_search_app repro check_commit format lint check_commit test visualize
+
 
 ### backend section ###
 ## elastic, kibana, 
@@ -43,5 +44,4 @@ test:
 
 ### analyse section ###
 visualize:
-	poetry run streamlit run src/visualize.py
-
+	poetry run streamlit run src/data_visualization/visualize.py
