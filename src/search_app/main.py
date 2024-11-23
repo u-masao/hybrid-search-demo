@@ -7,12 +7,14 @@ from src.search_app.es_utils import (
     perform_translation_search,
     perform_vector_search,
 )
-from src.translation_api.client import translate_item, translate_user
 
 app = Flask(__name__)
 
 item_index_name = "item_develop"
 user_index_name = "user_develop"
+
+text_embedding_field_name = "embedding"
+translated_field_name = "translation"
 
 
 @app.route("/api/vector_search", methods=["POST"])
@@ -23,8 +25,11 @@ def vector_search():
     if "embedding" not in query_vector:
         return jsonify({"status": "error"})
 
-    item_results, user_results = perform_vector_search(
-        query_vector["embedding"], item_index_name, user_index_name
+    item_results = perform_vector_search(
+        query_vector["embedding"], item_index_name, text_embedding_field_name
+    )
+    user_results = perform_vector_search(
+        query_vector["embedding"], user_index_name, text_embedding_field_name
     )
     return jsonify(
         {"item_results": item_results, "user_results": user_results}
@@ -56,6 +61,26 @@ def item_translation_search():
     data = request.json
     translation_vector = data.get("translation")
     results = perform_translation_search(translation_vector, item_index_name)
+    return jsonify(results)
+
+
+@app.route("/api/user_text_embedding_search", methods=["POST"])
+def user_text_embedding_search():
+    data = request.json
+    query_vector = data.get("embedding")
+    results = perform_vector_search(
+        query_vector, user_index_name, text_embedding_field_name
+    )
+    return jsonify(results)
+
+
+@app.route("/api/item_text_embedding_search", methods=["POST"])
+def item_text_embedding_search():
+    data = request.json
+    query_vector = data.get("embedding")
+    results = perform_vector_search(
+        query_vector, item_index_name, text_embedding_field_name
+    )
     return jsonify(results)
 
 

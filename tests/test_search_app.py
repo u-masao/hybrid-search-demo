@@ -1,5 +1,3 @@
-import json
-
 import requests
 
 BASE_URL = "http://localhost:5000"
@@ -44,6 +42,26 @@ def test_item_translation_search():
     response = requests.post(
         f"{BASE_URL}/api/item_translation_search",
         json={"translation": [0.1] * 64},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert isinstance(data, list)
+
+
+def test_user_text_embedding_search():
+    response = requests.post(
+        f"{BASE_URL}/api/user_text_embedding_search",
+        json={"embedding": [0.1] * 384},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert isinstance(data, list)
+
+
+def test_item_text_embedding_search():
+    response = requests.post(
+        f"{BASE_URL}/api/item_text_embedding_search",
+        json={"embedding": [0.1] * 384},
     )
     assert response.status_code == 200
     data = response.json()

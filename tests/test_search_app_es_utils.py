@@ -21,14 +21,22 @@ def test_perform_vector_search():
     user_index_name = "user_develop"
     top_k = 5
 
-    item_results, user_results = perform_vector_search(
+    item_results = perform_vector_search(
         query_vector=query_vector,
-        item_index_name=item_index_name,
-        user_index_name=user_index_name,
+        index_name=item_index_name,
+        field_name="embedding",
         top_k=top_k,
     )
 
     assert len(item_results) <= top_k
+
+    user_results = perform_vector_search(
+        query_vector=query_vector,
+        index_name=user_index_name,
+        field_name="embedding",
+        top_k=top_k,
+    )
+
     assert len(user_results) <= top_k
 
 
@@ -36,7 +44,6 @@ def test_get_user_info():
     user_id = "A1WNRJMBau9a4UogThL4"
     user_index_name = "user_develop"
     user_info = get_user_info(user_id, user_index_name)
-    print(user_info)
     assert user_info is not None
     assert (
         "sentence" in user_info
