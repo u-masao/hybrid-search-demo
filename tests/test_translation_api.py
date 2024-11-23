@@ -1,7 +1,11 @@
 import pytest
 import json
 from flask import Flask
-from src.translation_api.api import app
+from src.translation_api.api import app, main
+
+@pytest.fixture(scope='module', autouse=True)
+def setup_model():
+    main(['--model-path', 'models/two_tower_model.pth'])
 
 @pytest.fixture
 def client():
