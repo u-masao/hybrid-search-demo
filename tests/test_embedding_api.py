@@ -17,4 +17,4 @@ def test_embed():
     data = response.json()
     embedding = data.get("embedding", [])
     assert isinstance(embedding, list)
-    assert len(embedding) > 0
+    assert len(embedding) == 384
