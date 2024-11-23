@@ -1,5 +1,5 @@
 import click
-from elasticsearch import Elasticsearch
+from src.search_app.utils import make_client
 
 @click.command()
 @click.option('--es-host', required=True, help='Elasticsearch host URL.')
@@ -7,7 +7,7 @@ from elasticsearch import Elasticsearch
 @click.option('--query', required=True, help='Search query for the sentence, translation, or embedding fields.')
 def search_db(es_host, index_name, query):
     """Search the Elasticsearch index for the given query in sentence, translation, and embedding fields."""
-    es = Elasticsearch(es_host)
+    es = make_client(es_host)
 
     # Construct the search query
     search_query = {
