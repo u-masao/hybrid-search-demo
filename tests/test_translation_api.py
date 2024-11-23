@@ -25,3 +25,4 @@ def test_translate_item(item_embedding):
     data = response.json()
     assert "translation" in data
     assert isinstance(data["translation"], list)
+    assert len(data["translation"]) == 64
