@@ -71,32 +71,6 @@ stages:
     outs:
       - data/user_history.parquet
 
-  load_users_to_elasticsearch:
-    cmd: >-
-      poetry run python -m src.batch_processing.load_to_elasticsearch
-      --es_host=https://localhost:9200
-      --index_name=users_${elastic.index_suffix}
-      data/user_translation.parquet
-      && echo `date` > data/load_users_timestamp.txt
-    deps:
-      - src/batch_processing/load_to_elasticsearch.py
-      - data/user_translation.parquet
-    outs:
-      - data/load_users_timestamp.txt
-
-  load_items_to_elasticsearch:
-    cmd: >-
-      poetry run python -m src.batch_processing.load_to_elasticsearch
-      --es_host=https://localhost:9200
-      --index_name=item_${elastic.index_suffix}
-      data/item_translation.parquet
-      && echo `date` > data/load_items_timestamp.txt
-    deps:
-      - src/batch_processing/load_to_elasticsearch.py
-      - data/item_translation.parquet
-    outs:
-      - data/load_items_timestamp.txt
-
   use_elasticsearch:
     cmd: >-
       echo use elasticsearch
@@ -106,6 +80,20 @@ stages:
       - data/load_items_timestamp.txt
     outs:
       - data/use_elasticsearch.txt
+
+  learn_two_tower_model:
+    cmd: >-
+      poetry run python -m src.batch_processing.train_two_tower_model
+      data/user_history.parquet
+      models/two_tower_model.pth
+      --epochs=${train.epochs}
+      --patience=${train.patience}
+    deps:
+      - src/batch_processing/train_two_tower_model.py
+      - src/model/two_tower_model.py
+      - data/user_history.parquet
+    outs:
+      - models/two_tower_model.pth
 
   make_user_translation:
     cmd: >-
@@ -133,16 +121,28 @@ stages:
     outs:
       - data/item_translation.parquet
 
-  learn_two_tower_model:
+  load_users_to_elasticsearch:
     cmd: >-
-      poetry run python -m src.batch_processing.train_two_tower_model
-      data/user_history.parquet
-      models/two_tower_model.pth
-      --epochs=${train.epochs}
-      --patience=${train.patience}
+      poetry run python -m src.batch_processing.load_to_elasticsearch
+      --es_host=https://localhost:9200
+      --index_name=user_${elastic.index_suffix}
+      data/user_translation.parquet
+      && echo `date` > data/load_users_timestamp.txt
     deps:
-      - src/batch_processing/train_two_tower_model.py
-      - src/model/two_tower_model.py
-      - data/user_history.parquet
+      - src/batch_processing/load_to_elasticsearch.py
+      - data/user_translation.parquet
     outs:
-      - models/two_tower_model.pth
+      - data/load_users_timestamp.txt
+
+  load_items_to_elasticsearch:
+    cmd: >-
+      poetry run python -m src.batch_processing.load_to_elasticsearch
+      --es_host=https://localhost:9200
+      --index_name=item_${elastic.index_suffix}
+      data/item_translation.parquet
+      && echo `date` > data/load_items_timestamp.txt
+    deps:
+      - src/batch_processing/load_to_elasticsearch.py
+      - data/item_translation.parquet
+    outs:
+      - data/load_items_timestamp.txt

@@ -45,6 +45,13 @@ def main(item_embeddings_file, item_translation_file, model_path):
 
 
 if __name__ == "__main__":
-    import sys
+    import click
 
-    main(sys.argv[1], sys.argv[2], sys.argv[3])
+    @click.command()
+    @click.argument("item_embeddings_file", type=click.Path(exists=True))
+    @click.argument("item_translation_file", type=click.Path())
+    @click.argument("model_path", type=click.Path(exists=True))
+    def cli(item_embeddings_file, item_translation_file, model_path):
+        main(item_embeddings_file, item_translation_file, model_path)
+
+    cli()

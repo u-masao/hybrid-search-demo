@@ -17,9 +17,9 @@
     </style>
 </head>
 <body>
-    <h1>Vector Search Results ({{ target_column }})</h1>
+    <h1>Item Vector Search Results ({{ target_column }})</h1>
     <ul>
-        {% for result in vector_results %}
+        {% for result in item_vector_results %}
         <li>
             <a href="#" onclick="alert('Title: {{ result._source.title }}\nContent: {{ result._source.content }}')">
                 {{ result._source.title }}
@@ -28,12 +28,37 @@
         {% endfor %}
     </ul>
 
-    <h1>BM25 Search Results</h1>
+    <h1>User Vector Search Results ({{ target_column }})</h1>
     <ul>
-        {% for result in bm25_results %}
+        {% for result in user_vector_results %}
+        <li>
+            <form action="/user_vector_search" method="post" style="display:inline;">
+                <input type="hidden" name="user_translation" value="{{ result._source.translation }}">
+                <button type="submit" style="background:none;border:none;color:#1e90ff;cursor:pointer;">
+                    {{ result._source.introduction }}
+                </button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h1>Item BM25 Search Results</h1>
+    <ul>
+        {% for result in item_bm25_results %}
         <li>
             <a href="#" onclick="alert('Title: {{ result._source.title }}\nContent: {{ result._source.content }}')">
                 {{ result._source.title }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h1>User BM25 Search Results</h1>
+    <ul>
+        {% for result in user_bm25_results %}
+        <li>
+            <a href="#" onclick="alert('Title: {{ result._source.introduction }}\nContent: {{ result._source.introduction }}')">
+                {{ result._source.introduction }}
             </a>
         </li>
         {% endfor %}

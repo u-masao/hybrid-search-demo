@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid Search App</title>
+    <link rel="stylesheet" href="style.css">
+    <script type='module'>
+        import {} from './main.js';
+        document.getElementById('search-button').addEventListener('click', performSearch);
+        document.getElementById('query-input').addEventListener('keydown', handleKeyDown);
+        function handleKeyDown(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="search-container">
+        <input type="text" id="query-input" placeholder="Enter your search query">
+        <button id='search-button'>Search</button>
+    </div>
+    <div id="results">
+        <div class="result-box" id="user-hybrid-results">User Hybrid Results</div>
+        <div class="result-box" id="item-hybrid-results">Item Hybrid Results</div>
+        <div class="result-box" id="user-translation-results">User Translation Results</div>
+        <div class="result-box" id="item-translation-results">Item Translation Results</div>
+        <div class="result-box" id="user-text-embedding-results">User Text Embedding Results</div>
+        <div class="result-box" id="item-text-embedding-results">Item Text Embedding Results</div>
+        <div class="result-box" id="user-bm25-results">User BM25 Results</div>
+        <div class="result-box" id="item-bm25-results">Item BM25 Results</div>
+    </div>
+    <div id="detailPopup"><button onclick="hidePopup()">x</button><div id ='popupContent'></div></div>
+</body>
+</html>
