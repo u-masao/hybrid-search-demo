@@ -4,7 +4,7 @@ stages:
     cmd: >-
       poetry run python -m src.batch_processing.generate_users
       --num_users=${dataset.num_users}
-      --categories="technology,sports,music,art"
+      --categories="technology,sports,music,art,book,fishing,tea"
       data/users_with_sentences.parquet
     deps:
       - src/batch_processing/generate_users.py
