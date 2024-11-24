@@ -210,7 +210,7 @@ def perform_hybrid_search(
     text_weight: float = 1.0,
     text_vector_weight: float = 1.0,
     translation_vector_weight: float = 1.0,
-    top_k=5,
+    top_k=5
 ):
     es = make_client("https://localhost:9200")
 
