@@ -1,4 +1,8 @@
-from flask import Flask, jsonify, request, send_from_directory
+import io
+import random
+
+from flask import Flask, jsonify, make_response, request, send_from_directory
+from PIL import Image, ImageDraw, ImageFont
 
 from src.embedding_api.client import text_embedding
 from src.search_app.es_utils import (
@@ -18,14 +22,25 @@ text_embedding_field_name = "embedding"
 translated_field_name = "translation"
 
 
+@app.route("/api/text_embedding", methods=["POST"])
+def encode_text():
+    data = request.json
+    query_text = data.get("query_text")
+    embedding = text_embedding(query_text)
+    if "embedding" not in embedding:
+        return jsonify({"status": "error"})
+    return jsonify({"embedding": embedding["embedding"]})
+
+
 @app.route("/api/vector_search", methods=["POST"])
 def vector_search():
     data = request.json
     query_text = data.get("query_text")
+    print(query_text)
     query_vector = text_embedding(query_text)
     if "embedding" not in query_vector:
         return jsonify({"status": "error"})
-
+    print(query_vector)
     item_results = perform_vector_search(
         query_vector["embedding"], item_index_name, text_embedding_field_name
     )
@@ -89,20 +104,50 @@ def item_text_embedding_search():
     return jsonify(results)
 
 
-@app.route("/api/item_hybrid_search", methods=["POST"])
-def item_hybrid_search():
-    global item_index_name
+def parse_hybrid_search_input():
     data = request.json
-    query_text = data.get("text")
-    query_text_vector = data.get("embedding")
-    query_translation_vector = data.get("translation")
-    text_weight = data.get("text_weight", 1.0)
-    text_vector_weight = data.get("text_vector_weight", 1.0)
-    translation_vector_weight = data.get("translation_vector_weight", 1.0)
+    print(data)
+    query_text = data.get("text", None)
+    query_text_vector = data.get("embedding", [0.1] * 384)
+    query_translation_vector = data.get("translation", [0.1] * 64)
+    text_weight = data.get("text_weight", 0.0)
+    text_vector_weight = data.get("text_vector_weight", 0.0)
+    translation_vector_weight = data.get("translation_vector_weight", 0.0)
     top_k = data.get("top_k", 5)
     text_field_name = "sentence"
     text_vector_field_name = "embedding"
     translation_vector_field_name = "translation"
+
+    return (
+        query_text,
+        query_text_vector,
+        query_translation_vector,
+        text_weight,
+        text_vector_weight,
+        translation_vector_weight,
+        top_k,
+        text_field_name,
+        text_vector_field_name,
+        translation_vector_field_name,
+    )
+
+
+@app.route("/api/item_hybrid_search", methods=["POST"])
+def item_hybrid_search():
+    global item_index_name
+
+    (
+        query_text,
+        query_text_vector,
+        query_translation_vector,
+        text_weight,
+        text_vector_weight,
+        translation_vector_weight,
+        top_k,
+        text_field_name,
+        text_vector_field_name,
+        translation_vector_field_name,
+    ) = parse_hybrid_search_input()
 
     results = perform_hybrid_search(
         query_text,
@@ -123,17 +168,19 @@ def item_hybrid_search():
 @app.route("/api/user_hybrid_search", methods=["POST"])
 def user_hybrid_search():
     global user_index_name
-    data = request.json
-    query_text = data.get("text")
-    query_text_vector = data.get("embedding")
-    query_translation_vector = data.get("translation")
-    text_weight = data.get("text_weight", 1.0)
-    text_vector_weight = data.get("text_vector_weight", 1.0)
-    translation_vector_weight = data.get("translation_vector_weight", 1.0)
-    top_k = data.get("top_k", 5)
-    text_field_name = "sentence"
-    text_vector_field_name = "embedding"
-    translation_vector_field_name = "translation"
+
+    (
+        query_text,
+        query_text_vector,
+        query_translation_vector,
+        text_weight,
+        text_vector_weight,
+        translation_vector_weight,
+        top_k,
+        text_field_name,
+        text_vector_field_name,
+        translation_vector_field_name,
+    ) = parse_hybrid_search_input()
 
     results = perform_hybrid_search(
         query_text,
@@ -149,6 +196,38 @@ def user_hybrid_search():
         top_k=top_k,
     )
     return jsonify(results)
+
+
+@app.route("/favicon.ico")
+def favicon():
+    # 画像サイズ
+    size = (32, 32)
+
+    # ランダムな背景色を生成
+    r = random.randint(0, 128)
+    g = random.randint(0, 128)
+    b = random.randint(0, 128)
+    img = Image.new("RGB", size, (r, g, b))
+
+    # ロゴを描画
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.truetype("ipag.ttf", 25)
+    draw.text((5, 5), "Hy", fill=(255, 255, 255), font=font)
+
+    # 画像をバイトストリームに保存
+    img_io = io.BytesIO()
+    img.save(img_io, "ICO")
+    img_io.seek(0)
+
+    # レスポンスを作成
+    response = make_response(img_io.getvalue())
+    response.headers["Content-Type"] = "image/x-icon"
+    return response
+
+
+@app.route("/<path:filename>")
+def serve_file(filename):
+    return send_from_directory("./content", filename, as_attachment=False)
 
 
 @app.route("/")
