@@ -14,15 +14,15 @@ docker_start:
 
 ## embedding api
 run_embedding_api:
-	poetry run python -m src.embedding_api.api --port 5001 --host 0.0.0.0
+	poetry run python -m src.embedding_api.api --port 5001 --host 0.0.0.0 &
 
 ## translation api
 run_translation_api:
-	poetry run python -m src.translation_api.api --port 5002 --host 0.0.0.0
+	poetry run python -m src.translation_api.api --port 5002 --host 0.0.0.0 &
 
 ## search app
 run_search_app:
-	FLASK_APP=src.search_app.main poetry run flask run --debugger --reload
+	FLASK_APP=src.search_app.main poetry run flask run --debugger --reload &
 
 
 ### batch section ###
