@@ -7,6 +7,9 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from tqdm import tqdm
 
+# モジュールの説明:
+# このモジュールは、架空のユーザープロファイルを生成し、指定されたファイルに保存するための機能を提供します。
+
 # 環境変数をロード
 # .credentialファイルから環境変数を読み込む
 # .envファイルから環境変数を読み込む
