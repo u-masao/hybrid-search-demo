@@ -75,7 +75,7 @@ def generate_user_profiles(num_users=1000, categories=None):
                         ),
                     }
                 ],
-                max_tokens=50,
+                max_tokens=100,
                 temperature=0.9,
             )
             .choices[0]
@@ -111,7 +111,7 @@ def generate_user_profiles(num_users=1000, categories=None):
 )
 @click.option(
     "--categories",
-    default="technology,sports,music,art",
+    default="technology,sports,music,art,book,car",
     help="ユーザーの好みのカテゴリのカンマ区切りリスト。",
 )
 @click.argument("output_file", type=click.Path())
