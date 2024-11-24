@@ -1,0 +1,77 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 10;
+    padding: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #181818; /* Dark background */
+    color: #e0e0e0; /* Light text color */
+}
+
+#search-container {
+    margin-bottom: 20px;
+}
+
+#results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 90%;
+}
+
+.result-box {
+    background-color: #282828; /* Darker background for boxes */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* White shadow */
+}
+
+.translation-link {
+    color: #0096c7; /* Light blue link color */
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.button {
+  display: inline-block;
+  padding: 2px 5px;
+  margin: 2px 5px;
+  text-align: center;
+  text-decoration: none;
+  background-color: #007bff; /* 青色 */
+  color: #fff; /* 白色 */
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #0069d9; /* 濃い青色 */
+}
+
+.item-summary {
+  background-color: #181818;
+  border-radius: 5px;
+  padding: 3px;
+  margin: 3px;
+}
+
+.item-summary dd {
+  margin-left: 20px;
+}
+
+#detailPopup {
+  display: none;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid black;
+  padding: 20px;
+  background-color: #181818; /* Dark background */
+  color: #e0e0e0; /* Light text color */
+  max-height: 80vh; /* ポップアップの最大の高さを制限 */
+  overflow-y: auto; /* コンテンツが溢れた場合にスクロールバーを表示 */
+}
