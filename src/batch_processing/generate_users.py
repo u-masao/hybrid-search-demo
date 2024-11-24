@@ -12,6 +12,7 @@ from tqdm import tqdm
 # .envファイルから環境変数を読み込む
 load_dotenv()
 
+
 def generate_user_profiles(num_users=1000, categories=None):
     """
     架空のユーザープロファイルを生成します。
@@ -100,6 +101,7 @@ def generate_user_profiles(num_users=1000, categories=None):
 
     return user_profiles
 
+
 @click.command()  # コマンドラインインターフェースを定義
 @click.option(
     "--num_users", default=1000, help="生成するユニークなユーザーの数。"
@@ -122,6 +124,7 @@ def main(num_users, categories, output_file):
     df_user_profiles = pd.DataFrame.from_dict(user_profiles, orient="index")
     # Parquetファイルに保存
     df_user_profiles.to_parquet(output_file)
+
 
 if __name__ == "__main__":
     main()
