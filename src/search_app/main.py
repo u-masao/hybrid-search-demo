@@ -38,7 +38,6 @@ def encode_text():
     flask.Response
         埋め込みベクトルを含むJSONレスポンス
     """
-def encode_text():
     data = request.json
     query_text = data.get("query_text")
     embedding = text_embedding(query_text)
@@ -57,7 +56,6 @@ def vector_search():
     flask.Response
         アイテムとユーザーの検索結果を含むJSONレスポンス
     """
-def vector_search():
     data = request.json
     query_text = data.get("query_text")
     print(query_text)
@@ -86,7 +84,6 @@ def user_info():
     flask.Response
         ユーザー情報を含むJSONレスポンス
     """
-def user_info():
     data = request.json
     user_id = data.get("id")
     user_data = get_user_info(user_id, user_index_name)
@@ -103,7 +100,6 @@ def item_info():
     flask.Response
         アイテム情報を含むJSONレスポンス
     """
-def item_info():
     data = request.json
     item_id = data.get("id")
     item_data = get_item_info(item_id, item_index_name)
@@ -120,7 +116,6 @@ def user_translation_search():
     flask.Response
         検索結果を含むJSONレスポンス
     """
-def user_translation_search():
     data = request.json
     translation_vector = data.get("translation")
     results = perform_translation_search(translation_vector, user_index_name)
@@ -137,7 +132,6 @@ def item_translation_search():
     flask.Response
         検索結果を含むJSONレスポンス
     """
-def item_translation_search():
     data = request.json
     translation_vector = data.get("translation")
     results = perform_translation_search(translation_vector, item_index_name)
@@ -154,7 +148,6 @@ def user_text_embedding_search():
     flask.Response
         検索結果を含むJSONレスポンス
     """
-def user_text_embedding_search():
     data = request.json
     query_vector = data.get("embedding")
     results = perform_vector_search(
@@ -173,7 +166,6 @@ def item_text_embedding_search():
     flask.Response
         検索結果を含むJSONレスポンス
     """
-def item_text_embedding_search():
     data = request.json
     query_vector = data.get("embedding")
     results = perform_vector_search(
@@ -228,7 +220,6 @@ def item_hybrid_search():
     flask.Response
         検索結果を含むJSONレスポンス
     """
-def item_hybrid_search():
     global item_index_name
 
     (
@@ -270,7 +261,6 @@ def user_hybrid_search():
     flask.Response
         検索結果を含むJSONレスポンス
     """
-def user_hybrid_search():
     global user_index_name
 
     (
@@ -312,7 +302,7 @@ def favicon():
     flask.Response
         ICO形式の画像を含むレスポンス
     """
-def favicon():
+
     # 画像サイズ
     size = (32, 32)
 
@@ -353,7 +343,6 @@ def serve_file(filename):
     flask.Response
         ファイルを含むレスポンス
     """
-def serve_file(filename):
     return send_from_directory("./content", filename, as_attachment=False)
 
 
@@ -367,7 +356,6 @@ def serve_index():
     flask.Response
         インデックスページを含むレスポンス
     """
-def serve_index():
     return send_from_directory("./content", "index.html")
 
 
