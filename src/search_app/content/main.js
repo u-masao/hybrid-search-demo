@@ -1,4 +1,5 @@
 export async function performSearch() {
+    window.performSearch = performSearch;
     const queryText = document.getElementById('query-input').value;
     const queryVector = await fetchEmbedding(queryText);
 
