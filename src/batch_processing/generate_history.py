@@ -1,4 +1,4 @@
-import datetime
+import datetime  # 日付操作用
 import random
 
 import click
@@ -9,14 +9,19 @@ def generate_user_history(
     item_df, user_df, max_views=10, label_probability=0.5
 ):
     """
-    Generate browsing history for each item.
+    各アイテムの閲覧履歴を生成します。
 
-    Parameters:
-    - item_df: DataFrame containing 'sentence' column.
-    - user_df: Dictionary of user profiles.
+    Parameters
+    ----------
+    item_df : pandas.DataFrame
+        'sentence'列を含むアイテムのDataFrame。
+    user_df : pandas.DataFrame
+        ユーザープロファイルを含むDataFrame。
 
-    Returns:
-    DataFrame containing browsing history.
+    Returns
+    -------
+    pandas.DataFrame
+        閲覧履歴を含むDataFrame。
     """
     history = []
     user_ids = list(user_df["id"].values)
@@ -40,7 +45,7 @@ def generate_user_history(
     return pd.DataFrame(history)
 
 
-@click.command()
+@click.command()  # コマンドラインインターフェースを定義
 @click.argument("item_embeddings_file", type=click.Path(exists=True))
 @click.argument("user_embeddings_file", type=click.Path(exists=True))
 @click.argument("output_file", type=click.Path())
@@ -48,10 +53,12 @@ def generate_user_history(
 def main(item_embeddings_file, user_embeddings_file, output_file, max_views):
     """Generate browsing history and save to a parquet file."""
     # Load embeddings
+    # 埋め込みをロード
     item_embeddings = pd.read_parquet(item_embeddings_file)
     user_embeddings = pd.read_parquet(user_embeddings_file)
 
     # Debug output for input columns
+    # 入力列のデバッグ出力
     print("Item Embeddings Columns:", item_embeddings.columns)
     print("User Embeddings Columns:", user_embeddings.columns)
     df_history = generate_user_history(
@@ -59,6 +66,7 @@ def main(item_embeddings_file, user_embeddings_file, output_file, max_views):
     )
 
     # Merge embeddings with history
+    # 履歴と埋め込みをマージ
     df_history = df_history.merge(
         item_embeddings[["id", "embedding"]]
         .rename(columns={"embedding": "item_embedding"})
@@ -77,6 +85,7 @@ def main(item_embeddings_file, user_embeddings_file, output_file, max_views):
     )
 
     # Select relevant columns
+    # 関連する列を選択
     df_history = df_history[
         [
             "item_embedding",

@@ -1,4 +1,4 @@
-import os
+import os  # OS操作用
 import random
 
 import click
@@ -8,6 +8,8 @@ from openai import OpenAI
 from tqdm import tqdm
 
 # 環境変数をロード
+# .credentialファイルから環境変数を読み込む
+# .envファイルから環境変数を読み込む
 load_dotenv()
 
 def generate_user_profiles(num_users=1000, categories=None):
@@ -30,25 +32,31 @@ def generate_user_profiles(num_users=1000, categories=None):
         categories = []
 
     # ユーザーIDのリストを生成
+    # 1からnum_usersまでのIDを生成
     user_ids = [i for i in range(1, num_users + 1)]
     # 性別の選択肢
     genders = ["male", "female", "non-binary"]
 
     # OpenAIクライアントを初期化
+    # OpenAI APIを使用して自己紹介文を生成
     client = OpenAI(
         api_key=os.environ["OPENAI_API_KEY"],
     )
     user_profiles = {}
     for user_id in tqdm(user_ids, desc="Generating user profiles"):
         # 年齢をランダムに決定
+        # 18から70の間でランダムに選択
         age = random.randint(18, 70)
         # 性別をランダムに選択
+        # 性別の選択肢からランダムに選択
         gender = random.choice(genders)
         # 好みのカテゴリをランダムに選択
+        # カテゴリからランダムに選択
         preferences = random.sample(
             categories, k=random.randint(1, min(3, len(categories)))
         )
         # 自己紹介文を生成
+        # OpenAI APIを使用して生成
         introduction = (
             client.chat.completions.create(
                 model="gpt-3.5-turbo",
@@ -71,6 +79,7 @@ def generate_user_profiles(num_users=1000, categories=None):
         )
 
         # プロファイルの文を作成
+        # プロファイル情報をフォーマット
         sentence = (
             f"**Age**: {age}\n\n"
             f"**Gender**: {gender}\n\n"
@@ -79,6 +88,7 @@ def generate_user_profiles(num_users=1000, categories=None):
         )
 
         # ユーザープロファイルを辞書に追加
+        # 辞書にプロファイルを追加
         user_profiles[user_id] = {
             "id": user_id,
             "sentence": sentence,
@@ -90,7 +100,7 @@ def generate_user_profiles(num_users=1000, categories=None):
 
     return user_profiles
 
-@click.command()
+@click.command()  # コマンドラインインターフェースを定義
 @click.option(
     "--num_users", default=1000, help="生成するユニークなユーザーの数。"
 )

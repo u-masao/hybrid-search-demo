@@ -1,4 +1,4 @@
-import os
+import os  # OS操作用
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -9,6 +9,7 @@ load_dotenv(".credential")
 
 def load_data_to_elasticsearch(es_host, index_name, embedding_file):
     print(f"{es_host=}")
+    # Elasticsearchクライアントを初期化
     es = Elasticsearch(
         es_host,
         http_auth=(
@@ -18,6 +19,7 @@ def load_data_to_elasticsearch(es_host, index_name, embedding_file):
         ca_certs="certs/http_ca.crt",
     )
     # Define the index mapping with dense_vector fields
+    # インデックスマッピングを定義
     index_mapping = {
         "mappings": {
             "properties": {
@@ -36,11 +38,13 @@ def load_data_to_elasticsearch(es_host, index_name, embedding_file):
         es.indices.delete(index=index_name)
 
     # Create the index with the specified mapping
+    # 指定されたマッピングでインデックスを作成
     es.indices.create(index=index_name, body=index_mapping)
 
     df = pd.read_parquet(embedding_file)
 
     print(f"Uploading data with columns: {df.columns.tolist()}")
+    # データをElasticsearchにアップロード
 
     actions = [
         {
@@ -54,9 +58,9 @@ def load_data_to_elasticsearch(es_host, index_name, embedding_file):
 
 
 if __name__ == "__main__":
-    import click
+    import click  # コマンドライン引数を処理するためのライブラリ
 
-    @click.command()
+    @click.command()  # コマンドラインインターフェースを定義
     @click.option(
         "--es_host",
         default="https://localhost:9200",

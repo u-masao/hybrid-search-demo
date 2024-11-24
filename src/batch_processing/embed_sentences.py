@@ -1,4 +1,4 @@
-import mlflow
+import mlflow  # 機械学習のライフサイクル管理用
 import pandas as pd
 from loguru import logger
 from tqdm import tqdm
@@ -7,6 +7,22 @@ from src.model.embedding import Embedding
 
 
 def embed_sentences(input_file, output_file, dimension, model_name, limit):
+    """
+    データセット内の文の埋め込みを生成します。
+
+    Parameters
+    ----------
+    input_file : str
+        データセットを含む入力Parquetファイルのパス。
+    output_file : str
+        埋め込みを含む出力Parquetファイルを保存するパス。
+    dimension : int
+        埋め込みベクトルの次元数。
+    model_name : str
+        埋め込みに使用する事前学習済みモデルの名前。
+    limit : int
+        データセットから処理する最大行数。
+    """
     """
     データセット内の文の埋め込みを生成します。
 
@@ -28,20 +44,25 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
         )
 
     # 制限が指定されている場合は行数を制限
+    # データセットの行数を制限
     if limit > 0:
         df = df.head(min(limit, len(df)))
 
     # 指定された次元で埋め込みモデルを初期化
+    # 埋め込みモデルを初期化
     embedding_model = Embedding(dimension=dimension)
     # pandasにtqdmを登録
+    # プログレスバーを表示
     tqdm.pandas()
 
     # DataFrame内の各文に埋め込み生成を適用し、プログレスバーを表示
+    # 各文に対して埋め込みを生成
     df["embedding"] = df["sentence"].progress_apply(
         lambda x: (embedding_model.generate_embedding(x))
     )
 
     # 埋め込みを含むDataFrameをParquetファイルに保存
+    # 結果をファイルに保存
     logger.info(f"Saving embeddings to {output_file}")
     df.to_parquet(output_file)
     output_length = len(df)
@@ -51,9 +72,9 @@ def embed_sentences(input_file, output_file, dimension, model_name, limit):
 
 
 if __name__ == "__main__":
-    import click
+    import click  # コマンドライン引数を処理するためのライブラリ
 
-    @click.command()
+    @click.command()  # コマンドラインインターフェースを定義
     @click.argument("input_file", type=click.Path(exists=True))
     @click.argument("output_file", type=click.Path())
     @click.option("--dimension", type=int, default=384)
