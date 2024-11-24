@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<!--
+    Hybrid Search App
+    ハイブリッド検索アプリケーションのHTMLファイル
+-->
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -6,9 +9,11 @@
     <title>Hybrid Search App</title>
     <link rel="stylesheet" href="style.css">
     <script type='module'>
+        // main.jsから関数をインポートし、イベントリスナーを設定
         import {} from './main.js';
         document.getElementById('search-button').addEventListener('click', performSearch);
         document.getElementById('query-input').addEventListener('keydown', handleKeyDown);
+        // Enterキーが押されたときに検索を実行
         function handleKeyDown(event) {
             if (event.key === 'Enter') {
                 performSearch();
@@ -17,10 +22,12 @@
     </script>
 </head>
 <body>
+    <!-- 検索入力とボタン -->
     <div id="search-container">
         <input type="text" id="query-input" placeholder="Enter your search query">
         <button id='search-button'>Search</button>
     </div>
+    <!-- 検索結果を表示するためのコンテナ -->
     <div id="results">
         <div class="result-box" id="user-hybrid-results">User Hybrid Results</div>
         <div class="result-box" id="item-hybrid-results">Item Hybrid Results</div>
@@ -31,6 +38,10 @@
         <div class="result-box" id="user-bm25-results">User BM25 Results</div>
         <div class="result-box" id="item-bm25-results">Item BM25 Results</div>
     </div>
-    <div id="detailPopup"><button onclick="hidePopup()">x</button><div id ='popupContent'></div></div>
+    <!-- 詳細ポップアップ -->
+    <div id="detailPopup">
+        <button onclick="hidePopup()">x</button>
+        <div id='popupContent'></div>
+    </div>
 </body>
 </html>

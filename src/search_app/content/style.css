@@ -1,3 +1,4 @@
+/* 全体のスタイル設定 */
 body {
     font-family: Arial, sans-serif;
     margin: 10;
@@ -10,10 +11,12 @@ body {
     color: #e0e0e0; /* Light text color */
 }
 
+/* 検索コンテナのスタイル */
 #search-container {
     margin-bottom: 20px;
 }
 
+/* 結果表示のスタイル */
 #results {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -21,6 +24,7 @@ body {
     width: 90%;
 }
 
+/* 結果ボックスのスタイル */
 .result-box {
     background-color: #282828; /* Darker background for boxes */
     padding: 20px;
@@ -28,12 +32,14 @@ body {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* White shadow */
 }
 
+/* 翻訳リンクのスタイル */
 .translation-link {
     color: #0096c7; /* Light blue link color */
     cursor: pointer;
     text-decoration: underline;
 }
 
+/* ボタンのスタイル */
 .button {
   display: inline-block;
   padding: 2px 5px;
@@ -48,9 +54,11 @@ body {
 }
 
 .button:hover {
+  /* ホバー時のボタンスタイル */
   background-color: #0069d9; /* 濃い青色 */
 }
 
+/* アイテムサマリーのスタイル */
 .item-summary {
   background-color: #181818;
   border-radius: 5px;
@@ -59,9 +67,11 @@ body {
 }
 
 .item-summary dd {
+  /* アイテムサマリーの詳細スタイル */
   margin-left: 20px;
 }
 
+/* 詳細ポップアップのスタイル */
 #detailPopup {
   display: none;
   position: fixed;

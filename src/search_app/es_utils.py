@@ -1,3 +1,8 @@
+"""
+es_utils
+Elasticsearchとのインタラクションを行うユーティリティ関数群
+"""
+
 import os
 
 from dotenv import load_dotenv
@@ -7,6 +12,19 @@ load_dotenv(".credential")
 
 
 def make_client(es_host):
+    """
+    Elasticsearchクライアントを作成する関数
+
+    Parameters
+    ----------
+    es_host : str
+        ElasticsearchのホストURL
+
+    Returns
+    -------
+    Elasticsearch
+        Elasticsearchクライアントインスタンス
+    """
     elastic_username = os.getenv("ELASTIC_USERNAME")
     elastic_password = os.getenv("ELASTIC_PASSWORD")
 
@@ -23,18 +41,65 @@ def make_client(es_host):
 
 
 def get_user_info(user_id, user_index_name):
+    """
+    ユーザー情報を取得する関数
+
+    Parameters
+    ----------
+    user_id : str
+        ユーザーのID
+    user_index_name : str
+        ユーザー情報が格納されているインデックス名
+
+    Returns
+    -------
+    dict
+        ユーザー情報を含む辞書
+    """
     es = make_client("https://localhost:9200")
     response = es.get(index=user_index_name, id=user_id)
     return response["_source"]
 
 
 def get_item_info(item_id, item_index_name):
+    """
+    アイテム情報を取得する関数
+
+    Parameters
+    ----------
+    item_id : str
+        アイテムのID
+    item_index_name : str
+        アイテム情報が格納されているインデックス名
+
+    Returns
+    -------
+    dict
+        アイテム情報を含む辞書
+    """
     es = make_client("https://localhost:9200")
     response = es.get(index=item_index_name, id=item_id)
     return response["_source"]
 
 
 def perform_translation_search(translation_vector, index_name, top_k=5):
+    """
+    翻訳ベクトルを用いて検索を実行する関数
+
+    Parameters
+    ----------
+    translation_vector : list
+        検索に使用する翻訳ベクトル
+    index_name : str
+        検索対象のインデックス名
+    top_k : int, optional
+        取得する上位結果の数 (デフォルトは5)
+
+    Returns
+    -------
+    list
+        検索結果のリスト
+    """
     es = make_client("https://localhost:9200")
     response = es.search(
         index=index_name,
@@ -53,6 +118,25 @@ def perform_translation_search(translation_vector, index_name, top_k=5):
 
 
 def perform_vector_search(query_vector, index_name, field_name, top_k=5):
+    """
+    ベクトルを用いて検索を実行する関数
+
+    Parameters
+    ----------
+    query_vector : list
+        検索に使用するクエリベクトル
+    index_name : str
+        検索対象のインデックス名
+    field_name : str
+        検索対象のフィールド名
+    top_k : int, optional
+        取得する上位結果の数 (デフォルトは5)
+
+    Returns
+    -------
+    list
+        検索結果のリスト
+    """
     es = make_client("https://localhost:9200")
     response = es.search(
         index=index_name,
@@ -71,6 +155,51 @@ def perform_vector_search(query_vector, index_name, field_name, top_k=5):
 
 
 def perform_hybrid_search(
+    query_text,
+    query_text_vector,
+    query_translation_vector,
+    index_name,
+    text_field_name,
+    text_vector_field_name,
+    translation_vector_field_name,
+    text_weight: float = 1.0,
+    text_vector_weight: float = 1.0,
+    translation_vector_weight: float = 1.0,
+    top_k=5,
+):
+    """
+    ハイブリッド検索を実行する関数
+
+    Parameters
+    ----------
+    query_text : str
+        検索に使用するクエリテキスト
+    query_text_vector : list
+        検索に使用するテキストベクトル
+    query_translation_vector : list
+        検索に使用する翻訳ベクトル
+    index_name : str
+        検索対象のインデックス名
+    text_field_name : str
+        テキストフィールド名
+    text_vector_field_name : str
+        テキストベクトルフィールド名
+    translation_vector_field_name : str
+        翻訳ベクトルフィールド名
+    text_weight : float, optional
+        テキストの重み (デフォルトは1.0)
+    text_vector_weight : float, optional
+        テキストベクトルの重み (デフォルトは1.0)
+    translation_vector_weight : float, optional
+        翻訳ベクトルの重み (デフォルトは1.0)
+    top_k : int, optional
+        取得する上位結果の数 (デフォルトは5)
+
+    Returns
+    -------
+    list
+        検索結果のリスト
+    """
     query_text,
     query_text_vector,
     query_translation_vector,
