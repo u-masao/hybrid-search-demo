@@ -3,14 +3,6 @@
 
 ### opened
 
-- 基本的な検索画面
-  - キーワードで検索 ->  text embed
-  - User translation で検索 -> similar user, similar item
-  - User embedding で検索 -> similar user, similar item
-  - User id で検索 -> user
-  - Item translation で検索 -> similar user, similar item
-  - Item embedding で検索 -> similar user, similar item
-  - Item id で検索 -> item
 
 ### stock
 
@@ -30,3 +22,12 @@
   - search api を作成
     - item, item vector, item translation, item hybrid
     - user, user vector, user translation, user hybrid
+
+- 基本的な検索画面
+  - キーワードで検索 ->  text embed
+  - User translation で検索 -> similar user, similar item
+  - User embedding で検索 -> similar user, similar item
+  - User id で検索 -> user
+  - Item translation で検索 -> similar user, similar item
+  - Item embedding で検索 -> similar user, similar item
+  - Item id で検索 -> item
