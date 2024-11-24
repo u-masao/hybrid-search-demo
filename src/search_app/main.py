@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 
 from src.embedding_api.client import text_embedding
 from src.search_app.es_utils import (
@@ -151,5 +151,7 @@ def user_hybrid_search():
     return jsonify(results)
 
 
-if __name__ == "__main__":
+@app.route("/")
+def serve_index():
+    return send_from_directory("src/search_app", "index.html")
     app.run(debug=True)
