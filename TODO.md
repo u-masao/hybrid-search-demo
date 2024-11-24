@@ -21,5 +21,11 @@
   - スコアのブレンド比率を設定
     - アイテムをテキスト埋め込みで検索して候補を取得
     - アイテムをユーザーのTranslationで検索して候補を取得
+- embedding, translation api で起動時に初回エンコーディングを実施
 
 ### closed
+
+- API
+  - search api を作成
+    - item, item vector, item translation, item hybrid
+    - user, user vector, user translation, user hybrid
