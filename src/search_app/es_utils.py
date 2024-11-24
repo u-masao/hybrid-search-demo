@@ -165,7 +165,7 @@ def perform_hybrid_search(
     text_weight: float = 1.0,
     text_vector_weight: float = 1.0,
     translation_vector_weight: float = 1.0,
-    top_k=5
+    top_k=5,
 ):
     """
     ハイブリッド検索を実行する関数
@@ -200,18 +200,7 @@ def perform_hybrid_search(
     list
         検索結果のリスト
     """
-    query_text,
-    query_text_vector,
-    query_translation_vector,
-    index_name,
-    text_field_name,
-    text_vector_field_name,
-    translation_vector_field_name,
-    text_weight: float = 1.0,
-    text_vector_weight: float = 1.0,
-    translation_vector_weight: float = 1.0,
-    top_k=5
-):
+
     es = make_client("https://localhost:9200")
 
     source = f"""
