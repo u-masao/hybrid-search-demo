@@ -7,36 +7,48 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from tqdm import tqdm
 
+# 環境変数をロード
 load_dotenv()
-
 
 def generate_user_profiles(num_users=1000, categories=None):
     """
-    Generate fictional user profiles.
+    架空のユーザープロファイルを生成します。
 
-    Parameters:
-    - num_users: Number of unique users.
-    - categories: List of categories for user preferences.
+    Parameters
+    ----------
+    num_users : int, optional
+        ユニークなユーザーの数 (デフォルトは1000)。
+    categories : list of str, optional
+        ユーザーの好みのカテゴリのリスト (デフォルトはNone)。
 
-    Returns:
-    A dictionary of user profiles.
+    Returns
+    -------
+    dict
+        ユーザープロファイルの辞書。
     """
     if categories is None:
         categories = []
 
+    # ユーザーIDのリストを生成
     user_ids = [i for i in range(1, num_users + 1)]
+    # 性別の選択肢
     genders = ["male", "female", "non-binary"]
 
+    # OpenAIクライアントを初期化
     client = OpenAI(
         api_key=os.environ["OPENAI_API_KEY"],
     )
     user_profiles = {}
     for user_id in tqdm(user_ids, desc="Generating user profiles"):
+        # 年齢をランダムに決定
         age = random.randint(18, 70)
+        # 性別をランダムに選択
         gender = random.choice(genders)
+        # 好みのカテゴリをランダムに選択
         preferences = random.sample(
             categories, k=random.randint(1, min(3, len(categories)))
         )
+        # 自己紹介文を生成
         introduction = (
             client.chat.completions.create(
                 model="gpt-3.5-turbo",
@@ -58,6 +70,7 @@ def generate_user_profiles(num_users=1000, categories=None):
             .message.content.strip()
         )
 
+        # プロファイルの文を作成
         sentence = (
             f"**Age**: {age}\n\n"
             f"**Gender**: {gender}\n\n"
@@ -65,6 +78,7 @@ def generate_user_profiles(num_users=1000, categories=None):
             f"**Introduction**: {introduction}"
         )
 
+        # ユーザープロファイルを辞書に追加
         user_profiles[user_id] = {
             "id": user_id,
             "sentence": sentence,
@@ -76,26 +90,28 @@ def generate_user_profiles(num_users=1000, categories=None):
 
     return user_profiles
 
-
 @click.command()
 @click.option(
-    "--num_users", default=1000, help="Number of unique users to generate."
+    "--num_users", default=1000, help="生成するユニークなユーザーの数。"
 )
 @click.option(
     "--categories",
     default="technology,sports,music,art",
-    help="Comma-separated list of categories for user preferences.",
+    help="ユーザーの好みのカテゴリのカンマ区切りリスト。",
 )
 @click.argument("output_file", type=click.Path())
 def main(num_users, categories, output_file):
-    """Generate user profiles and save to a parquet file."""
+    """ユーザープロファイルを生成し、Parquetファイルに保存します。"""
+    # カテゴリをリストに変換
     categories_list = categories.split(",")
+    # ユーザープロファイルを生成
     user_profiles = generate_user_profiles(
         num_users=num_users, categories=categories_list
     )
+    # データフレームに変換
     df_user_profiles = pd.DataFrame.from_dict(user_profiles, orient="index")
+    # Parquetファイルに保存
     df_user_profiles.to_parquet(output_file)
-
 
 if __name__ == "__main__":
     main()
