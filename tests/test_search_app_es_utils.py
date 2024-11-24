@@ -4,6 +4,7 @@ from src.search_app.es_utils import (
     get_item_info,
     get_user_info,
     make_client,
+    perform_hybrid_search,
     perform_translation_search,
     perform_vector_search,
 )
@@ -73,4 +74,33 @@ def test_perform_item_translation_search():
     index_name = "item_develop"
     top_k = 5
     results = perform_translation_search(translation_vector, index_name, top_k)
+    assert len(results) <= top_k
+
+
+def test_perform_hybrid_search():
+    text = "スポーツ"
+    text_vector = [0.1] * 384
+    translation_vector = [0.1] * 64
+    text_weight = 1.0
+    text_vector_weight = 1.0
+    translation_vector_weight = 1.0
+    text_field_name = "sentence"
+    text_vector_field_name = "embedding"
+    translation_vector_field_name = "translation"
+    index_name = "item_develop"
+    top_k = 5
+
+    results = perform_hybrid_search(
+        text,
+        text_vector,
+        translation_vector,
+        index_name,
+        text_field_name=text_field_name,
+        text_vector_field_name=text_vector_field_name,
+        translation_vector_field_name=translation_vector_field_name,
+        text_weight=text_weight,
+        text_vector_weight=text_vector_weight,
+        translation_vector_weight=translation_vector_weight,
+        top_k=top_k,
+    )
     assert len(results) <= top_k

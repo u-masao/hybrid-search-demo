@@ -66,3 +66,31 @@ def test_item_text_embedding_search():
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, list)
+
+
+def test_item_hybrid_search():
+    response = requests.post(
+        f"{BASE_URL}/api/item_hybrid_search",
+        json={
+            "text": "スポーツ",
+            "embedding": [0.1] * 384,
+            "translation": [0.2] * 64,
+        },
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert isinstance(data, list)
+
+
+def test_user_hybrid_search():
+    response = requests.post(
+        f"{BASE_URL}/api/user_hybrid_search",
+        json={
+            "text": "スポーツ",
+            "embedding": [0.1] * 384,
+            "translation": [0.2] * 64,
+        },
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert isinstance(data, list)
