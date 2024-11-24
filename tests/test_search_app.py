@@ -15,14 +15,18 @@ def test_vector_search():
 
 
 def test_user_info():
-    response = requests.get(f"{BASE_URL}/api/user_info/A1WNRJMBau9a4UogThL4")
+    response = requests.post(
+        f"{BASE_URL}/api/user_info/", json={"id": "A1WNRJMBau9a4UogThL4"}
+    )
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, dict)
 
 
 def test_item_info():
-    response = requests.get(f"{BASE_URL}/api/item_info/HFWNRJMBau9a4UogZhKy")
+    response = requests.post(
+        f"{BASE_URL}/api/item_info/", json={"id": "HFWNRJMBau9a4UogZhKy"}
+    )
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, dict)

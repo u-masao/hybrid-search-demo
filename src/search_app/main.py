@@ -37,14 +37,18 @@ def vector_search():
     )
 
 
-@app.route("/api/user_info/<user_id>", methods=["GET"])
-def user_info(user_id):
+@app.route("/api/user_info/", methods=["POST"])
+def user_info():
+    data = request.json
+    user_id = data.get("id")
     user_data = get_user_info(user_id, user_index_name)
     return jsonify(user_data)
 
 
-@app.route("/api/item_info/<item_id>", methods=["GET"])
-def item_info(item_id):
+@app.route("/api/item_info/", methods=["POST"])
+def item_info():
+    data = request.json
+    item_id = data.get("id")
     item_data = get_item_info(item_id, item_index_name)
     return jsonify(item_data)
 
